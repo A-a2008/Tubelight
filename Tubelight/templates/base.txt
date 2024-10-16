@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section id="wrapper">
+    <header>
+        <div class="inner">
+            <h2>$title$</h2>
+            <p>$subtitle$</p>
+        </div>
+    </header>
+
+    <!-- Content -->
+        <div class="wrapper">
+            <div class="inner">
+
+                $content$
+
+            </div>
+        </div>
+
+</section>
+{% endblock %}

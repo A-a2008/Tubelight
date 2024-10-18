@@ -15,7 +15,7 @@
 
 				<!-- Header -->
 					<header id="header">
-						<h1><a href="index.html">Tubelight</a></h1>
+						<h1><a href="/">Tubelight</a></h1>
 						<nav>
 							<a href="#menu">Menu</a>
 						</nav>
@@ -30,7 +30,11 @@
 								<li><a href="generic.html">Generic</a></li>
 								<li><a href="elements.html">Elements</a></li>
 								<li><a href="#">Log In</a></li>
-								<li><a href="#">Sign Up</a></li>
+								{% if not request.session.is_authenticated %}
+								<li><a href="{% url 'register' %}">Register</a></li>
+								{% else %}
+								<li><a href="">Logout</a></li>
+								{% endif %}
 							</ul>
 							<a href="#" class="close">Close</a>
 						</div>

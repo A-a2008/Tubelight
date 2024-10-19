@@ -48,5 +48,10 @@ def register(request):
                 request.session["email"] = email
 
                 return redirect('home')
+            else:
+                data = {
+                    "messages": ["Passwords do not match"],
+                }
+                return render(request, 'accounts/register.html', data)
     else:
         return render(request, 'accounts/register.html')

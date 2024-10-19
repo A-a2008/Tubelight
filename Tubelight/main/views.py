@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 
 def home(request):
+    
     if "is_authenticated" not in request.session:
         request.session["is_authenticated"] = False
     return render(request, "index.html")

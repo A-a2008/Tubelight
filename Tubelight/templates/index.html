@@ -29,7 +29,7 @@
 								<li><a href="index.html">Home</a></li>
 								<li><a href="generic.html">Generic</a></li>
 								<li><a href="elements.html">Elements</a></li>
-								<li><a href="#">Log In</a></li>
+								<li><a href="{% url 'login' %}">Log In</a></li>
 								{% if not request.session.is_authenticated %}
 								<li><a href="{% url 'register' %}">Register</a></li>
 								{% else %}

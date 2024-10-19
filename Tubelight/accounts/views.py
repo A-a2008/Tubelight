@@ -55,3 +55,32 @@ def register(request):
                 return render(request, 'accounts/register.html', data)
     else:
         return render(request, 'accounts/register.html')
+
+
+def login(request):
+    if request.method=='POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        users = "./database/users.csv"
+        with open(users,mode='r',newline = '') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['username'] == username:
+                    if check_password(password,row['password'],row['username']):
+                        request.session["is_authenticated"] = True
+                        request.session['username'] = username
+                        request.session['first_name'] = row['first_name']
+                        request.session['last_name'] = row['last_name']
+                        request.session['email'] = row['email']
+                        return redirect('home')
+                    else:
+                        data={
+                            'messages':["Incorrect password"]
+                        }
+                        return render(request,'accounts/login.html',data)
+                    
+
+    else:
+
+        return render(request, 'accounts/login.html' )
+    

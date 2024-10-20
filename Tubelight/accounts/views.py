@@ -61,9 +61,12 @@ def login(request):
     if request.method=='POST':
         username = request.POST['username']
         password = request.POST['password']
+
         users = "./database/users.csv"
+
         with open(users,mode='r',newline = '') as file:
             reader = csv.DictReader(file)
+            
             for row in reader:
                 if row['username'] == username:
                     if check_password(password,row['password'],row['username']):
@@ -78,18 +81,14 @@ def login(request):
                             'messages':["Incorrect password"]
                         }
                         return render(request,'accounts/login.html',data)
-                    
-
     else:
-
         return render(request, 'accounts/login.html' )
     
 
 def logout(request):
-               request.session["is_authenticated"]  = False
-               del request.session['first_name']
-               del request.session['last_name']
-               del request.session['username']
-               del request.session['email']
-               return redirect('home')
-   
+    request.session["is_authenticated"] = False
+    del request.session['first_name']
+    del request.session['last_name']
+    del request.session['username']
+    del request.session['email']
+    return redirect('home')

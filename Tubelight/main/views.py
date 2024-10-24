@@ -50,6 +50,12 @@ def create_event(request):
     if request.method == "POST":
         username = request.POST["username"]
         name = request.POST["name"]
+        description = request.POST["description"]
+        date = request.POST["date"]
+        time = request.POST["time"]
+        venue = request.POST["venue"]
+        cheif_guest = request.POST["cheif_guest"]
+        target_audience = request.POST["target_audience"]
 
         events_file_id = None
         events_file = "./database/events.csv"
@@ -61,8 +67,23 @@ def create_event(request):
         print(events_file_id)
         with open(events_file, "a", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow([events_file_id, name, "B", "2021-09-10", "10:00:00", "Venue A", "A", "Students"])
+            writer.writerow([events_file_id, name, description, date, time, venue, cheif_guest, target_audience])
+
+        users_file = "./database/users.csv"
+        with open(users_file, "r", newline="") as f:
+            reader = csv.DictReader(f)
+            users_file_rows = list(reader)
+            for row in users_file_rows:
+                if row["username"] == username:
+                    row["events"] += str(events_file_id) + "|"
+                    break
         
+        with open(users_file, "w", newline="") as f:
+            cols = users_file_rows[0].keys()
+            writer = csv.DictWriter(f, fieldnames=cols)
+            writer.writeheader()
+            writer.writerows(users_file_rows)
+
         return redirect("display_events")
     else:
         return render(request, "main/create_event.html")

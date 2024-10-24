@@ -12,12 +12,37 @@
     <!-- Content -->
         <div class="wrapper">
             <div class="inner">
-
+                
                 <form action="/tubes/create/" method="post">
                     {% csrf_token %}
+                    <div class="row gtr-uniform">
+                        <div class="col-12 col-12-xsmall">
+                            Tube Name: <input type="text" name="name" placeholder="Tube Name" required>
+                        </div>
+                        <div class="col-12 col-12-xsmall">
+                            Tube Description: <textarea type="text" name="description" placeholder="Tube Description" required></textarea>
+                        </div>
+                        <div class="col-6 col-12-xsmall">
+                            Date: <input type="date" name="date" value="{{ date }}" required>
+                        </div>
+                        <div class="col-6 col-12-xsmall">
+                            Time: <input type="time" name="time" required>
+                        </div>
+                        <div class="col-12 col-12-xsmall">
+                            Venue: <input type="text" name="venue" placeholder="Venue" required>
+                        </div>
+                        <div class="col-12 col-12-xsmall">
+                            Cheif Guest: <input type="text" name="cheif_guest" placeholder="Cheif Guest" required>
+                        </div>
+                        <div class="col-12 col-12-xsmall">
+                            Target Audience: <input type="text" name="target_audience" placeholder="Target Audience" required>
+                        </div>
+                        <div class="col-12 col-12-xsmall">
+                            <input type="submit" value="Create"> <input type="reset" value="Reset">
+                        </div>
+                    </div>
                     <input type="hidden" name="username" value="{{ request.session.username }}">
-                    Tube Name: <input type="text" name="name" placeholder="Tube Name" required>
-                    <input type="submit" value="Create">
+                    
                 </form>
 
             </div>

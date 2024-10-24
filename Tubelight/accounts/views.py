@@ -40,7 +40,7 @@ def register(request):
 
             if password1 == password2:
                 password_hash = hash_password(password1, username)
-                writer.writerow([first_name, last_name, username, email, password_hash])
+                writer.writerow([first_name, last_name, username, email, password_hash, ""])
                 request.session["is_authenticated"] = True
                 request.session["username"] = username
                 request.session["first_name"] = first_name

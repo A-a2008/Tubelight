@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section id="wrapper">
+    <header>
+        <div class="inner">
+            <h2>{{ event.name }}</h2>
+            <p>{{ event.description }}</p>
+        </div>
+    </header>
+
+    <!-- Content -->
+        <div class="wrapper">
+            <div class="inner">
+                Create a new connection: <br>
+                <form method="POST" action="{% url 'create_subevent' event_id=event.id %}">
+                    {% csrf_token %}
+                    Name: <input type="text" name="name" placeholder="Connection Name" required><br>
+                    Description: <input type="text" name="description" placeholder="Description" required><br>
+                    Duration (in minutes): <input type="number" name="duration" placeholder="Duration in minutes" required><br>
+                    <input type="submit" value="Create"> <input type="reset" value="Reset">
+                </form>
+                <a href="{% url 'display_subevents' event_id=event.id %}" class="button">Stop</a>
+                <hr>
+                {% if subevents %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Connection Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subevent in subevents %}
+                            <tr>
+                                <td>{{ subevent.name }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+        </div>
+
+</section>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section id="wrapper">
+    <header>
+        <div class="inner">
+            <h2>{{ event.name }}</h2>
+            <p>{{ event.description }}</p>
+        </div>
+    </header>
+
+    <!-- Content -->
+        <div class="wrapper">
+            <div class="inner">
+                {% if subevents %}
+                Here's a list of all the connections for this tube:
+                <br><br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Connection Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subevent in subevents %}
+                            <tr>
+                                <td>{{ subevent.name }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{% url 'create_subevent' event_id=event.id %}" class="button">Add Connection</a>
+                {% else %}
+                <b>You have no connections for this tube yet.</b> Click on the "Create Connection" button to create a new connection. <br><br>
+                <a href="{% url 'create_subevent' event_id=event.id %}" class="button">Create Connection</a>
+                {% endif %}
+            </div>
+        </div>
+
+</section>
+{% endblock %}

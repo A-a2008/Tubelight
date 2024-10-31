@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section id="wrapper">
+    <header>
+        <div class="inner">
+            <h2>{{ subevent.name }}</h2>
+            <p>{{ subevent.description }}</p>
+        </div>
+    </header>
+
+    <!-- Content -->
+        <div class="wrapper">
+            <div class="inner">
+                {% if files %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>File Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for file in files %}
+                        <tr>
+                            <td>{{ file.file_name }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <b>You currenly have no files uploaded for this subevent.</b> Fill the form below to add a file. <br><br>
+                {% endif %}
+                <form action="{% url 'display_subevent_details' subevent_id=subevent.id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row gtr-uniform">
+                        <div class="col-6 col-12-xsmall">
+                            File Name: <input type="text" name="file_name" placeholder="File Name" required>
+                        </div>
+                        <div class="col-6 col-12-xsmall">
+                            Upload File: <br><input type="file" name="file" required>
+                        </div>
+                        <div class="col-12">
+                            <input type="submit" value="Add File" class="primary">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+</section>
+{% endblock %}

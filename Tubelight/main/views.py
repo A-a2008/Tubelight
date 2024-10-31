@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 import csv
+import os
 
 # Create your views here.
 
@@ -39,6 +40,16 @@ def get_subevent_subevent_id(subevents_file, subevent_id):
             if int(row["id"]) == subevent_id:
                 return row
     return None
+
+
+def get_files_subevent_id(files_file, subevent_id):
+    files = []
+    with open(files_file, "r", newline="") as f:    
+        reader = csv.DictReader(f)
+        for row in reader:
+            if int(row["subevent_id"]) == subevent_id:
+                files.append(row)
+    return files
 
 
 def display_events(request):
@@ -89,9 +100,12 @@ def create_event(request):
         events_file = "./database/events.csv"
         with open(events_file, "r", newline="") as f:
             reader = list(csv.DictReader(f))
+            if len(reader):
+                last_row = reader[-1]
+                events_file_id = int(last_row["id"]) + 1
+            else:
+                events_file_id = 0
 
-            last_row = reader[-1]
-            events_file_id = int(last_row["id"]) + 1
         print(events_file_id)
         with open(events_file, "a", newline="") as f:
             writer = csv.writer(f)
@@ -169,3 +183,48 @@ def create_subevent(request, event_id):
         }
 
         return render(request, "main/create_subevent.html", data)
+    
+
+def display_subevent_details(request, subevent_id):
+    if request.method == "POST":
+        file_name = request.POST["file_name"]
+        uploaded_file = request.FILES.get('file')
+        file_name = f"{file_name}{os.path.splitext(uploaded_file.name)[1]}"
+
+        if uploaded_file:
+            files_file = "./database/files.csv"
+            files_dir = "./database/files"
+            save_path = os.path.join(files_dir, file_name)
+            
+            os.makedirs(os.path.dirname(save_path), exist_ok=True)
+            
+            with open(save_path, 'wb') as file:
+                for chunk in uploaded_file.chunks():
+                    file.write(chunk)
+            
+            files_file_id = order = None
+            with open(files_file, "r", newline="") as f:
+                reader = list(csv.DictReader(f))
+                if len(reader):
+                    last_row = reader[-1]
+                    files_file_id = int(last_row["id"]) + 1
+                    order = int(last_row["order"]) + 1
+                else:
+                    files_file_id = 0
+                    order = 1
+            
+            with open(files_file, "a", newline="") as f:
+                writer = csv.writer(f)
+                writer.writerow([files_file_id, subevent_id, order, save_path, file_name])
+
+        return redirect("display_subevent_details", subevent_id=subevent_id)
+    else:
+        subevents_file = "./database/subevents.csv"
+        files_file = "./database/files.csv"
+
+        data = {
+            "subevent": get_subevent_subevent_id(subevents_file, subevent_id),
+            "files": get_files_subevent_id(files_file, subevent_id),
+        }
+
+        return render(request, "main/display_subevent_details.html", data)

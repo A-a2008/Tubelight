@@ -24,7 +24,7 @@
                     <tbody>
                         {% for subevent in subevents %}
                             <tr>
-                                <td>{{ subevent.name }}</td>
+                                <td><a href="{% url 'display_subevent_details' subevent_id=subevent.id %}">{{ subevent.name }}</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>

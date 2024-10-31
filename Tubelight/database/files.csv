@@ -1,1 +1,2 @@
-id,subevent_id,event_id,order,path
+id,subevent_id,order,path,file_name
+0,0,1,./database/files/Inaugural Dance.mp3,Inaugural Dance.mp3

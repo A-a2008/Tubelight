@@ -8,4 +8,5 @@ urlpatterns = [
     path("tubes/create/", views.create_event, name="create_event"),
     path("tubes/connections/<int:event_id>/", views.display_subevents, name="display_subevents"),
     path("tubes/connections/create/<int:event_id>/", views.create_subevent, name="create_subevent"),
+    path("tubes/connections/details/<int:subevent_id>/", views.display_subevent_details, name="display_subevent_details"),
 ]

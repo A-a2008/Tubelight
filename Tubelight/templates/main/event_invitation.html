@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+		<noscript><link rel="stylesheet" href="{% static 'assets/css/noscript.css' %}" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+
+				<!-- Banner -->
+					<section id="banner">
+						<div class="inner">
+							<!-- <div class="logo"><span class="icon fa-gem"></span></div> -->
+							<h2>Invitation to "{{ event.name }}"</h2>
+							<p>{{ event.description }}</p>
+						</div>
+					</section>
+
+				<!-- Wrapper -->
+					<section id="wrapper">
+
+						<!-- One -->
+							<section id="one" class="wrapper spotlight style1">
+								<div class="inner">
+									<div class="content">
+										<div class="row gtr-uniform">
+											<div class="col-4 col-4-xsmall">
+												<h2 class="major">Date</h2>
+												<p>{{ event.date }}</p>
+											</div>
+											<div class="col-4 col-4-xsmall">
+												<h2 class="major">Time</h2>
+												<p>{{ event.time }}</p>
+											</div>
+											<div class="col-4 col-4-xsmall">
+												<h2 class="major">Venue</h2>
+												<p>{{ event.venue }}</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</section>
+
+						<!-- Two -->
+							<section id="two" class="wrapper alt spotlight style2">
+								<div class="inner">
+									<div class="content">
+										<div class="row gtr-uniform">
+											<div class="col-6 col-6-xsmall">
+												<h2 class="major">Chief Guest</h2>
+												<p>{{ event.chief_guest }}</p>
+											</div>
+											<div class="col-6 col-6-xsmall">
+												<h2 class="major">Audience</h2>
+												<p>{{ event.target_audience }}</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</section>
+
+
+					</section>
+			</div>
+
+		<!-- Scripts -->
+			<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+			<script src="{% static 'assets/js/jquery.scrollex.min.js' %}"></script>
+			<script src="{% static 'assets/js/browser.min.js' %}"></script>
+			<script src="{% static 'assets/js/breakpoints.min.js' %}"></script>
+			<script src="{% static 'assets/js/util.js' %}"></script>
+			<script src="{% static 'assets/js/main.js' %}"></script>
+
+	</body>
+</html>

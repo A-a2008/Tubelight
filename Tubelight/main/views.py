@@ -1,6 +1,11 @@
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+from django.http import HttpResponse
 import csv
 import os
+from datetime import datetime
+import tempfile
+from weasyprint import HTML, CSS
 
 # Create your views here.
 
@@ -228,3 +233,35 @@ def display_subevent_details(request, subevent_id):
         }
 
         return render(request, "main/display_subevent_details.html", data)
+    
+
+def event_invitation(request, event_id):
+    events_file = "./database/events.csv"
+    event = get_event_event_id(events_file, event_id)
+    event["date"] = datetime.strptime(event["date"], "%Y-%m-%d").strftime("%d-%m-%Y")
+    event["time"] = datetime.strptime(event["time"], "%H:%M:%S").strftime("%I:%M %p")
+
+    data = {
+        "event": event,
+    }
+
+    invitation_html = render_to_string("main/event_invitation.html", data)
+
+    css_url = request.build_absolute_uri('/static/assets/css/main.css')
+
+    custom_css = """
+        @page {
+            size: A2;
+            margin: 0cm;
+        }
+    """
+
+    with tempfile.NamedTemporaryFile(delete=True) as invitation_file:
+        HTML(string=invitation_html, base_url=request.build_absolute_uri()).write_pdf(
+            invitation_file.name,
+            stylesheets=[CSS(css_url), CSS(string=custom_css)]
+        )
+
+        response = HttpResponse(open(invitation_file.name, 'rb'), content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{event["name"]}_invitation.pdf"'
+        return response

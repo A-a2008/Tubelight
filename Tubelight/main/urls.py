@@ -9,4 +9,5 @@ urlpatterns = [
     path("tubes/connections/<int:event_id>/", views.display_subevents, name="display_subevents"),
     path("tubes/connections/create/<int:event_id>/", views.create_subevent, name="create_subevent"),
     path("tubes/connections/details/<int:subevent_id>/", views.display_subevent_details, name="display_subevent_details"),
+    path("tubes/invitation/<int:event_id>/", views.event_invitation, name="event_invitation"),
 ]

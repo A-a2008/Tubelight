@@ -6,6 +6,8 @@ import os
 from datetime import datetime
 import tempfile
 from weasyprint import HTML, CSS
+import qrcode
+from PIL import Image
 
 # Create your views here.
 
@@ -55,6 +57,23 @@ def get_files_subevent_id(files_file, subevent_id):
             if int(row["subevent_id"]) == subevent_id:
                 files.append(row)
     return files
+
+
+def venue_qr(url, save_path, qr_size=300):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_H,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(url)
+    qr.make(fit=True)
+
+    qr_img = qr.make_image(fill="black", back_color="white").convert("RGB")
+
+    qr_img = qr_img.resize((qr_size, qr_size), Image.LANCZOS)
+
+    qr_img.save(save_path)
 
 
 def display_events(request):
@@ -130,6 +149,8 @@ def create_event(request):
             writer = csv.DictWriter(f, fieldnames=cols)
             writer.writeheader()
             writer.writerows(users_file_rows)
+
+        venue_qr(venue, f"./static/images/venues/{events_file_id}.png")
 
         return redirect("display_events")
     else:
@@ -239,7 +260,7 @@ def event_invitation(request, event_id):
     events_file = "./database/events.csv"
     event = get_event_event_id(events_file, event_id)
     event["date"] = datetime.strptime(event["date"], "%Y-%m-%d").strftime("%d-%m-%Y")
-    event["time"] = datetime.strptime(event["time"], "%H:%M:%S").strftime("%I:%M %p")
+    event["time"] = datetime.strptime(event["time"], "%H:%M").strftime("%I:%M %p")
 
     data = {
         "event": event,
@@ -265,3 +286,5 @@ def event_invitation(request, event_id):
         response = HttpResponse(open(invitation_file.name, 'rb'), content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="{event["name"]}_invitation.pdf"'
         return response
+
+venue_qr("https://www.google.com/maps/place/Royal+Meenakshi+Mall/@12.8881935,77.5963265,15z/data=!4m6!3m5!1s0x3bae152cc2008809:0x6f1c35681dbd4e5a!8m2!3d12.8757!4d77.595766!16s%2Fg%2F11b7stmqk8?entry=ttu&g_ep=EgoyMDI0MTEwNi4wIKXMDSoASAFQAw%3D%3D", "./static/images/venues/1.png")

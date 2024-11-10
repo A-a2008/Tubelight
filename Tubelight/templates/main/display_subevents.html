@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 <section id="wrapper">
@@ -34,6 +35,10 @@
                 <b>You have no connections for this tube yet.</b> Click on the "Create Connection" button to create a new connection. <br><br>
                 <a href="{% url 'create_subevent' event_id=event.id %}" class="button">Create Connection</a>
                 {% endif %}
+                <hr>
+                Venue: <br>
+                <img src="{% static 'images/venues/' %}{{ event.id }}.png" width="500"><br><br>
+                <a href="{{ event.venue }}" target="_blank">Go to Maps ➡️</a>
             </div>
         </div>
 

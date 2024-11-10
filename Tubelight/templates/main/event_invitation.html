@@ -40,7 +40,8 @@
 											</div>
 											<div class="col-4 col-4-xsmall">
 												<h2 class="major">Venue</h2>
-												<p>{{ event.venue }}</p>
+												<p><img src="{% static 'images/venues/' %}{{ event.id }}.png" width="400"><br><br>
+													<a href="{{ event.venue }}" target="_blank">Go to Maps ➡️</a><hr></p>
 											</div>
 										</div>
 									</div>

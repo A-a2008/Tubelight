@@ -286,5 +286,3 @@ def event_invitation(request, event_id):
         response = HttpResponse(open(invitation_file.name, 'rb'), content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="{event["name"]}_invitation.pdf"'
         return response
-
-venue_qr("https://www.google.com/maps/place/Royal+Meenakshi+Mall/@12.8881935,77.5963265,15z/data=!4m6!3m5!1s0x3bae152cc2008809:0x6f1c35681dbd4e5a!8m2!3d12.8757!4d77.595766!16s%2Fg%2F11b7stmqk8?entry=ttu&g_ep=EgoyMDI0MTEwNi4wIKXMDSoASAFQAw%3D%3D", "./static/images/venues/1.png")

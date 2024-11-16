@@ -18,7 +18,7 @@ After installing the pip packages, please refer to [WeasyPrint Installation](htt
 
 Navigate to the directory containing the `manage.py` file. <br>
 
-Then to start the sever, you can type the command:
+Then to start the server, you can type the command:
 ```bash
 python manage.py runserver
 ```
@@ -37,7 +37,7 @@ pip install -r requirements.txt
 
 Navigate to the directory containing the `manage.py` file.
 
-Then to start the sever, you can type the command:
+Then to start the server, you can type the command:
 ```bash
 python manage.py runserver
 ```

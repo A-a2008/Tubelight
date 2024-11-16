@@ -21,6 +21,7 @@
                                 <tr>
                                     <th>Tube Name</th>
                                     <th style="text-align: right;">Download Invitation</th>
+                                    <th style="text-align: right;">Download Files</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -28,6 +29,7 @@
                                 <tr>
                                     <td><a href="{% url 'display_subevents' event_id=event.id %}">{{ event.name }}</a></td>
                                     <td style="text-align: right;"><a href="{% url 'event_invitation' event_id=event.id %}" class="button small">Download</a></td>
+                                    <td style="text-align: right;"><a href="{% url 'download_files' event_id=event.id %}" class="button small">Download</a></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>

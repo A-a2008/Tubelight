@@ -12,6 +12,7 @@
     <!-- Content -->
         <div class="wrapper">
             <div class="inner">
+                <a href="{% url 'display_subevents' event_id=event.id %}" class="button">Stop</a><br><br>
                 Create a new connection: <br>
                 <form method="POST" action="{% url 'create_subevent' event_id=event.id %}">
                     {% csrf_token %}
@@ -20,7 +21,6 @@
                     Duration (in minutes): <input type="number" name="duration" placeholder="Duration in minutes" required><br>
                     <input type="submit" value="Create"> <input type="reset" value="Reset">
                 </form>
-                <a href="{% url 'display_subevents' event_id=event.id %}" class="button">Stop</a>
                 <hr>
                 {% if subevents %}
                 <table>

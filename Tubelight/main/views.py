@@ -8,6 +8,7 @@ import tempfile
 from weasyprint import HTML, CSS
 import qrcode
 from PIL import Image
+import zipfile
 
 # Create your views here.
 
@@ -56,6 +57,20 @@ def get_files_subevent_id(files_file, subevent_id):
         for row in reader:
             if int(row["subevent_id"]) == subevent_id:
                 files.append(row)
+    return files
+
+def get_files_event_id(files_file, event_file, event_id):
+    subevents = get_subevents_event_id(event_file, event_id)
+    files = {}
+    for subevent in subevents:
+        subevent_id = int(subevent["id"])
+        subevent_files = []
+        with open(files_file, "r", newline="") as f:    
+            reader = csv.DictReader(f)
+            for row in reader:
+                if int(row["subevent_id"]) == subevent_id:
+                    subevent_files.append(row["path"])
+        files[subevent["name"]] = subevent_files
     return files
 
 
@@ -119,6 +134,13 @@ def create_event(request):
         venue = request.POST["venue"]
         cheif_guest = request.POST["cheif_guest"]
         target_audience = request.POST["target_audience"]
+
+        today = datetime.now().strftime("%Y-%m-%d")
+        if date < today:
+            data = {
+                "messages": ["Invalid date. Please select a date from today onwards"]
+            }
+            return render(request, "main/create_event.html", data)
 
         events_file_id = None
         events_file = "./database/events.csv"
@@ -212,10 +234,19 @@ def create_subevent(request, event_id):
     
 
 def display_subevent_details(request, subevent_id):
+    events_file = "./database/events.csv"
+    
+    with open(events_file, "r", newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if int(row["id"]) == subevent_id:
+                event = row
+                break
+
     if request.method == "POST":
         file_name = request.POST["file_name"]
         uploaded_file = request.FILES.get('file')
-        file_name = f"{file_name}{os.path.splitext(uploaded_file.name)[1]}"
+        file_name = f"{event['id']}-{file_name}{os.path.splitext(uploaded_file.name)[1]}"
 
         if uploaded_file:
             files_file = "./database/files.csv"
@@ -286,3 +317,38 @@ def event_invitation(request, event_id):
         response = HttpResponse(open(invitation_file.name, 'rb'), content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="{event["name"]}_invitation.pdf"'
         return response
+    
+def download_files(request, event_id):
+    files = get_files_event_id("./database/files.csv", "./database/subevents.csv", event_id)
+
+    event = get_event_event_id("./database/events.csv", event_id)
+
+    download_zip = audio_files_edit(files, event["name"])
+    original_file_name = os.path.basename(download_zip)
+
+    with open(download_zip, 'rb') as zip_file:
+        response = HttpResponse(zip_file.read(), content_type='application/zip')
+        response['Content-Disposition'] = f'attachment; filename="{original_file_name}"'
+        return response
+
+
+def audio_files_edit(file_paths, event_name):
+    current_date = datetime.now().strftime("%Y-%m-%d")
+
+    zip_file_name = f'{event_name}-{current_date}.zip'
+    zip_files = "./database/files/zip_files"
+    zip_file_path = os.path.join(zip_files, zip_file_name)
+    zip_file_url = os.path.join(zip_files, zip_file_name)
+
+    print(file_paths)
+    with zipfile.ZipFile(zip_file_path, 'w') as zip_file:
+        for subevent_name, all_file_paths in file_paths.items():
+            for file_path in all_file_paths:
+                file_path = os.path.abspath(file_path)
+                print(file_path)
+                file_name = os.path.basename(file_path)
+                zip_file.write(file_path, arcname=os.path.join(subevent_name, file_name))
+                if file_path.endswith('.mp3'):
+                    zip_file.write(file_path, arcname=os.path.join("All Music Files", file_name))
+                    
+    return zip_file_url

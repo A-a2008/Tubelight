@@ -12,6 +12,11 @@
     <!-- Content -->
         <div class="wrapper">
             <div class="inner">
+                {% if messages %}
+                {% for message in messages %}
+                <font color="red">{{ message }} <br /></font><br />
+                {% endfor %}
+                {% endif %}
                 
                 <form action="/tubes/create/" method="post">
                     {% csrf_token %}

@@ -2,5 +2,3 @@ id,subevent_id,order,path,file_name
 0,0,1,./database/files/Inaugural Dance.mp3,Inaugural Dance.mp3
 1,2,2,./database/files/2-Prayer Dance.mp3,2-Prayer Dance.mp3
 2,3,3,./database/files/3-Group 1 Dance Song.mp3,3-Group 1 Dance Song.mp3
-3,4,4,./database/files/4-hi.png,4-hi.png
-4,5,5,./database/files/5-File1.mp4,5-File1.mp4

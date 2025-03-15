@@ -28,7 +28,7 @@
                                 {% for event in events %}
                                 <tr>
                                     <td><a href="{% url 'display_subevents' event_id=event.id %}">{{ event.name }}</a></td>
-                                    <td style="text-align: right;"><a href="{% url 'event_invitation' event_id=event.id %}" class="button small">Download</a></td>
+                                    <td style="text-align: right;"><a href="" class="button small">Download</a></td>
                                     <td style="text-align: right;"><a href="{% url 'download_files' event_id=event.id %}" class="button small">Download</a></td>
                                 </tr>
                                 {% endfor %}

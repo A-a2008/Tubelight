@@ -2,11 +2,11 @@ import mysql.connector as mysql
 import csv
 from os.path import join
 
-db = mysql.connect(host="localhost", user="aryan", passwd="nothingx16", database="tubelight")
+db = mysql.connect(host="localhost", user="root", passwd="cajc", database="tubelight")
 cursor = db.cursor()
 
 # def update_mysql(file_path):
-#     db = mysql.connect(host="localhost", user="aryan", passwd="nothingx16", database="tubelight")
+#     db = mysql.connect(host="localhost", user="root", passwd="cajc", database="tubelight")
 #     cursor = db.cursor()
 #     file_name = file_path[len("./database/"):-len(".csv")]
 #     with open(file_path, 'r') as file:
@@ -45,4 +45,3 @@ def get_table(table_name: str):
 def update_value(table_name: str, column: str, value: str, identifier_name: str, identifier_value: str):
     cursor.execute(f'update {table_name} set {column}="{value}" where {identifier_name}="{identifier_value}"')
     db.commit()
-    print("changed")

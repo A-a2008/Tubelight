@@ -96,7 +96,6 @@ def display_events(request):
             if row["username"] == request.session["username"]:
                 print("here")
                 events_id = row["events"].split("|")[:-1]
-        print(events_id)
         reader = get_table("events")
 
         for row in reader:
@@ -231,7 +230,7 @@ def display_subevent_details(request, subevent_id):
             if len(reader):
                 last_row = reader[-1]
                 files_file_id = int(last_row["id"]) + 1
-                order = int(last_row["order"]) + 1
+                order = int(last_row["subevent_order"]) + 1
             else:
                 files_file_id = 0
                 order = 1

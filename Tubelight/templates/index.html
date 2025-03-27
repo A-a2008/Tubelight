@@ -7,6 +7,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
 		<noscript><link rel="stylesheet" href="{% static 'assets/css/noscript.css' %}" /></noscript>
+		<link rel="icon" href="{% static 'images/logo-bgremoved-small.png' %}">
 	</head>
 	<body class="is-preload">
 
@@ -15,7 +16,7 @@
 
 				<!-- Header -->
 					<header id="header" class="alt">
-						<span class="logo"><img src="{% static 'images/logo.svg' %}" alt="" /></span>
+						<span class="logo"><img src="{% static 'images/logo-bgremoved-small-white.png' %}" alt="" /></span>
 						<h1>Tubelight</h1>
 						<p>Manage your event gatherings with ease and efficiency<br /><br>
 						    {% if not request.session.is_authenticated %}
@@ -89,31 +90,7 @@
 									</div>
 									<span class="image"><img src="{% static 'images/pic01.jpg' %}" alt="" /></span>
 								</div>
-                                <div class="spotlight">
-									<div class="content" id="location">
-										<header class="major">
-											<h2>Hear from our customers </h2>
-										</header>
-										<p><b>1. Ayush Gupta</b>
-                                            ⭐⭐⭐⭐⭐<br /><br>
-                                            "I recently used Tubelight for my wedding, and I couldn't be happier with tGet directions, check the venue’s location, and even view nearby amenities to make event attendance a breeze.he experience! From the moment I started browsing their services, everything felt easy and seamless. The website was so user-friendly, and I loved how they provided a range of customizable options. The team was attentive, and they truly understood my vision. Our event went off without a hitch, and our guests had the best time. I highly recommend Tubelight for anyone looking to plan a special occasion."</p>
-										<p><b>2. Andrew Anbu</b>
-                                            ⭐⭐⭐⭐⭐<br /><br>
-                                            "I had an amazing experience with Tubelight for my corporate event. The platform made everything so much easier, and the team was incredibly professional. I loved the tools they provided to track the progress and the communication throughout the planning. On the day of the event, everything went smoothly, and it was exactly as I had envisioned. Tubelight is definitely my go-to for any future events."
-                                            </p>
-                                        <p><b>3. Parvesh Sotalli</b>
-                                            ⭐⭐⭐⭐<br /><br>
-                                            "I used Tubelight for my birthday party and was impressed with the variety of options available for different types of events. The layout of the website is sleek, and it was easy to navigate. The event went great, and the staff was super helpful in making sure every detail was handled. Only reason I’m giving it four stars is that I had some initial hiccups in communication, but they resolved it quickly. Still, very happy overall!"
-                                            </p> 
-                                        <p><b>4. Adwin Michael Afton</b>
-                                            ⭐⭐⭐⭐⭐<br /><br>
-                                            "Tubelight made planning my anniversary celebration a breeze! I loved how they offered a wide range of themes and vendors to choose from. The best part was the ability to collaborate with their team directly through the website, which kept everything organized. Everything was delivered on time, and the event turned out even better than I imagined. If you’re looking for hassle-free event planning, Tubelight is the way to go."
-                                            
-                                            </p>           
-									</div>
-									<span class="image"><img src="{% static 'images/pic01.jpg' %}" alt="" /></span>
-								</div>
-							</section>
+                                
 
 						<!-- Second Section -->
 							<section class="main special" id="invitation">
@@ -173,7 +150,30 @@
 						{% endif %}
 
 					</div>
-
+					<div class="spotlight">
+						<div class="content" id="location">
+							<header class="major">
+								<h2><br><b><center>Hear from our customers</center>  </b></h2>
+							</header>
+							<p><b>1. Ayush Gupta</b>
+								<span style="float: right;">⭐⭐⭐⭐⭐</span><br /><br />
+								"I recently used Tubelight for my wedding, and I couldn't be happier with the experience! From the moment I started browsing their services, everything felt easy and seamless. The website was so user-friendly, and I loved how they provided a range of customizable options. The team was attentive, and they truly understood my vision. Our event went off without a hitch, and our guests had the best time. I highly recommend Tubelight for anyone looking to plan a special occasion."</p>
+							<p><b>2. Andrew Anbu</b>
+								<span style="float: right;">⭐⭐⭐⭐⭐</span><br /><br />
+								"I had an amazing experience with Tubelight for my corporate event. The platform made everything so much easier, and the team was incredibly professional. I loved the tools they provided to track the progress and the communication throughout the planning. On the day of the event, everything went smoothly, and it was exactly as I had envisioned. Tubelight is definitely my go-to for any future events."
+								</p>
+							<p><b>3. Skibidi Toilet</b>
+								<span style="float: right;">⭐⭐⭐⭐⭐</span><br /><br />
+								"I used Tubelight for my birthday party and was impressed with the variety of options available for different types of events. The layout of the website is sleek, and it was easy to navigate. The event went great, and the staff was super helpful in making sure every detail was handled. Only reason I’m giving it four stars is that I had some initial hiccups in communication, but they resolved it quickly. Still, very happy overall!"
+								</p> 
+							<p><b>4. Adwin Michael Afton</b>
+								<span style="float: right;">⭐⭐⭐⭐⭐</span><br /><br />
+								"Tubelight made planning my anniversary celebration a breeze! I loved how they offered a wide range of themes and vendors to choose from. The best part was the ability to collaborate with their team directly through the website, which kept everything organized. Everything was delivered on time, and the event turned out even better than I imagined. If you’re looking for hassle-free event planning, Tubelight is the way to go."
+								
+								</p>           
+						</div>
+						
+					</div>
 				<!-- Footer -->
 					<footer id="footer">
 						<section>

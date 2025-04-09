@@ -1,47 +1,39 @@
 {% extends 'base.html' %}
 
+{% block header %}
+<header id="header">
+    <h1>Tubes</h1>
+    <p>Create and manage your tubes</p>
+</header>
+{% endblock %}
+
 {% block content %}
-<section id="wrapper">
-    <header>
-        <div class="inner">
-            <h2>Tubes</h2>
-            <p>Create and manage your tubes</p>
-        </div>
-    </header>
-
-    <!-- Content -->
-        <div class="wrapper">
-            <div class="inner">
-                {% if events %}
-                    Here are your tubes:
-                    <br><br>
-                    <div class="table-wrapper">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Tube Name</th>
-                                    <th style="text-align: right;">Download Invitation</th>
-                                    <th style="text-align: right;">Download Files</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for event in events %}
-                                <tr>
-                                    <td><a href="{% url 'display_subevents' event_id=event.id %}">{{ event.name }}</a></td>
-                                    <td style="text-align: right;"><a href="{% url 'event_invitation' event_id=event.id %}" class="button small">Download</a></td>
-                                    <td style="text-align: right;"><a href="{% url 'download_files' event_id=event.id %}" class="button small">Download</a></td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <a href="{% url 'create_event' %}" class="button">Add Tube</a>
-                {% else %}
-                    <b>You have no tubes created yet.</b> Click on the "Create Tube" button to create a new tube. <br><br>
-                    <a href="{% url 'create_event' %}" class="button">Create Tube</a>
-                {% endif %}
-            </div>
-        </div>
-
-</section>
+{% if events %}
+    Here are your tubes:
+    <br><br>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Tube Name</th>
+                    <th style="text-align: right;">Download Invitation</th>
+                    <th style="text-align: right;">Download Files</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                <tr>
+                    <td><a href="{% url 'display_subevents' event_id=event.id %}">{{ event.name }}</a></td>
+                    <td style="text-align: right;"><a href="" class="button small">Download</a></td>
+                    <td style="text-align: right;"><a href="{% url 'download_files' event_id=event.id %}" class="button small">Download</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{% url 'create_event' %}" class="button">Add Tube</a>
+{% else %}
+    <b>You have no tubes created yet.</b> Click on the "Create Tube" button to create a new tube. <br><br>
+    <a href="{% url 'create_event' %}" class="button">Create Tube</a>
+{% endif %}
 {% endblock %}

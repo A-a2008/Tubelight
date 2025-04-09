@@ -1,65 +1,56 @@
 {% extends 'base.html' %}
 
+{% block header %}
+<header id="header">
+    <h1>Create Tube</h1>
+    <p>Create a tube here</p>
+</header>
+{% endblock %}
+
 {% block content %}
-<section id="wrapper">
-    <header>
-        <div class="inner">
-            <h2>Create Tube</h2>
-            <p>Create a tube here</p>
+{% if messages %}
+{% for message in messages %}
+<font color="red">{{ message }} <br /></font><br />
+{% endfor %}
+{% endif %}
+
+<form action="/tubes/create/" method="post">
+    {% csrf_token %}
+    <div class="row gtr-uniform">
+        <div class="col-12 col-12-xsmall">
+            Tube Name: <input type="text" name="name" placeholder="Tube Name" required>
         </div>
-    </header>
-
-    <!-- Content -->
-        <div class="wrapper">
-            <div class="inner">
-                {% if messages %}
-                {% for message in messages %}
-                <font color="red">{{ message }} <br /></font><br />
-                {% endfor %}
-                {% endif %}
-                
-                <form action="/tubes/create/" method="post">
-                    {% csrf_token %}
-                    <div class="row gtr-uniform">
-                        <div class="col-12 col-12-xsmall">
-                            Tube Name: <input type="text" name="name" placeholder="Tube Name" required>
-                        </div>
-                        <div class="col-12 col-12-xsmall">
-                            Tube Description: <textarea type="text" name="description" placeholder="Tube Description" required></textarea>
-                        </div>
-                        <div class="col-6 col-12-xsmall">
-                            Date: <input type="date" name="date" value="{{ date }}" required>
-                        </div>
-                        <div class="col-6 col-12-xsmall">
-                            Time: <input type="time" name="time" required>
-                        </div>
-                        <div class="col-12 col-12-xsmall">
-                            Please follow the steps to fill the venue:
-                            <ol>
-                                <li>Go to Google Maps</li>
-                                <li>Search for the venue</li>
-                                <li>Click on the venue</li>
-                                <li>Copy the URL of the venue</li>
-                                <li>Paste the URL in the venue field</li>
-                            </ol>
-                            Venue: <input type="text" name="venue" placeholder="Venue" required>
-                        </div>
-                        <div class="col-12 col-12-xsmall">
-                            Cheif Guest: <input type="text" name="cheif_guest" placeholder="Cheif Guest" required>
-                        </div>
-                        <div class="col-12 col-12-xsmall">
-                            Target Audience: <input type="text" name="target_audience" placeholder="Target Audience" required>
-                        </div>
-                        <div class="col-12 col-12-xsmall">
-                            <input type="submit" value="Create"> <input type="reset" value="Reset">
-                        </div>
-                    </div>
-                    <input type="hidden" name="username" value="{{ request.session.username }}">
-                    
-                </form>
-
-            </div>
+        <div class="col-12 col-12-xsmall">
+            Tube Description: <textarea type="text" name="description" placeholder="Tube Description" required></textarea>
         </div>
-
-</section>
+        <div class="col-6 col-12-xsmall">
+            Date: <input type="date" name="date" value="{{ date }}" required>
+        </div>
+        <div class="col-6 col-12-xsmall">
+            Time: <input type="time" name="time" required>
+        </div>
+        <div class="col-12 col-12-xsmall">
+            Please follow the steps to fill the venue:
+            <ol>
+                <li>Go to Google Maps</li>
+                <li>Search for the venue</li>
+                <li>Click on the venue</li>
+                <li>Copy the URL of the venue</li>
+                <li>Paste the URL in the venue field</li>
+            </ol>
+            Venue: <input type="text" name="venue" placeholder="Venue" required>
+        </div>
+        <div class="col-12 col-12-xsmall">
+            Cheif Guest: <input type="text" name="cheif_guest" placeholder="Cheif Guest" required>
+        </div>
+        <div class="col-12 col-12-xsmall">
+            Target Audience: <input type="text" name="target_audience" placeholder="Target Audience" required>
+        </div>
+        <div class="col-12 col-12-xsmall">
+            <input type="submit" value="Create"> <input type="reset" value="Reset">
+        </div>
+    </div>
+    <input type="hidden" name="username" value="{{ request.session.username }}">
+    
+</form>
 {% endblock %}

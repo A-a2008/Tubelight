@@ -19,11 +19,14 @@
 						<span class="logo"><img src="{% static 'images/logo-bgremoved-small-white.png' %}" alt="" /></span>
 						<h1>Tubelight</h1>
 						<p>Manage your event gatherings with ease and efficiency<br /><br>
-						    {% if not request.session.is_authenticated %}
-						    <a href="{% url 'login' %}" class="button small">Login</a> <a href="{% url 'register' %}" class="button small">Register</a>
-						    {% else %}
-						    <a href="{% url 'display_events' %}" class="button small">Tubes</a> <a href="{% url 'logout' %}" class="button small">Logout</a>
-						    {% endif %}
+						{% if not request.session.is_authenticated %}
+						<a href="{% url 'login' %}" class="button small">Login</a> 
+						<a href="{% url 'register' %}" class="button small">Register</a>
+						{% else %}
+						<a href="{% url 'display_events' %}" class="button small">Tubes</a> 
+						<a href="{% url 'logout' %}" class="button small">Logout</a>
+						<a href="{% url 'templates_menu' %}" class="button small">Templates</a>
+						{% endif %}
 						</p>
 					</header>
 

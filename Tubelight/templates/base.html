@@ -16,11 +16,15 @@
 			<div id="wrapper">
 				<nav id="nav-page">
 					<ul>
-						<li><a href="#intro">Introduction</a></li>
-						<li><a href="#registeration">Registeration</a></li>
-						<li><a href="#files">Manage Files</a></li>
-						<li><a href="#location">Venue Location Access</a></li>
-						<li><a href="#invitation">Download Invitation</a></li>
+						<li><a href="{% url 'home' %}">Home</a></li>
+						{% if not request.session.is_authenticated %}
+						<li><a href="{% url 'login' %}">Login</a></li>
+						<li><a href="{% url 'register' %}">Register</a></li>
+						{% else %}
+						<li><a href="{% url 'display_events' %}">Tubes</a></li>
+						<li><a href="{% url 'logout' %}">Logout</a></li>
+						<li><a href="{% url 'templates_menu' %}">Templates</a></li>
+						{% endif %}
 					</ul>
 				</nav>
 

@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+<header id="header">
+    <h1>Edit Subevents</h1>
+    <p>Edit your subevents here</p>
+</header>
+{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url 'edit_subevents' template_id=template.id %}">
+    {% csrf_token %}
+    {% for subevent in subevents %}
+        <h2>{{ subevent }}</h2>
+
+        <div id="{{ subevent|slugify }}_placeholder">
+            <center>Click on "Add Field" for {{ subevent }}</center>
+        </div>
+
+        <table id="{{ subevent|slugify }}_table" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Service</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody id="{{ subevent|slugify }}_body">
+                <!-- Rows will be added dynamically -->
+            </tbody>
+        </table>
+        <br>
+        <button type="button" class="small primary" onclick="addField('{{ subevent|slugify }}', '{{ subevent }}')">Add Field</button>
+        <hr>
+    {% endfor %}
+    <br>
+    <input type="submit" value="Submit">
+</form>
+
+<script>
+    const fieldCounters = {};
+
+    function addField(subeventId, subeventName) {
+        if (!fieldCounters[subeventId]) fieldCounters[subeventId] = 0;
+
+        const placeholder = document.getElementById(`${subeventId}_placeholder`);
+        const table = document.getElementById(`${subeventId}_table`);
+        const tbody = document.getElementById(`${subeventId}_body`);
+
+        if (tbody.children.length === 0) {
+            placeholder.style.display = "none";
+            table.style.display = "table";
+        }
+
+        fieldCounters[subeventId]++;
+        const fieldNum = fieldCounters[subeventId];
+        const inputNamePrefix = subeventName;
+
+        const row = document.createElement("tr");
+        row.setAttribute("id", `${subeventId}_row_${fieldNum}`);
+
+        row.innerHTML = `
+            <td>
+                <select name="${inputNamePrefix}" required>
+                    <option value="" disabled selected hidden>Select Service</option>
+                    <option value="caterers">Food Caterers</option>
+                    <option value="photographers">Photographer</option>
+                    <option value="photographer_videographers">Photographer + Videographers</option>
+                    <option value="decorators">Decorators</option>
+                    <option value="dj">DJ</option>
+                    <option value="sound_system">Sound System</option>
+                    <option value="musicians">Musicians</option>
+                    <option value="lighting_sound">Venue Lighting and Sound</option>
+                    <option value="event_coordinator">Event Coordinator</option>
+                    <option value="valet">Valet</option>
+                    <option value="waiters">Waiters</option>
+                    <option value="bouncers">Bouncers</option>
+                    <option value="screen">Screen</option>
+                    <option value="other">Other</option>
+                </select>
+            </td>
+            <td>
+                <button type="button" class="button small" onclick="removeField('${subeventId}', ${fieldNum})">Delete</button>
+            </td>
+        `;
+
+        tbody.appendChild(row);
+    }
+
+    function removeField(subeventId, fieldNum) {
+        const row = document.getElementById(`${subeventId}_row_${fieldNum}`);
+        if (row) row.remove();
+
+        const tbody = document.getElementById(`${subeventId}_body`);
+        const table = document.getElementById(`${subeventId}_table`);
+        const placeholder = document.getElementById(`${subeventId}_placeholder`);
+
+        if (tbody.children.length === 0) {
+            table.style.display = "none";
+            placeholder.style.display = "block";
+        }
+    }
+</script>
+{% endblock %}

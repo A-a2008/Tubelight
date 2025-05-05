@@ -9,7 +9,7 @@ import tempfile
 import qrcode
 from PIL import Image
 import zipfile
-from mysql_connection import add_row, get_table, update_value
+from mysql_connection import add_row, get_table, update_value, create_table, datatypes
 
 # Create your views here.
 
@@ -312,3 +312,111 @@ def audio_files_edit(file_paths, event_name):
                     zip_file.write(file_path, arcname=os.path.join("All Music Files", file_name))
                     
     return zip_file_url
+
+
+# Templates
+
+
+def templates_menu(request):
+    return render(request, "main/templates_menu.html")
+
+
+def create_template(request):
+    if request.method == "POST":
+        name = request.POST["name"]
+        description = request.POST["description"]
+
+        templates = get_table("templates")
+        for row in templates:
+            if row["name"] == name:
+                data = {
+                    "messages": ["Template with this name already exists. Please choose a different name"]
+                }
+                return render(request, "main/create_template.html", data)
+
+        print(request.POST)
+        fields = {}
+        raw = ""
+        for key in request.POST:
+            if key.startswith("field_name"):
+                field_name = request.POST[key]
+                num = key.split("_")[-1]
+                if request.POST[f"field_type_{num}"] == "select":
+                    options = []
+                    for key_ in request.POST:
+                        if key_.startswith(f"field_type_{num}_option_"):
+                            options.append(request.POST[key_])
+                    raw += f"{field_name}:select-{options}|"
+                    fields[field_name.replace(" ", "_")] = "select"
+                else:
+                    raw += f"{field_name}:{request.POST[f'field_type_{num}']}|"
+                    fields[field_name.replace(" ", "_")] = request.POST[f"field_type_{num}"]
+        
+        raw = raw[:-1]
+
+        create_table(name, fields)
+
+        subevents = ""
+        for key in request.POST:
+            if key.startswith("subevent_name_"):
+                subevents += f"{request.POST[key]}|"
+        subevents = subevents[:-1]
+
+        templates_id = None
+        reader = get_table("templates")
+        if len(reader):
+            last_row = reader[-1]
+            templates_id = int(last_row["id"]) + 1
+        else:
+            templates_id = 0
+        
+        add_row("templates", templates_id, name, description, raw, subevents)
+        return redirect("show_templates")
+    else:
+        return render(request, "main/create_template.html")
+    
+
+def show_templates(request):
+    if request.method == "POST":
+        pass
+    else:
+        templates = get_table("templates")
+        data = {
+            "templates": templates,
+        }
+        return render(request, "main/show_templates.html", data)
+
+
+def create_tube(request, template_id):
+    data = get_table("templates")
+    for row in data:
+        if int(row["id"]) == template_id:
+            template = row
+            break
+    
+    fields = [[field.split(":")[0], field.split(":")[1]] for field in template["raw"].split("|")]
+
+    data = {
+        "fields": fields,
+    }
+
+    return render(request, "main/create_tube.html", data)
+
+
+def edit_subevents(request, template_id):
+    if request.method == "POST":
+        print(request.POST)
+        return redirect("templates_menu")
+    else:
+        data = get_table("templates")
+        for row in data:
+            if int(row["id"]) == template_id:
+                template = row
+                break
+        
+        subevents = template["subevents"].split("|")
+        data = {
+            "template": template,
+            "subevents": subevents,
+        }
+        return render(request, "main/edit_subevents.html", data)

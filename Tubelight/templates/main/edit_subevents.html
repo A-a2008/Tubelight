@@ -11,14 +11,14 @@
 {% block content %}
 <form method="post" action="{% url 'edit_subevents' template_id=template.id %}">
     {% csrf_token %}
-    {% for subevent in subevents %}
+    {% for subevent, services in subevents.items %}
         <h2>{{ subevent }}</h2>
 
-        <div id="{{ subevent|slugify }}_placeholder">
+        <div id="{{ subevent|slugify }}_placeholder" {% if services %} style="display:none;" {% endif %}>
             <center>Click on "Add Field" for {{ subevent }}</center>
         </div>
 
-        <table id="{{ subevent|slugify }}_table" style="display: none;">
+        <table id="{{ subevent|slugify }}_table" {% if not services %} style="display: none;" {% endif %}>
             <thead>
                 <tr>
                     <th>Service</th>
@@ -27,6 +27,25 @@
             </thead>
             <tbody id="{{ subevent|slugify }}_body">
                 <!-- Rows will be added dynamically -->
+                {% if services %}
+                    {% for service in services %}
+                    <tr id="{{ subevent|slugify }}_row_{{ forloop.counter }}">
+                        <td>
+                            <select name="{{ subevent }}" required>
+                                <option value="" disabled hidden>Select Service</option>
+                                {% for option_view, option in service_options.items %}
+                                <option value="{{ option }}" {% if option == service %}selected{% endif %}>
+                                    {{ option_view }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" class="button small" onclick="removeField('${subeventId}', fieldNum)">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
             </tbody>
         </table>
         <br>

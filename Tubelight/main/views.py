@@ -9,7 +9,7 @@ import tempfile
 import qrcode
 from PIL import Image
 import zipfile
-from mysql_connection import add_row, get_table, update_value, create_table, datatypes
+from mysql_connection import add_row, get_table, update_value, create_table, create_table_foreign_key, fetch_columns, drop_table, datatypes
 
 # Create your views here.
 
@@ -317,6 +317,24 @@ def audio_files_edit(file_paths, event_name):
 # Templates
 
 
+service_options = {
+    "Food Caterers": "caterers",
+    "Photographer": "photographers",
+    "Photographer + Videographers": "photographer_videographers",
+    "Decorators": "decorators",
+    "DJ": "dj",
+    "Sound System": "sound_system",
+    "Musicians": "musicians",
+    "Venue Lighting and Sound": "lighting_sound",
+    "Event Coordinator": "event_coordinator",
+    "Valet": "valet",
+    "Waiters": "waiters",
+    "Bouncers": "bouncers",
+    "Screen": "screen",
+    "Other": "other"
+}
+
+
 def templates_menu(request):
     return render(request, "main/templates_menu.html")
 
@@ -334,8 +352,7 @@ def create_template(request):
                 }
                 return render(request, "main/create_template.html", data)
 
-        print(request.POST)
-        fields = {}
+        fields = {"id": "foriegn_key_parent"}
         raw = ""
         for key in request.POST:
             if key.startswith("field_name"):
@@ -355,7 +372,6 @@ def create_template(request):
         raw = raw[:-1]
 
         create_table(name, fields)
-
         subevents = ""
         for key in request.POST:
             if key.startswith("subevent_name_"):
@@ -395,17 +411,32 @@ def create_tube(request, template_id):
             break
     
     fields = [[field.split(":")[0], field.split(":")[1]] for field in template["raw"].split("|")]
-
     data = {
         "fields": fields,
     }
-
     return render(request, "main/create_tube.html", data)
 
 
 def edit_subevents(request, template_id):
     if request.method == "POST":
         print(request.POST)
+        data = get_table("templates")
+        for row in data:
+            if row["id"] == template_id:
+                template = row
+                break
+        table_name = f"{template['name']}_details"
+        columns = [x for x in template["subevents"].split("|")]
+        print(columns)
+        column_dict = {"id": "id", f"{template['name']}_id": "foriegn_key"}
+        for column in columns:
+            if column in request.POST:
+                for service in request.POST.getlist(column):
+                    column_dict[f"{column}|{service}"] = "select"
+        return_code = create_table_foreign_key(table_name, column_dict, template["name"], "id", f"{template['name']}_id")
+        if return_code == -1:
+            drop_table(table_name)
+            create_table_foreign_key(table_name, column_dict, template["name"], "id", f"{template['name']}_id")
         return redirect("templates_menu")
     else:
         data = get_table("templates")
@@ -415,8 +446,26 @@ def edit_subevents(request, template_id):
                 break
         
         subevents = template["subevents"].split("|")
+        subevent_dict = dict()
+        print(f"{template['name']}_details")
+        template_details_columns = fetch_columns(f"{template['name']}_details")
+        print(template_details_columns)
+        if not template_details_columns == -1:
+            template_details_columns = template_details_columns[2:]
+            for column in template_details_columns:
+                subevent, service = tuple(column.split("|"))
+                if subevent in subevent_dict:
+                    subevent_dict[subevent].append(service)
+                else:
+                    subevent_dict[subevent] = [service]
+        for subevent in subevents:
+            subevent_dict.setdefault(subevent, [])
+        print(subevent_dict)
+        print(subevents)
+
         data = {
             "template": template,
-            "subevents": subevents,
+            "subevents": subevent_dict,
+            "service_options": service_options,
         }
         return render(request, "main/edit_subevents.html", data)

@@ -9,7 +9,7 @@ import tempfile
 import qrcode
 from PIL import Image
 import zipfile
-from mysql_connection import add_row, get_table, update_value, create_table, create_table_foreign_key, fetch_columns, drop_table, datatypes
+from mysql_connection import add_row, add_row_dict, get_table, update_value, create_table, create_table_foreign_key, fetch_columns, drop_table, datatypes
 
 # Create your views here.
 
@@ -96,8 +96,8 @@ def display_events(request):
             if row["username"] == request.session["username"]:
                 print("here")
                 events_id = row["events"].split("|")[:-1]
+        
         reader = get_table("events")
-
         for row in reader:
             if str(row["id"]) in events_id:
                 events.append(row)
@@ -364,10 +364,10 @@ def create_template(request):
                         if key_.startswith(f"field_type_{num}_option_"):
                             options.append(request.POST[key_])
                     raw += f"{field_name}:select-{options}|"
-                    fields[field_name.replace(" ", "_")] = "select"
+                    fields[field_name] = "select"
                 else:
                     raw += f"{field_name}:{request.POST[f'field_type_{num}']}|"
-                    fields[field_name.replace(" ", "_")] = request.POST[f"field_type_{num}"]
+                    fields[field_name] = request.POST[f"field_type_{num}"]
         
         raw = raw[:-1]
 
@@ -403,18 +403,60 @@ def show_templates(request):
         return render(request, "main/show_templates.html", data)
 
 
-def create_tube(request, template_id):
-    data = get_table("templates")
-    for row in data:
-        if int(row["id"]) == template_id:
-            template = row
-            break
-    
-    fields = [[field.split(":")[0], field.split(":")[1]] for field in template["raw"].split("|")]
-    data = {
-        "fields": fields,
-    }
-    return render(request, "main/create_tube.html", data)
+def create_tube_template(request, template_id):
+    if request.method == 'POST':
+        print(request.POST)
+        username = request.POST["username"]
+        data = get_table("templates")
+        for row in data:
+            if int(row["id"]) == template_id:
+                template = row
+                break
+
+        tube_id = None
+        reader = get_table(template["name"])
+        if len(reader):
+            last_row = reader[-1]
+            tube_id = int(last_row["id"]) + 1
+        else:
+            tube_id = 0
+        
+        fields = [field.split(":")[0] for field in template["raw"].split("|")]
+        row_data = {"id": tube_id}
+        for key, value in request.POST.items():
+            if key.startswith("field"):
+                column = key.split("|")[1]
+                row_data[column] = value
+        
+        add_row_dict(template["name"], row_data)
+
+        new_user_events = ""
+        users_file_rows = get_table("users")
+        for row in users_file_rows:
+            if row["username"] == username:
+                new_user_events = f"{template['id']}-{tube_id}" + "|"
+                break
+        update_value(table_name="users", column="events", value=new_user_events, identifier_name="username", identifier_value=username)
+
+        return redirect("select_template")
+    else:
+        data = get_table("templates")
+        for row in data:
+            if int(row["id"]) == template_id:
+                template = row
+                break
+        
+        fields = [[field.split(":")[0], [field.split(":")[1]]] for field in template["raw"].split("|")]
+        for field in fields:
+            if field[1][0].startswith("select"):
+                options = eval(field[1].split("-")[1])
+                field[1] = ["select", options]
+        
+        data = {
+            "fields": fields,
+            "template": template,
+        }
+        return render(request, "main/create_tube_template.html", data)
 
 
 def edit_subevents(request, template_id):

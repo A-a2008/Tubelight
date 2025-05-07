@@ -20,7 +20,7 @@
             </header>
             <p>{{ template.description }}</p>
             <ul class="actions">
-                <li><a href="{% url 'create_tube' template_id=template.id %}" class="button">Use</a></li>
+                <li><a href="{% url 'create_tube_template' template_id=template.id %}" class="button">Use</a></li>
                 <li><a href="{% url 'edit_subevents' template_id=template.id %}" class="button">Edit Subevents</a></li>
             </ul>
         </div>

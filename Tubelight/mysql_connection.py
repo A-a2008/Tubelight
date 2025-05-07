@@ -44,6 +44,18 @@ def add_row(table_name: str, *args):
     cursor.execute(query)
     db.commit()
 
+def add_row_dict(table_name: str, row_data: dict):
+    columns, values = list(row_data.keys()), list(row_data.values())
+    query = f"insert into `{table_name}`("
+    for column in columns:
+        query += f"`{column}`,"
+    query = query[:-1] + ") values ("
+    for value in values:
+        query += f'"{value}",'
+    query = query[:-1]+")"
+    cursor.execute(query)
+    db.commit()
+
 def get_table(table_name: str):
     try:
         cursor.execute(f"desc `{table_name}`")

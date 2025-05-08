@@ -10,6 +10,9 @@ import qrcode
 from PIL import Image
 import zipfile
 from mysql_connection import add_row, add_row_dict, get_table, update_value, create_table, create_table_foreign_key, fetch_columns, drop_table, datatypes
+from django.shortcuts import get_object_or_404
+from django.utils.dateparse import parse_date, parse_time
+
 
 # Create your views here.
 
@@ -511,3 +514,34 @@ def edit_subevents(request, template_id):
             "service_options": service_options,
         }
         return render(request, "main/edit_subevents.html", data)
+    
+
+def event_invitation(request, event_id):
+    # Fetch event from the database
+    event = get_object_or_404(Event, pk=event_id)
+
+    # Format date and time
+    formatted_date = event.date.strftime("%d-%m-%Y")
+    formatted_time = event.time.strftime("%I:%M %p")
+
+    # Prepare context
+    data = {
+        "event": {
+            "name": event.name,
+            "date": formatted_date,
+            "time": formatted_time,
+            
+        }
+    }
+
+    # Render HTML from template
+    invitation_html = render_to_string("main/event_invitation.html", data)
+
+    # CSS and custom styles
+    css_url = request.build_absolute_uri('/static/assets/css/main.css')
+    custom_css = """
+        @page {
+            size: A2;
+            margin: 0cm;
+        }
+    """    

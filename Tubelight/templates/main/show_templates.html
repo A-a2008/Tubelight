@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+<header id="header">
+    <h1>Templates</h1>
+    <p>Here is the list of templates available for you to create your tubes.</p>
+</header>
+{% endblock %}
+
+{% block content %}
+<h2>Please select a template:</h2>
+<p>
+    {% if templates %}
+    {% for template in templates %}
+    <div class="spotlight" id="intro">
+        <div class="content">
+            <header class="major">
+                <h2>{{ template.name }}</h2>
+            </header>
+            <p>{{ template.description }}</p>
+            <ul class="actions">
+                <li><a href="{% url 'create_tube_template' template_id=template.id %}" class="button">Use</a></li>
+                <li><a href="{% url 'edit_subevents' template_id=template.id %}" class="button">Edit Subevents</a></li>
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    Currently, there are no templates.
+    {% endif %}
+</p>
+{% endblock %}

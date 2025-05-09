@@ -9,7 +9,10 @@ import tempfile
 import qrcode
 from PIL import Image
 import zipfile
-from mysql_connection import add_row, get_table, update_value
+from mysql_connection import add_row, add_row_dict, get_table, update_value, create_table, create_table_foreign_key, fetch_columns, drop_table, datatypes
+from django.shortcuts import get_object_or_404
+from django.utils.dateparse import parse_date, parse_time
+
 
 # Create your views here.
 
@@ -96,8 +99,8 @@ def display_events(request):
             if row["username"] == request.session["username"]:
                 print("here")
                 events_id = row["events"].split("|")[:-1]
+        
         reader = get_table("events")
-
         for row in reader:
             if str(row["id"]) in events_id:
                 events.append(row)
@@ -312,3 +315,235 @@ def audio_files_edit(file_paths, event_name):
                     zip_file.write(file_path, arcname=os.path.join("All Music Files", file_name))
                     
     return zip_file_url
+
+
+# Templates
+
+
+service_options = {
+    "Food Caterers": "caterers",
+    "Photographer": "photographers",
+    "Photographer + Videographers": "photographer_videographers",
+    "Decorators": "decorators",
+    "DJ": "dj",
+    "Sound System": "sound_system",
+    "Musicians": "musicians",
+    "Venue Lighting and Sound": "lighting_sound",
+    "Event Coordinator": "event_coordinator",
+    "Valet": "valet",
+    "Waiters": "waiters",
+    "Bouncers": "bouncers",
+    "Screen": "screen",
+    "Other": "other"
+}
+
+
+def templates_menu(request):
+    return render(request, "main/templates_menu.html")
+
+
+def create_template(request):
+    if request.method == "POST":
+        name = request.POST["name"]
+        description = request.POST["description"]
+
+        templates = get_table("templates")
+        for row in templates:
+            if row["name"] == name:
+                data = {
+                    "messages": ["Template with this name already exists. Please choose a different name"]
+                }
+                return render(request, "main/create_template.html", data)
+
+        fields = {"id": "foriegn_key_parent"}
+        raw = ""
+        for key in request.POST:
+            if key.startswith("field_name"):
+                field_name = request.POST[key]
+                num = key.split("_")[-1]
+                if request.POST[f"field_type_{num}"] == "select":
+                    options = []
+                    for key_ in request.POST:
+                        if key_.startswith(f"field_type_{num}_option_"):
+                            options.append(request.POST[key_])
+                    raw += f"{field_name}:select-{options}|"
+                    fields[field_name] = "select"
+                else:
+                    raw += f"{field_name}:{request.POST[f'field_type_{num}']}|"
+                    fields[field_name] = request.POST[f"field_type_{num}"]
+        
+        raw = raw[:-1]
+
+        create_table(name, fields)
+        subevents = ""
+        for key in request.POST:
+            if key.startswith("subevent_name_"):
+                subevents += f"{request.POST[key]}|"
+        subevents = subevents[:-1]
+
+        templates_id = None
+        reader = get_table("templates")
+        if len(reader):
+            last_row = reader[-1]
+            templates_id = int(last_row["id"]) + 1
+        else:
+            templates_id = 0
+        
+        add_row("templates", templates_id, name, description, raw, subevents)
+        return redirect("show_templates")
+    else:
+        return render(request, "main/create_template.html")
+    
+
+def show_templates(request):
+    if request.method == "POST":
+        pass
+    else:
+        templates = get_table("templates")
+        data = {
+            "templates": templates,
+        }
+        return render(request, "main/show_templates.html", data)
+
+
+def create_tube_template(request, template_id):
+    if request.method == 'POST':
+        print(request.POST)
+        username = request.POST["username"]
+        data = get_table("templates")
+        for row in data:
+            if int(row["id"]) == template_id:
+                template = row
+                break
+
+        tube_id = None
+        reader = get_table(template["name"])
+        if len(reader):
+            last_row = reader[-1]
+            tube_id = int(last_row["id"]) + 1
+        else:
+            tube_id = 0
+        
+        fields = [field.split(":")[0] for field in template["raw"].split("|")]
+        row_data = {"id": tube_id}
+        for key, value in request.POST.items():
+            if key.startswith("field"):
+                column = key.split("|")[1]
+                row_data[column] = value
+        
+        add_row_dict(template["name"], row_data)
+
+        new_user_events = ""
+        users_file_rows = get_table("users")
+        for row in users_file_rows:
+            if row["username"] == username:
+                new_user_events = f"{template['id']}-{tube_id}" + "|"
+                break
+        update_value(table_name="users", column="events", value=new_user_events, identifier_name="username", identifier_value=username)
+
+        return redirect("select_template")
+    else:
+        data = get_table("templates")
+        for row in data:
+            if int(row["id"]) == template_id:
+                template = row
+                break
+        
+        fields = [[field.split(":")[0], [field.split(":")[1]]] for field in template["raw"].split("|")]
+        for field in fields:
+            if field[1][0].startswith("select"):
+                options = eval(field[1].split("-")[1])
+                field[1] = ["select", options]
+        
+        data = {
+            "fields": fields,
+            "template": template,
+        }
+        return render(request, "main/create_tube_template.html", data)
+
+
+def edit_subevents(request, template_id):
+    if request.method == "POST":
+        print(request.POST)
+        data = get_table("templates")
+        for row in data:
+            if row["id"] == template_id:
+                template = row
+                break
+        table_name = f"{template['name']}_details"
+        columns = [x for x in template["subevents"].split("|")]
+        print(columns)
+        column_dict = {"id": "id", f"{template['name']}_id": "foriegn_key"}
+        for column in columns:
+            if column in request.POST:
+                for service in request.POST.getlist(column):
+                    column_dict[f"{column}|{service}"] = "select"
+        return_code = create_table_foreign_key(table_name, column_dict, template["name"], "id", f"{template['name']}_id")
+        if return_code == -1:
+            drop_table(table_name)
+            create_table_foreign_key(table_name, column_dict, template["name"], "id", f"{template['name']}_id")
+        return redirect("templates_menu")
+    else:
+        data = get_table("templates")
+        for row in data:
+            if int(row["id"]) == template_id:
+                template = row
+                break
+        
+        subevents = template["subevents"].split("|")
+        subevent_dict = dict()
+        print(f"{template['name']}_details")
+        template_details_columns = fetch_columns(f"{template['name']}_details")
+        print(template_details_columns)
+        if not template_details_columns == -1:
+            template_details_columns = template_details_columns[2:]
+            for column in template_details_columns:
+                subevent, service = tuple(column.split("|"))
+                if subevent in subevent_dict:
+                    subevent_dict[subevent].append(service)
+                else:
+                    subevent_dict[subevent] = [service]
+        for subevent in subevents:
+            subevent_dict.setdefault(subevent, [])
+        print(subevent_dict)
+        print(subevents)
+
+        data = {
+            "template": template,
+            "subevents": subevent_dict,
+            "service_options": service_options,
+        }
+        return render(request, "main/edit_subevents.html", data)
+    
+
+def event_invitation(request, event_id):
+   if request.method == "POST":
+          # Fetch event from the database
+         event = get_table("events")
+
+        # Format date and time
+         formatted_date = event.date.strftime("%d-%m-%Y")
+         formatted_time = event.time.strftime("%I:%M %p")
+
+    # Prepare context
+         data = {
+             "event": {
+            "name": event.name,
+            "date": formatted_date,
+            "time": formatted_time,
+            
+         }
+         }
+
+    # Render HTML from template
+         invitation_html = render_to_string("main/event_invitation2.html", data)
+
+    # CSS and custom styles
+         css_url = request.build_absolute_uri('/static/assets/css/main.css')
+         custom_css = """
+           @page {
+             size: A2;
+             margin: 0cm;
+             }
+             """  
+         return render(request, 'main/event_invitation2.html')  

@@ -1,0 +1,2 @@
+Copy mysql server data to local machine using mysqldump command:
+https://www.perplexity.ai/search/easy-way-to-export-and-import-2_OW7rb6Rk2Wiyo.80knUg

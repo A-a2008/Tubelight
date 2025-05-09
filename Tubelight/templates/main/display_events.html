@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 
 {% block header %}
@@ -35,5 +36,13 @@
 {% else %}
     <b>You have no tubes created yet.</b> Click on the "Create Tube" button to create a new tube. <br><br>
     <a href="{% url 'select_template' %}" class="button">Create Tube</a>
+
+
+    {% for event in events %}
+     <tr>
+         <td style="text-align: right;"><a href="{% url 'event_invitation' event_id=event.id %}" class="button small">Invitation</a></td>
+     </tr>
+    {% endfor %}
+  
 {% endif %}
 {% endblock %}

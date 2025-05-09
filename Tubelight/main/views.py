@@ -517,31 +517,33 @@ def edit_subevents(request, template_id):
     
 
 def event_invitation(request, event_id):
-    # Fetch event from the database
-    event = get_object_or_404(Event, pk=event_id)
+   if request.method == "POST":
+          # Fetch event from the database
+         event = get_table("events")
 
-    # Format date and time
-    formatted_date = event.date.strftime("%d-%m-%Y")
-    formatted_time = event.time.strftime("%I:%M %p")
+        # Format date and time
+         formatted_date = event.date.strftime("%d-%m-%Y")
+         formatted_time = event.time.strftime("%I:%M %p")
 
     # Prepare context
-    data = {
-        "event": {
+         data = {
+             "event": {
             "name": event.name,
             "date": formatted_date,
             "time": formatted_time,
             
-        }
-    }
+         }
+         }
 
     # Render HTML from template
-    invitation_html = render_to_string("main/event_invitation.html", data)
+         invitation_html = render_to_string("main/event_invitation2.html", data)
 
     # CSS and custom styles
-    css_url = request.build_absolute_uri('/static/assets/css/main.css')
-    custom_css = """
-        @page {
-            size: A2;
-            margin: 0cm;
-        }
-    """    
+         css_url = request.build_absolute_uri('/static/assets/css/main.css')
+         custom_css = """
+           @page {
+             size: A2;
+             margin: 0cm;
+             }
+             """  
+         return render(request, 'main/event_invitation2.html')  

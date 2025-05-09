@@ -17,5 +17,5 @@ urlpatterns = [
     path("templates/create_template/", views.create_template, name="create_template"),
     path("templates/edit_subevents/<int:template_id>/", views.edit_subevents, name="edit_subevents"),
     path("templates/show_templates/", views.show_templates, name="show_templates"),
-    path('tubes/<int:event_id>/invitation/', views.event_invitation, name='event_invitation'),
+    path('tubes/<int:event_id>/event_invitation/', views.event_invitation, name='event_invitation'),
 ]

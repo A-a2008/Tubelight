@@ -92,15 +92,22 @@ def display_events(request):
         events = []
         reader = get_table("users")
 
-        for row in reader:
-            if row["username"] == request.session["username"]:
-                print("here")
-                events_id = row["events"].split("|")[:-1]
+        for template in reader:
+            if template["username"] == request.session["username"]:
+                event_ids = [(int(event.split("-")[0]), int(event.split("-")[1])) for event in template["events"].split("|")[:-1]]
+                events_id = template["events"].split("|")[:-1]
         
-        reader = get_table("events")
-        for row in reader:
-            if str(row["id"]) in events_id:
-                events.append(row)
+        reader = get_table("templates")
+        for event in event_ids:
+            for template in reader:
+                if template["id"] == event[0]:
+                    template_events = get_table(template["name"])
+                    for template_event in template_events:
+                        if template_event["id"] == event[1]:
+                            template_event["template_name"] = template["name"]
+                            events.append(template_event)
+
+        print(events)
         
         data = {
             "events": events,

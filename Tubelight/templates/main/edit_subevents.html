@@ -33,9 +33,9 @@
                         <td>
                             <select name="{{ subevent }}" required>
                                 <option value="" disabled hidden>Select Service</option>
-                                {% for option_view, option in service_options.items %}
-                                <option value="{{ option }}" {% if option == service %}selected{% endif %}>
-                                    {{ option_view }}
+                                {% for option in service_options %}
+                                <option value="{{ option.name }}" {% if option.name == service %}selected{% endif %}>
+                                    {{ option.name }}
                                 </option>
                                 {% endfor %}
                             </select>
@@ -82,49 +82,9 @@
             <td>
                 <select name="${inputNamePrefix}" required>
                     <option value="" disabled selected hidden>Select Service</option>
-                    <option value="venue_booking">Venue Booking</option>
-                    <option value="wedding_coordinator">Wedding Coordinator</option>
-                    <option value="caterers">Food Caterers</option>
-                    <option value="dj">DJ</option>
-                    <option value="musicians">Musicians</option>
-                    <option value="sound_system">Sound System</option>
-                    <option value="lighting">Lighting</option>
-                    <option value="photographers">Photographer</option>
-                    <option value="photographer_videographers">Photographer + Videographers</option>
-                    <option value="valet">Valet</option>
-                    <option value="decorators">Decorators</option>
-                    <option value="invitations">Invitations</option>
-                    <option value="power_backup">Power Backup</option>
-                    <option value="security">Security</option>
-                    <option value="cleaning">Cleaning</option>
-                    <option value="games_activity">Games & Activity</option>
-                    <option value="screen">Screen</option>
-                    <option value="stage_setup">Stage Setup</option>
-                    <option value="furniture_rentals">Furniture Rentals</option>
-                    <option value="return_gifts">Return Gifts</option>
-                    <option value="games_cake_beverages">Games, Cake & Beverages</option>
-                    <option value="religious_ritual_setup">Religious Ritual Setup</option>
-                    <option value="priest_service">Priest Service</option>
-                    <option value="devotional_group">Devotional Group</option>
-                    <option value="prasadam_distribution">Prasadam / Bhog Distribution</option>
-                    <option value="hearse_arrangement">Hearse Arrangement</option>
-                    <option value="cremation">Cremation</option>
-                    <option value="floral_wreaths">Floral Wreaths</option>
-                    <option value="tent_seating_setup">Tent & Seating Setup</option>
-                    <option value="religious_ceremony">Religious Ceremony</option>
-                    <option value="trip_planning">Trip Planning</option>
-                    <option value="accommodation_booking">Accommodation Booking</option>
-                    <option value="vehicle_rental">Vehicle Rental</option>
-                    <option value="group_meal_planning">Group Meal Planning / Packed Food</option>
-                    <option value="tour_guide">Tour Guide</option>
-                    <option value="communication_management">Communication Management</option>
-                    <option value="first_aid">First AID</option>
-                    <option value="booking_management">Booking Management</option>
-                    <option value="certificate_distribution">Certificate Distribution</option>
-                    <option value="graduation_dessert_table">Graduation Cake / Dessert Table</option>
-                    <option value="event_coordinator">Event Coordinator</option>
-                    <option value="waiters">Waiters</option>
-                    <option value="bouncers">Bouncers</option>
+                    {% for service in service_options %}
+                    <option value="{{ service.name }}">{{ service.name }}</option>
+                    {% endfor %}
                     <option value="other">Other</option>
                 </select>
             </td>

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block header %}
+<!-- Header -->
+    <header id="header">
+        <h1>{{ event.template_name }}: {{ event.Name }}</h1>
+        <p>{{ event.description }}</p>
+    </header>
+{% endblock %}
+
+{% block content %}
+<h2>Fill in the following details:</h2>
+<form action="{% url 'event_subevents_template' template_id=template_id event_id=event_id %}" method="post">
+    {% csrf_token %}
+    {% for subevent_name, subevent_services in details %}
+    <h3>{{ subevent_name }}</h3>
+    {% for service_name, services in subevent_services %}
+    <label for="{{ service_name }}">{{ service_name }}</label>
+    <select name="{{ service_name }}" id="{{ service_name }}" required>
+        <option value="" disabled selected hidden>Select Service Provider</option>
+        {% for service in services %}
+        <option value="{{ service.id }}">{{ service.Name }}</option>
+        {% endfor %}
+        <option value="-1">Self Planned</option>
+    </select><br>
+    <a href="" class="button small">More Details on: <b>{{ service_name }}</b></a>
+    <br><br>
+    {% endfor %}
+    <hr>
+    {% endfor %}
+</form>
+{% endblock %}

@@ -76,7 +76,10 @@ def get_table(table_name: str):
     for row in rows:
         data_row = {}
         for i, value in enumerate(row):
-            data_row[columns[i]] = value
+            if not value == 'NULL':
+                data_row[columns[i]] = value
+            else:
+                data_row[columns[i]] = None
         data.append(data_row)
     return data
 

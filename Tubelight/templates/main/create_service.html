@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<form action="{% url 'create_service' %}" method="post">
+<form action="{% url 'create_service' %}" method="post" onsubmit="return validateForm()">
     {% csrf_token %}
 
     <label for="name">Service Name:</label>
@@ -39,12 +39,21 @@
     <br><br>
 
     <label for="user_input_field">Select User Input Field:</label>
-    <select name="user_input_field" id="user_input_field">
-        <option value="" disabled selected hidden>Atleast 1 Field required</option>
+    <select name="user_input_field" id="user_input_field" onchange="updateMatchingColumnOptions()" required>
+        <option value="" disabled selected hidden>At least 1 Field required</option>
     </select>
-
     <br><br>
-    <input type="submit" value="Submit">
+
+    <label for="matching_column">Which Column Should It Match?</label>
+    <select name="matching_column" id="matching_column" required>
+        <option value="" disabled selected hidden>At least 2 Fields required</option>
+    </select>
+    <br>
+
+    <span id="duplicate_warning" style="color: red; display: none;">Duplicate field names are not allowed.</span>
+    <br>
+
+    <input type="submit" value="Submit" id="submit_btn">
 </form>
 
 <script>
@@ -54,13 +63,11 @@
         const table = document.getElementById("fields_table");
         const tbody = document.getElementById("fields_body");
         const placeholder = document.getElementById("fields_placeholder");
-        const userInputSelect = document.getElementById("user_input_field");
 
         fieldCounter++;
         const rowId = `field_row_${fieldCounter}`;
         const inputId = `field_name_input_${fieldCounter}`;
 
-        // Show table, hide placeholder if first field
         if (tbody.children.length === 0) {
             placeholder.style.display = "none";
             table.style.display = "table";
@@ -70,7 +77,7 @@
         row.id = rowId;
 
         row.innerHTML = `
-            <td><input type="text" name="field_names" id="${inputId}" oninput="updateUserInputOptions()" required></td>
+            <td><input type="text" name="field_names" id="${inputId}" oninput="updateAll()" required></td>
             <td>
                 <select name="field_types" required>
                     <option value="" disabled selected hidden>Select Type</option>
@@ -81,19 +88,17 @@
                 </select>
             </td>
             <td>
-                <button type="button" onclick="removeField('${rowId}', '${inputId}')" class="button small">Delete</button>
+                <button type="button" onclick="removeField('${rowId}')" class="button small">Delete</button>
             </td>
         `;
 
         tbody.appendChild(row);
-        updateUserInputOptions();
+        updateAll();
     }
 
-    function removeField(rowId, inputId) {
+    function removeField(rowId) {
         const row = document.getElementById(rowId);
         if (row) row.remove();
-
-        updateUserInputOptions();
 
         const tbody = document.getElementById("fields_body");
         const placeholder = document.getElementById("fields_placeholder");
@@ -103,24 +108,94 @@
             table.style.display = "none";
             placeholder.style.display = "block";
         }
+
+        updateAll();
     }
 
-    function updateUserInputOptions() {
-        const select = document.getElementById("user_input_field");
-        select.innerHTML = `
-            <option value="None">None</option>
+    function getUniqueFieldValues() {
+        const inputs = document.querySelectorAll('[id^="field_name_input_"]');
+        const names = [];
+        inputs.forEach((input) => {
+            const val = input.value.trim();
+            if (val) names.push(val);
+        });
+        return names;
+    }
+
+    function hasDuplicates(array) {
+        return new Set(array).size !== array.length;
+    }
+
+    function updateAll() {
+        const userFieldSelect = document.getElementById("user_input_field");
+        const matchColSelect = document.getElementById("matching_column");
+        const submitBtn = document.getElementById("submit_btn");
+        const warning = document.getElementById("duplicate_warning");
+
+        const fields = getUniqueFieldValues();
+
+        // Check for duplicates
+        if (hasDuplicates(fields)) {
+            warning.style.display = "inline";
+            submitBtn.disabled = true;
+        } else {
+            warning.style.display = "none";
+            submitBtn.disabled = false;
+        }
+
+        // Update user input field select
+        userFieldSelect.innerHTML = `
+            <option value="" disabled hidden>At least 1 Fields required</option>
+            <option value="__none__">None</option>
+        `;
+        fields.forEach(f => {
+            const opt = document.createElement("option");
+            opt.value = f;
+            opt.textContent = f;
+            userFieldSelect.appendChild(opt);
+        });
+
+        updateMatchingColumnOptions();
+    }
+
+    function updateMatchingColumnOptions() {
+        const matchColSelect = document.getElementById("matching_column");
+        const userFieldSelect = document.getElementById("user_input_field");
+        const selectedUserField = userFieldSelect.value;
+        const fields = getUniqueFieldValues();
+
+        matchColSelect.innerHTML = `
+            <option value="" disabled hidden>At least 2 Fields required</option>
+            <option value="__none__">None</option>
         `;
 
 
-        const inputs = document.querySelectorAll('[id^="field_name_input_"]');
-        inputs.forEach((input) => {
-            if (input.value.trim()) {
-                const option = document.createElement("option");
-                option.value = input.value.trim();
-                option.textContent = input.value.trim();
-                select.appendChild(option);
+        fields.forEach(f => {
+            if (f !== selectedUserField) {
+                const opt = document.createElement("option");
+                opt.value = f;
+                opt.textContent = f;
+                matchColSelect.appendChild(opt);
             }
         });
+    }
+
+    function validateForm() {
+        const userField = document.getElementById("user_input_field").value;
+        const matchCol = document.getElementById("matching_column").value;
+        const warning = document.getElementById("duplicate_warning");
+
+        if (!userField || !matchCol) {
+            alert("Please select both 'User Input Field' and 'Matching Column'");
+            return false;
+        }
+
+        if (warning.style.display === "inline") {
+            alert("Duplicate field names are not allowed");
+            return false;
+        }
+
+        return true;
     }
 </script>
 {% endblock %}

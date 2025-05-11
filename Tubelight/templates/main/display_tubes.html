@@ -8,8 +8,30 @@
 {% endblock %}
 
 {% block content %}
+{% if event_templates %}
+    <h3>Here are your tubes created with templates:</h3>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Template: Tube Name</th>
+                    <!-- <th style="text-align: right;">Download Invitation</th>
+                    <th style="text-align: right;">Download Files</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in event_templates %}
+                <tr>
+                    <td><a href="{% url 'event_subevents_template' template_id=event.template_id event_id=event.id %}">{{ event.template_name }}: <b>{{ event.Name }}</b></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+
 {% if events %}
-    Here are your tubes:
+    <h3>Here are your tubes:</h3>
     <br><br>
     <div class="table-wrapper">
         <table>
@@ -31,9 +53,7 @@
             </tbody>
         </table>
     </div>
-    <a href="{% url 'create_event' %}" class="button">Add Tube</a>
-{% else %}
-    <b>You have no tubes created yet.</b> Click on the "Create Tube" button to create a new tube. <br><br>
-    <a href="{% url 'create_event' %}" class="button">Create Tube</a>
 {% endif %}
+<a href="{% url 'select_template' %}" class="button">Create Tube with Template</a>
+<a href="{% url 'create_event' %}" class="button">Create Tube</a>
 {% endblock %}

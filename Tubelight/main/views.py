@@ -95,7 +95,6 @@ def display_events(request):
         for template in reader:
             if template["username"] == request.session["username"]:
                 event_ids = [(int(event.split("-")[0]), int(event.split("-")[1])) for event in template["events"].split("|")[:-1]]
-                events_id = template["events"].split("|")[:-1]
         
         reader = get_table("templates")
         for event in event_ids:
@@ -105,6 +104,7 @@ def display_events(request):
                     for template_event in template_events:
                         if template_event["id"] == event[1]:
                             template_event["template_name"] = template["name"]
+                            template_event["template_id"] = template["id"]
                             events.append(template_event)
 
         print(events)
@@ -166,19 +166,35 @@ def create_event(request):
         return render(request, "main/create_event.html")
     
 
-def display_subevents(request, event_id):
-    subevents = []
+def display_subevents(request, template_id, event_id):
+    reader = get_table("templates")
+    for template in reader:
+        if template["id"] == template_id:
+            template_events = get_table(template["name"])
+            for template_event in template_events:
+                if template_event["id"] == event_id:
+                    event = template_event
+                    event["description"] = template["description"]
+                    event["template_name"] = template["name"]
+                    event["template_id"] = template["id"]
+                    event["subevents"] = template["subevents"]
+                    event["subevents_raw"] = template["subevents_raw"]
+                    break
 
-    event = get_event_event_id(event_id)
-
-    reader = get_table("subevents")
-    for row in reader:
-        if int(row["event_id"]) == event_id:
-            subevents.append(row)
+    subevents = [(x.split("-")[0], eval(x.split("-")[1])) for x in event["subevents_raw"].split("|")]
+    details = []
+    for subevent_name, services in subevents:
+        for service in services:
+            for key in service_options:
+                if service_options[key] == service:
+                    reader = get_table(key)
+                    service_name = key
+            details.append((subevent_name, service_name, reader))
+    print(details)
     
     data = {
         "event": event,
-        "subevents": subevents,
+        "details": details,
     }
 
     return render(request, "main/display_subevents.html", data)
@@ -325,21 +341,52 @@ def audio_files_edit(file_paths, event_name):
 
 
 service_options = {
+    "Venue Booking": "venue_booking",
+    "Wedding Coordinator": "wedding_coordinator",
     "Food Caterers": "caterers",
+    "DJ": "dj",
+    "Musicians": "musicians",
+    "Sound System": "sound_system",
+    "Lighting": "lighting",
     "Photographer": "photographers",
     "Photographer + Videographers": "photographer_videographers",
-    "Decorators": "decorators",
-    "DJ": "dj",
-    "Sound System": "sound_system",
-    "Musicians": "musicians",
-    "Venue Lighting and Sound": "lighting_sound",
-    "Event Coordinator": "event_coordinator",
     "Valet": "valet",
+    "Decorators": "decorators",
+    "Invitations": "invitations",
+    "Power Backup": "power_backup",
+    "Security": "security",
+    "Cleaning": "cleaning",
+    "Games & Activity": "games_activity",
+    "Screen": "screen",
+    "Stage Setup": "stage_setup",
+    "Furniture Rentals": "furniture_rentals",
+    "Return Gifts": "return_gifts",
+    "Games, Cake & Beverages": "games_cake_beverages",
+    "Religious Ritual Setup": "religious_ritual_setup",
+    "Priest Service": "priest_service",
+    "Devotional Group": "devotional_group",
+    "Prasadam / Bhog Distribution": "prasadam_distribution",
+    "Hearse Arrangement": "hearse_arrangement",
+    "Cremation": "cremation",
+    "Floral Wreaths": "floral_wreaths",
+    "Tent & Seating Setup": "tent_seating_setup",
+    "Religious Ceremony": "religious_ceremony",
+    "Trip Planning": "trip_planning",
+    "Accommodation Booking": "accommodation_booking",
+    "Vehicle Rental": "vehicle_rental",
+    "Group Meal Planning / Packed Food": "group_meal_planning",
+    "Tour Guide": "tour_guide",
+    "Communication Management": "communication_management",
+    "First AID": "first_aid",
+    "Booking Management": "booking_management",
+    "Certificate Distribution": "certificate_distribution",
+    "Graduation Cake / Dessert Table": "graduation_dessert_table",
+    "Event Coordinator": "event_coordinator",
     "Waiters": "waiters",
     "Bouncers": "bouncers",
-    "Screen": "screen",
     "Other": "other"
 }
+
 
 
 def templates_menu(request):
@@ -393,7 +440,7 @@ def create_template(request):
         else:
             templates_id = 0
         
-        add_row("templates", templates_id, name, description, raw, subevents)
+        add_row("templates", templates_id, name, description, raw, subevents, None)
         return redirect("show_templates")
     else:
         return render(request, "main/create_template.html")
@@ -445,7 +492,7 @@ def create_tube_template(request, template_id):
                 break
         update_value(table_name="users", column="events", value=new_user_events, identifier_name="username", identifier_value=username)
 
-        return redirect("select_template")
+        return redirect("display_events")
     else:
         data = get_table("templates")
         for row in data:
@@ -468,7 +515,6 @@ def create_tube_template(request, template_id):
 
 def edit_subevents(request, template_id):
     if request.method == "POST":
-        print(request.POST)
         data = get_table("templates")
         for row in data:
             if row["id"] == template_id:
@@ -476,12 +522,22 @@ def edit_subevents(request, template_id):
                 break
         table_name = f"{template['name']}_details"
         columns = [x for x in template["subevents"].split("|")]
-        print(columns)
         column_dict = {"id": "id", f"{template['name']}_id": "foriegn_key"}
+        subevents = {}
         for column in columns:
             if column in request.POST:
                 for service in request.POST.getlist(column):
                     column_dict[f"{column}|{service}"] = "select"
+                    if column in subevents:
+                        subevents[column].append(service)
+                    else:
+                        subevents[column] = [service]
+        subevents_str = ""
+        for subevent, services in subevents.items():
+            subevents_str += f"{subevent}-{services}|"
+        subevents_str = subevents_str[:-1]
+        print(subevents_str)
+        update_value(table_name="templates", column="subevents_raw", value=subevents_str, identifier_name="id", identifier_value=template_id)
         return_code = create_table_foreign_key(table_name, column_dict, template["name"], "id", f"{template['name']}_id")
         if return_code == -1:
             drop_table(table_name)
@@ -498,7 +554,6 @@ def edit_subevents(request, template_id):
         subevent_dict = dict()
         print(f"{template['name']}_details")
         template_details_columns = fetch_columns(f"{template['name']}_details")
-        print(template_details_columns)
         if not template_details_columns == -1:
             template_details_columns = template_details_columns[2:]
             for column in template_details_columns:
@@ -509,8 +564,6 @@ def edit_subevents(request, template_id):
                     subevent_dict[subevent] = [service]
         for subevent in subevents:
             subevent_dict.setdefault(subevent, [])
-        print(subevent_dict)
-        print(subevents)
 
         data = {
             "template": template,
@@ -518,3 +571,43 @@ def edit_subevents(request, template_id):
             "service_options": service_options,
         }
         return render(request, "main/edit_subevents.html", data)
+
+
+# Services
+
+
+def services_menu(request):
+    if request.method == "POST":
+        pass
+    else:
+        services = get_table("services")
+        data = {
+            "services": services,
+        }
+        return render(request, "main/services_menu.html", data)
+
+
+def create_service(request):
+    if request.method == "POST":
+        service_name = request.POST["name"]
+        field_names = list(request.POST.getlist("field_names"))
+        field_types = list(request.POST.getlist("field_types"))
+
+        column_dict = {"id": "id"}
+        for i, service in enumerate(field_names):
+            column_dict[service] = field_types[i]
+        
+        print(column_dict)
+            
+
+        return redirect("services_menu")
+    else:
+        return render(request, "main/create_service.html")
+
+
+def show_services(request):
+    pass
+
+
+def edit_service(reqeust):
+    pass

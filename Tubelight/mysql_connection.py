@@ -13,6 +13,7 @@ datatypes = {
     "radio": "varchar(100)",
     "select": "varchar(100)",
     "number": "int(11)",
+    "boolean": "int(1)",
     "date": "date",
     "time": "time",
     "datetime": "datetime",
@@ -39,7 +40,10 @@ datatypes = {
 def add_row(table_name: str, *args):
     query = f"insert into `{table_name}` values ("
     for arg in args:
-        query += f'"{arg}",'
+        if arg == None:
+            query += "null,"
+        else:
+            query += f'"{arg}",'
     query = query[:-1]+")"
     cursor.execute(query)
     db.commit()
@@ -51,7 +55,10 @@ def add_row_dict(table_name: str, row_data: dict):
         query += f"`{column}`,"
     query = query[:-1] + ") values ("
     for value in values:
-        query += f'"{value}",'
+        if value == None:
+            query += "null,"
+        else:
+            query += f'"{value}",'
     query = query[:-1]+")"
     cursor.execute(query)
     db.commit()

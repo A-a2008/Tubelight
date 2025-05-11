@@ -23,7 +23,7 @@
             <tbody>
                 {% for event in events %}
                 <tr>
-                    <td><a href="{% url 'display_subevents' event_id=event.id %}">{{ event.template_name }}: <b>{{ event.Name }}</b></a></td>
+                    <td><a href="{% url 'display_subevents' template_id=event.template_id event_id=event.id %}">{{ event.template_name }}: <b>{{ event.Name }}</b></a></td>
                 </tr>
                 {% endfor %}
             </tbody>

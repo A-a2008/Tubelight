@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+<!-- Header -->
+    <header id="header">
+        <h1>{{ event_info.template_name }}: {{ event_info.Name }}</h1>
+        <p>{{ event_info.description }}</p>
+    </header>
+{% endblock %}
+
+{% block content %}
+<!-- <span class="image main"><img src="{% static '$Image$' %}" alt="" /></span> -->
+
+<p>
+    {% if event %}
+    <h2><b>Event Details</b></h2>
+    {% for service, event_name, event_details in event %}
+        <h2>{{ event_name }}</h2>
+        <h3><u>{{ service }}</u></h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        {% for key in event_details.keys %}
+                        <th>{{ key }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% for value in event_details.values %}
+                        <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr>
+    {% endfor %}
+    <a href="{% url 'event_subevents_template' template_id=template_id event_id=event_id %}" class="button large">Edit Services</a>
+    {% else %}
+    <a href="{% url 'event_subevents_template' template_id=template_id event_id=event_id %}" class="button large primary">Select Services</a>
+    {% endif %}
+</p>
+{% endblock %}

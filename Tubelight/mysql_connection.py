@@ -2,8 +2,25 @@ import mysql.connector as mysql
 import csv
 from os.path import join
 
-db = mysql.connect(host="localhost", user="root", passwd="cajc", database="tubelight")
+# db = mysql.connect(host="localhost", user="root", passwd="cajc", database="tubelight")
+db = mysql.connect(host="localhost", user="aryan", passwd="nothingx16", database="tubelight_combined")
 cursor = db.cursor()
+
+datatypes = {
+    "text": "varchar(100)",
+    "textarea": "varchar(1000)",
+    "checkbox": "varchar(100)",
+    "radio": "varchar(100)",
+    "select": "varchar(100)",
+    "number": "int(11)",
+    "boolean": "int(1)",
+    "date": "date",
+    "time": "time",
+    "datetime": "datetime",
+    "foriegn_key": "int(4)",
+    "foriegn_key_parent": "int(4) primary key",
+    "id": "int(4) primary key",
+}
 
 # def update_mysql(file_path):
 #     db = mysql.connect(host="localhost", user="root", passwd="cajc", database="tubelight")
@@ -21,27 +38,96 @@ cursor = db.cursor()
 #     db.commit()
 
 def add_row(table_name: str, *args):
-    query = f"insert into {table_name} values ("
+    query = f"insert into `{table_name}` values ("
     for arg in args:
-        query += f'"{arg}",'
+        if arg == None:
+            query += "null,"
+        else:
+            query += f'"{arg}",'
+    query = query[:-1]+")"
+    cursor.execute(query)
+    db.commit()
+
+def add_row_dict(table_name: str, row_data: dict):
+    columns, values = list(row_data.keys()), list(row_data.values())
+    query = f"insert into `{table_name}`("
+    for column in columns:
+        query += f"`{column}`,"
+    query = query[:-1] + ") values ("
+    for value in values:
+        if value == None:
+            query += "null,"
+        else:
+            query += f'"{value}",'
     query = query[:-1]+")"
     cursor.execute(query)
     db.commit()
 
 def get_table(table_name: str):
-    cursor.execute(f"desc {table_name}")
+    try:
+        cursor.execute(f"desc `{table_name}`")
+    except Exception as e:
+        return -1
     columns_rows = cursor.fetchall()
     columns = [row[0] for row in columns_rows]
-    cursor.execute(f"select * from {table_name}")
+    cursor.execute(f"select * from `{table_name}`")
     rows = cursor.fetchall()
     data = []
     for row in rows:
         data_row = {}
         for i, value in enumerate(row):
-            data_row[columns[i]] = value
+            if not value == 'NULL':
+                data_row[columns[i]] = value
+            else:
+                data_row[columns[i]] = None
         data.append(data_row)
     return data
 
 def update_value(table_name: str, column: str, value: str, identifier_name: str, identifier_value: str):
-    cursor.execute(f'update {table_name} set {column}="{value}" where {identifier_name}="{identifier_value}"')
+    cursor.execute(f'update `{table_name}` set `{column}`="{value}" where `{identifier_name}`="{identifier_value}"')
     db.commit()
+
+def create_table(table_name: str, columns: dict):
+    query = f"create table `{table_name}` ("
+    for column_name, column_type in columns.items():
+        query += f"`{column_name}` {datatypes[column_type]},"
+    query = query[:-1]+")"
+    print(query)
+    try:
+        cursor.execute(query)
+    except Exception as e:
+        if "already exists" in str(e):
+            return -1
+    db.commit()
+    return 0
+
+def create_table_foreign_key(table_name: str, columns: dict, foreign_key_table: str, foreign_key__parent_column: str, foreign_key__child_column: str):
+    query = f"create table `{table_name}` ("
+    for column_name, column_type in columns.items():
+        query += f"`{column_name}` {datatypes[column_type]}, "
+    query += f"foreign key(`{foreign_key__child_column}`) references `{foreign_key_table}`(`{foreign_key__parent_column}`))"
+    # query = query[:-1]+")"
+    print(query)
+    try:
+        cursor.execute(query)
+    except Exception as e:
+        if "already exists" in str(e):
+            return -1
+    db.commit()
+    return 0
+
+def fetch_columns(table_name: str):
+    try:
+        cursor.execute(f"desc `{table_name}`")
+    except Exception as e:
+        return -1
+    columns_rows = cursor.fetchall()
+    columns = [row[0] for row in columns_rows]
+    return columns
+
+def drop_table(table_name: str):
+    try:
+        cursor.execute(f"drop table `{table_name}`")
+    except Exception as e:
+        print(e)
+        return -1

@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+<header id="header">
+    <h1>Create a Template</h1>
+    <p>Create a new template according to your specifications</p>
+</header>
+{% endblock %}
+
+{% block content %}
+<p>
+    {% for message in messages %}
+    <strong><font color="red">{{ message }}</font></strong>
+    {% endfor %}
+</p>
+<form action="{% url 'create_template' %}" method="post">
+    {% csrf_token %}
+    <h3><label for="name">Name:</label></h3>
+    <input type="text" id="name" name="name" required><br>
+    <h3><label for="description">Description:</label></h3>
+    <textarea type="text" name="description" placeholder="Tube Description" required></textarea>
+    <br><br>
+
+    <h3>Fields:</h3>
+
+    <div id="fieldsPlaceholderMessage">
+        <center>Click on "Add Field" button</center>
+    </div>
+
+    <table id="fieldsTable" style="display: none;">
+        <thead>
+            <tr>
+                <th>Field Name</th>
+                <th>Field Type</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody id="fieldsBody">
+            <!-- Dynamic rows go here -->
+        </tbody>
+    </table>
+    <br>
+    <button class="small primary" type="button" onclick="addField()">Add Field</button>
+    <br><br>
+
+    <h3>Subevents:</h3>
+
+    <div id="subeventsPlaceholderMessage">
+        <center>Click on "Add Subevent" button</center>
+    </div>
+
+    <table id="subeventsTable" style="display: none;">
+        <thead>
+            <tr>
+                <th>Subevent Name</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody id="subeventsBody">
+            <!-- Dynamic rows go here -->
+        </tbody>
+    </table>
+    <br>
+    <button class="small primary" type="button" onclick="addSubevent()">Add Subevent</button>
+    <br><br>
+
+    <input type="submit" value="Submit">
+</form>
+
+<script>
+    let fieldCount = 0;
+    let subeventCount = 0;
+    const optionCounters = {};
+
+    function addField() {
+        const placeholder = document.getElementById("fieldsPlaceholderMessage");
+        const table = document.getElementById("fieldsTable");
+        const tbody = document.getElementById("fieldsBody");
+
+        if (tbody.children.length === 0) {
+            placeholder.style.display = "none";
+            table.style.display = "table";
+        }
+
+        fieldCount++;
+        const row = document.createElement("tr");
+        row.setAttribute("id", `field_row_${fieldCount}`);
+
+        row.innerHTML = `
+            <td><input type="text" name="field_name_${fieldCount}" required></td>
+            <td>
+                <select name="field_type_${fieldCount}" required onchange="handleFieldTypeChange(${fieldCount}, this)">
+                    <option value="" disabled selected hidden>Select Field Type</option>
+                    <option value="text">Text</option>
+                    <option value="textarea">Text Area</option>
+                    <option value="checkbox">Checkbox</option>
+                    <option value="radio">Radio Button</option>
+                    <option value="select">Select</option>
+                    <option value="number">Number</option>
+                    <option value="date">Date</option>
+                    <option value="time">Time</option>
+                    <option value="datetime">Date and Time</option>
+                </select>
+                <div id="options_container_${fieldCount}" style="display: none; margin-top: 5px;"></div>
+            </td>
+            <td><button type="button" class="button small" onclick="removeField(${fieldCount})">Delete</button></td>
+        `;
+
+        tbody.appendChild(row);
+    }
+
+    function removeField(index) {
+        const row = document.getElementById(`field_row_${index}`);
+        if (row) row.remove();
+
+        const tbody = document.getElementById("fieldsBody");
+        if (tbody.children.length === 0) {
+            document.getElementById("fieldsTable").style.display = "none";
+            document.getElementById("fieldsPlaceholderMessage").style.display = "block";
+        }
+    }
+
+    function handleFieldTypeChange(index, selectElement) {
+        const container = document.getElementById(`options_container_${index}`);
+        container.innerHTML = ""; // Reset
+        container.style.display = "none";
+    
+        if (selectElement.value === "select") {
+            container.style.display = "block";
+
+            optionCounters[index] = 0;
+    
+            const label = document.createElement("div");
+            label.textContent = "Options:";
+            container.appendChild(label);
+    
+            // Create a wrapper div for options and button
+            const optionWrapper = document.createElement("div");
+            optionWrapper.setAttribute("id", `option_wrapper_${index}`);
+            optionWrapper.style.display = "flex";
+            optionWrapper.style.flexDirection = "column";
+            optionWrapper.style.gap = "5px";
+            container.appendChild(optionWrapper);
+    
+            // Add initial "Add Option" button at the bottom
+            const addBtn = document.createElement("button");
+            addBtn.type = "button";
+            addBtn.className = "small primary";
+            addBtn.innerText = "Add Option";
+            addBtn.style.marginTop = "5px";
+            addBtn.onclick = () => addOption(index);
+            optionWrapper.appendChild(addBtn);
+        }
+    }
+    
+    function addOption(fieldIndex) {
+        if (!optionCounters[fieldIndex]) optionCounters[fieldIndex] = 0;
+        optionCounters[fieldIndex]++;
+        const optionIndex = optionCounters[fieldIndex];
+    
+        const wrapper = document.getElementById(`option_wrapper_${fieldIndex}`);
+    
+        // Remove existing button
+        const addBtn = wrapper.querySelector("button");
+        if (addBtn) wrapper.removeChild(addBtn);
+    
+        // Add input field
+        const input = document.createElement("input");
+        input.type = "text";
+        input.name = `field_type_${fieldIndex}_option_${optionIndex}`;
+        input.placeholder = `Option ${optionIndex}`;
+        input.required = true;
+        wrapper.appendChild(input);
+    
+        // Re-append button at the bottom
+        if (addBtn) wrapper.appendChild(addBtn);
+    }    
+
+    function addSubevent() {
+        const placeholder = document.getElementById("subeventsPlaceholderMessage");
+        const table = document.getElementById("subeventsTable");
+        const tbody = document.getElementById("subeventsBody");
+
+        if (tbody.children.length === 0) {
+            placeholder.style.display = "none";
+            table.style.display = "table";
+        }
+
+        subeventCount++;
+        const row = document.createElement("tr");
+        row.setAttribute("id", `subevent_row_${subeventCount}`);
+
+        row.innerHTML = `
+            <td><input type="text" name="subevent_name_${subeventCount}" required></td>
+            <td><button type="button" class="button small" onclick="removeSubevent(${subeventCount})">Delete</button></td>
+        `;
+
+        tbody.appendChild(row);
+    }
+
+    function removeSubevent(index) {
+        const row = document.getElementById(`subevent_row_${index}`);
+        if (row) row.remove();
+
+        const tbody = document.getElementById("subeventsBody");
+        if (tbody.children.length === 0) {
+            document.getElementById("subeventsTable").style.display = "none";
+            document.getElementById("subeventsPlaceholderMessage").style.display = "block";
+        }
+    }
+</script>
+{% endblock %}

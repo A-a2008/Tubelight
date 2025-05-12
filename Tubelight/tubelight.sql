@@ -38,7 +38,7 @@ CREATE TABLE `Birthday Party` (
 
 LOCK TABLES `Birthday Party` WRITE;
 /*!40000 ALTER TABLE `Birthday Party` DISABLE KEYS */;
-INSERT INTO `Birthday Party` VALUES (0,'Srishti','2025-05-28','17:30:00',17);
+INSERT INTO `Birthday Party` VALUES (0,'Srishti','2025-05-28','17:50:00',17);
 /*!40000 ALTER TABLE `Birthday Party` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -52,13 +52,16 @@ DROP TABLE IF EXISTS `Birthday Party_details`;
 CREATE TABLE `Birthday Party_details` (
   `id` int NOT NULL,
   `Birthday Party_id` int DEFAULT NULL,
-  `Cake Cutting|photographer_videographers` varchar(100) DEFAULT NULL,
-  `Cake Cutting|sound_system` varchar(100) DEFAULT NULL,
-  `Games|screen` varchar(100) DEFAULT NULL,
-  `Games|event_coordinator` varchar(100) DEFAULT NULL,
-  `Dinner|caterers` varchar(100) DEFAULT NULL,
-  `Dinner|lighting_sound` varchar(100) DEFAULT NULL,
-  `Dinner|waiters` varchar(100) DEFAULT NULL,
+  `Cake Cutting|Photographers` varchar(100) DEFAULT NULL,
+  `Cake Cutting|Photographers-No.  Of Photographers Required` varchar(100) DEFAULT NULL,
+  `Games|DJ` varchar(100) DEFAULT NULL,
+  `Games|DJ-__none__` varchar(100) DEFAULT NULL,
+  `Dinner|Food Caterers` varchar(100) DEFAULT NULL,
+  `Dinner|Food Caterers-No of Plates Required` varchar(100) DEFAULT NULL,
+  `Dinner|Waiters` varchar(100) DEFAULT NULL,
+  `Dinner|Waiters-__none__` varchar(100) DEFAULT NULL,
+  `Dinner|DJ` varchar(100) DEFAULT NULL,
+  `Dinner|DJ-__none__` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `Birthday Party_id` (`Birthday Party_id`),
   CONSTRAINT `Birthday Party_details_ibfk_1` FOREIGN KEY (`Birthday Party_id`) REFERENCES `Birthday Party` (`id`)
@@ -72,6 +75,226 @@ CREATE TABLE `Birthday Party_details` (
 LOCK TABLES `Birthday Party_details` WRITE;
 /*!40000 ALTER TABLE `Birthday Party_details` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Birthday Party_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Bouncers`
+--
+
+DROP TABLE IF EXISTS `Bouncers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Bouncers` (
+  `id` int NOT NULL,
+  `services_id` int DEFAULT NULL,
+  `Name` varchar(100) DEFAULT NULL,
+  `Service Type` varchar(100) DEFAULT NULL,
+  `Price per Event` int DEFAULT NULL,
+  `Setup Cost` int DEFAULT NULL,
+  `No. of People` int DEFAULT NULL,
+  `Customization Options` varchar(100) DEFAULT NULL,
+  `Delivery & Setup Fees` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `services_id` (`services_id`),
+  CONSTRAINT `Bouncers_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Bouncers`
+--
+
+LOCK TABLES `Bouncers` WRITE;
+/*!40000 ALTER TABLE `Bouncers` DISABLE KEYS */;
+INSERT INTO `Bouncers` VALUES (0,6,'Elite Guard Services','Professional Bouncers',15000,5000,5,'Yes',3000);
+/*!40000 ALTER TABLE `Bouncers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `DJ`
+--
+
+DROP TABLE IF EXISTS `DJ`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `DJ` (
+  `id` int NOT NULL,
+  `services_id` int DEFAULT NULL,
+  `Name` varchar(100) DEFAULT NULL,
+  `Service Fees` int DEFAULT NULL,
+  `Duration (Hours)` int DEFAULT NULL,
+  `Number of People` int DEFAULT NULL,
+  `Equipment Provided` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `services_id` (`services_id`),
+  CONSTRAINT `DJ_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `DJ`
+--
+
+LOCK TABLES `DJ` WRITE;
+/*!40000 ALTER TABLE `DJ` DISABLE KEYS */;
+INSERT INTO `DJ` VALUES (0,4,'DJ Pulsewave',12000,4,3,'Sound system, DJ console, LED lights');
+/*!40000 ALTER TABLE `DJ` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Food Caterers`
+--
+
+DROP TABLE IF EXISTS `Food Caterers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Food Caterers` (
+  `id` int NOT NULL,
+  `services_id` int DEFAULT NULL,
+  `Name` varchar(100) DEFAULT NULL,
+  `Catering fees` int DEFAULT NULL,
+  `Cost per plate` int DEFAULT NULL,
+  `Service type` varchar(100) DEFAULT NULL,
+  `No of Plates Required` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `services_id` (`services_id`),
+  CONSTRAINT `Food Caterers_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Food Caterers`
+--
+
+LOCK TABLES `Food Caterers` WRITE;
+/*!40000 ALTER TABLE `Food Caterers` DISABLE KEYS */;
+INSERT INTO `Food Caterers` VALUES (0,1,'Gourmet Gatherings',5000,350,'Buffet',NULL),(1,1,'Spice & Spoon Caterers',7500,420,'Sit-down',NULL);
+/*!40000 ALTER TABLE `Food Caterers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Furniture Rentals`
+--
+
+DROP TABLE IF EXISTS `Furniture Rentals`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Furniture Rentals` (
+  `id` int NOT NULL,
+  `services_id` int DEFAULT NULL,
+  `Name` varchar(100) DEFAULT NULL,
+  `Service Type` varchar(100) DEFAULT NULL,
+  `Service Cost` int DEFAULT NULL,
+  `Price per Hour` int DEFAULT NULL,
+  `Setup Time Required` int DEFAULT NULL,
+  `No. of Items Required` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `services_id` (`services_id`),
+  CONSTRAINT `Furniture Rentals_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Furniture Rentals`
+--
+
+LOCK TABLES `Furniture Rentals` WRITE;
+/*!40000 ALTER TABLE `Furniture Rentals` DISABLE KEYS */;
+INSERT INTO `Furniture Rentals` VALUES (0,0,'Rent-a-Furniture','Chairs (Plastic)',5000,500,15,NULL),(1,0,'FurnitureMania','Chairs (Wooden)',1500,500,15,NULL);
+/*!40000 ALTER TABLE `Furniture Rentals` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Photographers`
+--
+
+DROP TABLE IF EXISTS `Photographers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Photographers` (
+  `id` int NOT NULL,
+  `services_id` int DEFAULT NULL,
+  `Name` varchar(100) DEFAULT NULL,
+  `Service Fees` int DEFAULT NULL,
+  `Price per hour` int DEFAULT NULL,
+  `Experience (Years)` int DEFAULT NULL,
+  `No.  Of Photographers Required` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `services_id` (`services_id`),
+  CONSTRAINT `Photographers_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Photographers`
+--
+
+LOCK TABLES `Photographers` WRITE;
+/*!40000 ALTER TABLE `Photographers` DISABLE KEYS */;
+INSERT INTO `Photographers` VALUES (0,2,'FrameCraft Studios',25000,500,8,NULL);
+/*!40000 ALTER TABLE `Photographers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Sound System`
+--
+
+DROP TABLE IF EXISTS `Sound System`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Sound System` (
+  `id` int NOT NULL,
+  `services_id` int DEFAULT NULL,
+  `Name` varchar(100) DEFAULT NULL,
+  `Equipment Type` varchar(100) DEFAULT NULL,
+  `Price per Day` int DEFAULT NULL,
+  `Setup Cost` int DEFAULT NULL,
+  `Event Types Covered` varchar(100) DEFAULT NULL,
+  `Customization Options` varchar(100) DEFAULT NULL,
+  `Delivery & Setup Fees` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `services_id` (`services_id`),
+  CONSTRAINT `Sound System_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Sound System`
+--
+
+LOCK TABLES `Sound System` WRITE;
+/*!40000 ALTER TABLE `Sound System` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Sound System` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Waiters`
+--
+
+DROP TABLE IF EXISTS `Waiters`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Waiters` (
+  `id` int NOT NULL,
+  `services_id` int DEFAULT NULL,
+  `Name` varchar(100) DEFAULT NULL,
+  `Service Fees` int DEFAULT NULL,
+  `No. of Waiters Provided` int DEFAULT NULL,
+  `Shift Duration (Hours)` int DEFAULT NULL,
+  `Experience (Years)` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `services_id` (`services_id`),
+  CONSTRAINT `Waiters_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Waiters`
+--
+
+LOCK TABLES `Waiters` WRITE;
+/*!40000 ALTER TABLE `Waiters` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Waiters` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -132,6 +355,33 @@ LOCK TABLES `files` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `services`
+--
+
+DROP TABLE IF EXISTS `services`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `services` (
+  `id` int NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `columns` varchar(1000) DEFAULT NULL,
+  `input_column` varchar(1000) DEFAULT NULL,
+  `matching_column` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `services`
+--
+
+LOCK TABLES `services` WRITE;
+/*!40000 ALTER TABLE `services` DISABLE KEYS */;
+INSERT INTO `services` VALUES (0,'Furniture Rentals','Name-text|Service Type-text|Service Cost-number|Price per Hour-number|Setup Time Required-number|No. of Items Required-number','No. of Items Required',NULL),(1,'Food Caterers','Name-text|Catering fees-number|Cost per plate-number|Service type-text|No of Plates Required-number','No of Plates Required','Cost per plate'),(2,'Photographers','Name-text|Service Fees-number|Price per hour-number|Experience (Years)-number|No.  Of Photographers Required-number','No.  Of Photographers Required','__none__'),(3,'Waiters','Name-text|Service Fees-number|No. of Waiters Provided-number|Shift Duration (Hours)-number|Experience (Years)-number','__none__','__none__'),(4,'DJ','Name-text|Service Fees-number|Duration (Hours)-number|Number of People-number|Equipment Provided-text','__none__','__none__'),(5,'Sound System','Name-text|Equipment Type-text|Price per Day-number|Setup Cost-number|Event Types Covered-text|Customization Options-text|Delivery & Setup Fees-number','__none__','__none__'),(6,'Bouncers','Name-text|Service Type-text|Price per Event-number|Setup Cost-number|No. of People-number|Customization Options-text|Delivery & Setup Fees-number','__none__','__none__');
+/*!40000 ALTER TABLE `services` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `subevents`
 --
 
@@ -171,7 +421,8 @@ CREATE TABLE `templates` (
   `name` varchar(100) DEFAULT NULL,
   `description` varchar(1000) DEFAULT NULL,
   `raw` varchar(1000) DEFAULT NULL,
-  `subevents` varchar(1000) DEFAULT NULL
+  `subevents` varchar(1000) DEFAULT NULL,
+  `subevents_raw` varchar(1000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -181,7 +432,7 @@ CREATE TABLE `templates` (
 
 LOCK TABLES `templates` WRITE;
 /*!40000 ALTER TABLE `templates` DISABLE KEYS */;
-INSERT INTO `templates` VALUES (0,'Birthday Party','Plan a Birthday Party','Name:text|Date:date|Time:time|Age:number','Cake Cutting|Games|Dinner');
+INSERT INTO `templates` VALUES (0,'Birthday Party','Create Birthday Parties efficiently with us','Name:text|Date:date|Time:time|Age:number','Cake Cutting|Games|Dinner','Cake Cutting-[\'Photographers\']|Games-[\'DJ\']|Dinner-[\'Food Caterers\', \'Waiters\', \'DJ\']');
 /*!40000 ALTER TABLE `templates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -222,4 +473,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-09 16:36:48
+-- Dump completed on 2025-05-12 21:08:08

@@ -2004,7 +2004,7 @@ input, select, textarea {
 	input[type="email"],
 	input[type="date"],
 	input[type="time"],
-	input[type="datetime"],
+	input[type="datetime-local"],
 	input[type="number"],
 	select,
 	textarea {
@@ -2027,7 +2027,7 @@ input, select, textarea {
 		input[type="email"]:invalid,
 		input[type="date"]:invalid,
 		input[type="time"]:invalid,
-		input[type="datetime"]:invalid,
+		input[type="datetime-local"]:invalid,
 		input[type="number"]:invalid,
 		select:invalid,
 		textarea:invalid {
@@ -2056,7 +2056,7 @@ input, select, textarea {
 	input[type="email"],
 	input[type="date"],
 	input[type="time"],
-	input[type="datetime"],
+	input[type="datetime-local"],
 	input[type="number"],
 	select {
 		height: 2.75em;
@@ -2160,7 +2160,7 @@ input, select, textarea {
 	input[type="email"],
 	input[type="date"],
 	input[type="time"],
-	input[type="datetime"],
+	input[type="datetime-local"],
 	input[type="number"],
 	select,
 	textarea {
@@ -2173,7 +2173,7 @@ input, select, textarea {
 		input[type="email"]:focus,
 		input[type="date"]:focus,
 		input[type="time"]:focus,
-		input[type="datetime"]:focus,
+		input[type="datetime-local"]:focus,
 		input[type="number"]:focus,
 		select:focus,
 		textarea:focus {
@@ -3592,7 +3592,7 @@ input, select, textarea {
 		#main input[type="email"],
 		#main input[type="date"],
 		#main input[type="time"],
-		#main input[type="datetime"],
+		#main input[type="datetime-local"],
 		#main input[type="number"],
 		#main select,
 		#main textarea {
@@ -3605,7 +3605,7 @@ input, select, textarea {
 			#main input[type="email"]:focus,
 			#main, input[type="date"]:focus,
 			#main, input[type="time"]:focus,
-			#main, input[type="datetime"]:focus,
+			#main, input[type="datetime-local"]:focus,
 			#main, input[type="number"]:focus,
 			#main select:focus,
 			#main textarea:focus {

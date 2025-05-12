@@ -34,7 +34,9 @@
 					<nav id="nav">
 						<ul>
 							<li><a href="#intro" class="active">Introduction</a></li>
+							{% if not request.session.is_authenticated %}
 							<li><a href="#registeration">Registeration</a></li>
+							{% endif %}
 							<li><a href="#files">Manage Files</a></li>
 							<li><a href="#location">Venue Location Access</a></li>
                             <li><a href="#invitation">Download Invitation</a></li>
@@ -57,7 +59,7 @@
 											<li><a href="{% url 'display_events' %}" class="button">View Events</a></li>
 										</ul>
 									</div>
-									<span class="image"><img src="{% static 'images/pic01.jpg' %}" alt="" /></span>
+									<span class="image"><img src="{% static 'images/logo 1.png' %}" alt="" /></span>
 								</div>
 								{% if not request.session.is_authenticated %}
 								<div class="spotlight" id="registeration">
@@ -70,7 +72,7 @@
 											<li><a href="{% url 'register' %}" class="button">Get Started</a></li>
 										</ul>
 									</div>
-									<span class="image"><img src="{% static 'images/pic01.jpg' %}" alt="" /></span>
+									<span class="image"><img src="{% static 'images/Logo 2.PNG' %}" alt="" /></span>
 								</div>
 								{% endif %}
 								<div class="spotlight">
@@ -81,7 +83,7 @@
 										<p>Upload, organize, and manage all files needed for your event in one convenient dosa. From documents to media, keep everything at your fingertips.</p>
 										<p>Access, update, and share files effortlessly to ensure everyone has what they need for a successful event.</p>
 									</div>
-									<span class="image"><img src="{% static 'images/pic01.jpg' %}" alt="" /></span>
+									<span class="image"><img src="{% static 'images/Logo 2.PNG' %}" alt="" /></span>
 								</div>
 								<div class="spotlight">
 									<div class="content" id="location">
@@ -91,7 +93,7 @@
 										<p>Find your way to the event with integrated venue location features, so you never miss a beat.</p>
 										<p>Get directions, check the venue’s location, and even view nearby amenities to make event attendance a breeze.</p>
 									</div>
-									<span class="image"><img src="{% static 'images/pic01.jpg' %}" alt="" /></span>
+									<span class="image"><img src="{% static 'images/Logo 3.PNG' %}" alt="" /></span>
 								</div>
                                 
 

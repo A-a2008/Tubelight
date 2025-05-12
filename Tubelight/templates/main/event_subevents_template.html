@@ -15,20 +15,44 @@
 <form action="{% url 'event_subevents_template' template_id=template_id event_id=event_id %}" method="post">
     {% csrf_token %}
     {% for subevent_name, subevent_services in details %}
-    <h3>{{ subevent_name }}</h3>
-    {% for service_name, services in subevent_services %}
-    <label for="{{ service_name }}">{{ service_name }}</label>
-    <select name="{{ service_name }}" id="{{ service_name }}" required>
+    <h2><b>{{ subevent_name }}</b></h2>
+    {% for service_name, services, input_column, service_details_view in subevent_services %}
+    <label for="{{ service_name }}"><u>{{ service_name }}</u></label>
+    <select name="{{ subevent_name }}|{{ service_name }}" id="{{ service_name }}" required>
         <option value="" disabled selected hidden>Select Service Provider</option>
         {% for service in services %}
         <option value="{{ service.id }}">{{ service.Name }}</option>
         {% endfor %}
         <option value="-1">Self Planned</option>
     </select><br>
-    <a href="" class="button small">More Details on: <b>{{ service_name }}</b></a>
-    <br><br>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    {% for key in service_details_view.0.keys %}
+                    <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for service in service_details_view %}
+                <tr>
+                    {% for value in service.values %}
+                    <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if input_column.0 != "" %}
+    <label for="{{ input_column.0 }}">{{ input_column.0 }}</label>
+    Note: Enter <b>0</b> if <b>Self Planned</b>
+    <input type="{{ input_column.1 }}" name="{{ subevent_name }}|{{service_name}}-{{ input_column.0 }}" id="{{ input_column.0 }}" required><br>
+    {% endif %}
     {% endfor %}
     <hr>
     {% endfor %}
+    <input type="submit" value="Submit" class="primary">
 </form>
 {% endblock %}

@@ -3,7 +3,7 @@ import csv
 from os.path import join
 
 # db = mysql.connect(host="localhost", user="root", passwd="cajc", database="tubelight")
-db = mysql.connect(host="localhost", user="aryan", passwd="nothingx16", database="tubelight")
+db = mysql.connect(host="localhost", user="aryan", passwd="nothingx16", database="tubelight_combined")
 cursor = db.cursor()
 
 datatypes = {

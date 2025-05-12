@@ -466,7 +466,7 @@ def create_tube_template(request, template_id):
         users_file_rows = get_table("users")
         for row in users_file_rows:
             if row["username"] == username:
-                new_user_events = f"{template['id']}-{tube_id}" + "|"
+                new_user_events += f"{template['id']}-{tube_id}" + "|"
                 break
         update_value(table_name="users", column="events", value=new_user_events, identifier_name="username", identifier_value=username)
 
@@ -509,7 +509,7 @@ def edit_subevents(request, template_id):
                     services = get_table("services")
                     for template_service in services:
                         if service == template_service["name"]:
-                            if template_service["input_column"]:
+                            if not template_service["input_column"] == "__none__":
                                 column_dict[f"{column}|{service}-{template_service['input_column']}"] = "text"
                                 break
 
@@ -559,44 +559,148 @@ def edit_subevents(request, template_id):
     
 
 def event_subevents_template(request, template_id, event_id):
+    if request.method == "POST":
+        reader = get_table("templates")
+        for template in reader:
+            if template["id"] == template_id:
+                template_details_name = f"{template['name']}_details"
+                template_name = template["name"]
+                break
+
+        event_id = None
+        reader = get_table(template_details_name)
+        if len(reader):
+            last_row = reader[-1]
+            event_id = int(last_row["id"]) + 1
+        else:
+            event_id = 0
+        
+        columns = {"id": event_id, f"{template_name}_id": event_id}
+        request_items = list(request.POST.items())
+        for key, value in request_items[1:]:
+            columns[key] = value       
+        
+        add_row_dict(template_details_name, columns)
+        
+        return redirect("display_events")
+    else:
+        reader = get_table("templates")
+        for template in reader:
+            if template["id"] == template_id:
+                template_events = get_table(template["name"])
+                for template_event in template_events:
+                    if template_event["id"] == event_id:
+                        event = template_event
+                        event["description"] = template["description"]
+                        event["template_name"] = template["name"]
+                        event["template_id"] = template["id"]
+                        event["subevents"] = template["subevents"]
+                        event["subevents_raw"] = template["subevents_raw"]
+                        break
+
+        if event["subevents_raw"]:
+            subevents = [(x.split("-")[0], eval(x.split("-")[1])) for x in event["subevents_raw"].split("|")]
+        else:
+            subevents = [(x, []) for x in event["subevents_raw"].split("|")]
+
+        details = []
+        for subevent_name, services in subevents:
+            subevent = (subevent_name, [])
+            for service in services:
+                service_details = get_table(service)
+                services_table = get_table("services")
+                for service_table in services_table:
+                    if service_table["name"] == service:
+                        input_column = service_table["input_column"]
+                        services_datatype = {}
+                        for x in service_table["columns"].split("|"):
+                            services_datatype[x.split("-")[0]] = x.split("-")[1]
+                        if not input_column == "__none__":
+                            input_column_datatype = services_datatype[input_column]
+                        break
+                service_details_view = get_table(service)
+                for service_detail in service_details:
+                    service_id = service_detail["id"]
+                
+                for service_detail in service_details_view:
+                    del service_detail["id"]
+                    del service_detail["services_id"]
+                    if not input_column == "__none__":
+                        del service_detail[input_column]
+                
+                input_column = (input_column, input_column_datatype) if not input_column == "__none__" else ("", "",)
+                subevent[1].append((service, service_details, input_column, service_details_view))
+            details.append(subevent)
+        
+        data = {
+            "template_id": template_id,
+            "event_id": event_id,
+            "event": event,
+            "details": details,
+        }
+
+        return render(request, "main/event_subevents_template.html", data)
+    
+
+def template_event_details(request, template_id, event_id):
     reader = get_table("templates")
     for template in reader:
         if template["id"] == template_id:
             template_events = get_table(template["name"])
             for template_event in template_events:
                 if template_event["id"] == event_id:
-                    event = template_event
-                    event["description"] = template["description"]
-                    event["template_name"] = template["name"]
-                    event["template_id"] = template["id"]
-                    event["subevents"] = template["subevents"]
-                    event["subevents_raw"] = template["subevents_raw"]
+                    event_info = template_event
+                    event_info["description"] = template["description"]
+                    event_info["template_name"] = template["name"]
+                    event_info["template_id"] = template["id"]
                     break
 
-    if event["subevents_raw"]:
-        subevents = [(x.split("-")[0], eval(x.split("-")[1])) for x in event["subevents_raw"].split("|")]
-    else:
-        subevents = [(x, []) for x in event["subevents_raw"].split("|")]
-
-    details = []
-    print(subevents)
-    for subevent_name, services in subevents:
-        subevent = (subevent_name, [])
-        for service in services:
-            service_details = get_table(service)
-            subevent[1].append((service, service_details))
-        details.append(subevent)
-        
-    print(details)
+    template_details = get_table(f"{event_info['template_name']}_details")
+    event = []
+    event_details = None
+    for template_detail in template_details:
+        if template_detail["id"] == event_id:
+            event_details = template_detail
+            break
     
+    print(event_details)
+
+    if event_details:
+        keys = list(event_details.keys())
+        for key in keys[2:]:
+            if re.fullmatch(r'^[^|]+?\|[^|-]+-.+$', key):
+                continue
+            else:
+                subevent, service = key.split("|")[0], key.split("|")[1]
+                services = get_table("services")
+                input_column = matching_column = ""
+                for service_detail in services:
+                    if service_detail["name"] == service:
+                        input_column = service_detail["input_column"] if not service_detail["input_column"] == "__none__" else ""
+                        matching_column = service_detail["matching_column"] if not service_detail["matching_column"] == "__none__" else ""
+                        break
+                service_details = get_table(service)
+                if not int(event_details[key]) == -1:
+                    for service_detail in service_details:
+                        if service_detail["id"] == int(event_details[key]):
+                            if not input_column == "":
+                                service_detail[f"{input_column}"] = event_details[f"{subevent}|{service}-{input_column}"]
+                            if not matching_column == "":
+                                service_detail["Calculated Price"] = int(service_detail[matching_column]) * int(event_details[f"{subevent}|{service}-{input_column}"])
+                            del service_detail["id"]
+                            del service_detail["services_id"]
+                            event.append((service, subevent, service_detail))
+                            break
+                else:
+                    event.append((service, subevent, {"No service provider selected": "Self Planned"}))
+
     data = {
+        "event": event,
+        "event_info": event_info,
         "template_id": template_id,
         "event_id": event_id,
-        "event": event,
-        "details": details,
     }
-
-    return render(request, "main/event_subevents_template.html", data)
+    return render(request, "main/template_event_details.html", data)
 
 
 def display_tubes(request):
@@ -615,9 +719,6 @@ def display_tubes(request):
                         template_ids.append((int(event.split("-")[0]), int(event.split("-")[1])))
                     else:
                         event_ids.append(event)
-        
-        print(template_ids)
-
         
         reader = get_table("templates")
         for event in template_ids:

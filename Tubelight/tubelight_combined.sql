@@ -16,6 +16,139 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `Anniversary`
+--
+
+DROP TABLE IF EXISTS `Anniversary`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Anniversary` (
+  `id` int NOT NULL,
+  `Anniversary Type` varchar(100) DEFAULT NULL,
+  `Mr.` varchar(100) DEFAULT NULL,
+  `Mrs.` varchar(100) DEFAULT NULL,
+  `Date` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Anniversary`
+--
+
+LOCK TABLES `Anniversary` WRITE;
+/*!40000 ALTER TABLE `Anniversary` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Anniversary` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Anniversary_details`
+--
+
+DROP TABLE IF EXISTS `Anniversary_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Anniversary_details` (
+  `id` int NOT NULL,
+  `Anniversary_id` int DEFAULT NULL,
+  `Pre Celebrations|Decorations` varchar(100) DEFAULT NULL,
+  `Pre Celebrations|Tent & Seating` varchar(100) DEFAULT NULL,
+  `Pre Celebrations|Tent & Seating-No. of Seats Required` varchar(100) DEFAULT NULL,
+  `Pre Celebrations|Screen` varchar(100) DEFAULT NULL,
+  `Main Celebration|Food Caterers` varchar(100) DEFAULT NULL,
+  `Main Celebration|Food Caterers-No of Plates Required` varchar(100) DEFAULT NULL,
+  `Main Celebration|Stage Setup` varchar(100) DEFAULT NULL,
+  `Main Celebration|Power Backup` varchar(100) DEFAULT NULL,
+  `Main Celebration|Valet` varchar(100) DEFAULT NULL,
+  `Main Celebration|Games & Activity` varchar(100) DEFAULT NULL,
+  `Main Celebration|Photographers` varchar(100) DEFAULT NULL,
+  `Main Celebration|Photographers-No.  Of Photographers Required` varchar(100) DEFAULT NULL,
+  `Post Celebration|Cleaning` varchar(100) DEFAULT NULL,
+  `Post Celebration|Return Gifts` varchar(100) DEFAULT NULL,
+  `Post Celebration|Return Gifts-No. of Gifts Required` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `Anniversary_id` (`Anniversary_id`),
+  CONSTRAINT `Anniversary_details_ibfk_1` FOREIGN KEY (`Anniversary_id`) REFERENCES `Anniversary` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Anniversary_details`
+--
+
+LOCK TABLES `Anniversary_details` WRITE;
+/*!40000 ALTER TABLE `Anniversary_details` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Anniversary_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Baby Shower`
+--
+
+DROP TABLE IF EXISTS `Baby Shower`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Baby Shower` (
+  `id` int NOT NULL,
+  `Date and Time` datetime DEFAULT NULL,
+  `Venue` varchar(1000) DEFAULT NULL,
+  `Host Name` varchar(100) DEFAULT NULL,
+  `Theme` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Baby Shower`
+--
+
+LOCK TABLES `Baby Shower` WRITE;
+/*!40000 ALTER TABLE `Baby Shower` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Baby Shower` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Baby Shower_details`
+--
+
+DROP TABLE IF EXISTS `Baby Shower_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Baby Shower_details` (
+  `id` int NOT NULL,
+  `Baby Shower_id` int DEFAULT NULL,
+  `Pre Celebrations|Decorations` varchar(100) DEFAULT NULL,
+  `Pre Celebrations|Tent & Seating` varchar(100) DEFAULT NULL,
+  `Pre Celebrations|Tent & Seating-No. of Seats Required` varchar(100) DEFAULT NULL,
+  `Pre Celebrations|Stage Setup` varchar(100) DEFAULT NULL,
+  `Pre Celebrations|Power Backup` varchar(100) DEFAULT NULL,
+  `Pre Celebrations|Screen` varchar(100) DEFAULT NULL,
+  `Pre Celebrations|Venue Lighting` varchar(100) DEFAULT NULL,
+  `Main Celebration|Waiters` varchar(100) DEFAULT NULL,
+  `Main Celebration|Photographers` varchar(100) DEFAULT NULL,
+  `Main Celebration|Photographers-No.  Of Photographers Required` varchar(100) DEFAULT NULL,
+  `Main Celebration|Food Caterers` varchar(100) DEFAULT NULL,
+  `Main Celebration|Food Caterers-No of Plates Required` varchar(100) DEFAULT NULL,
+  `Main Celebration|Return Gifts` varchar(100) DEFAULT NULL,
+  `Main Celebration|Return Gifts-No. of Gifts Required` varchar(100) DEFAULT NULL,
+  `Main Celebration|Games & Activity` varchar(100) DEFAULT NULL,
+  `Main Celebration|Cleaning` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `Baby Shower_id` (`Baby Shower_id`),
+  CONSTRAINT `Baby Shower_details_ibfk_1` FOREIGN KEY (`Baby Shower_id`) REFERENCES `Baby Shower` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Baby Shower_details`
+--
+
+LOCK TABLES `Baby Shower_details` WRITE;
+/*!40000 ALTER TABLE `Baby Shower_details` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Baby Shower_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `Birthday Party`
 --
 
@@ -38,7 +171,7 @@ CREATE TABLE `Birthday Party` (
 
 LOCK TABLES `Birthday Party` WRITE;
 /*!40000 ALTER TABLE `Birthday Party` DISABLE KEYS */;
-INSERT INTO `Birthday Party` VALUES (0,'Srishti',17,'2025-05-28 17:00:00','Royal Meenakshi Mall');
+INSERT INTO `Birthday Party` VALUES (1,'Srishti',17,'2025-05-28 17:30:00','Royal Meenakshi Mall');
 /*!40000 ALTER TABLE `Birthday Party` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,7 +214,6 @@ CREATE TABLE `Birthday Party_details` (
 
 LOCK TABLES `Birthday Party_details` WRITE;
 /*!40000 ALTER TABLE `Birthday Party_details` DISABLE KEYS */;
-INSERT INTO `Birthday Party_details` VALUES (0,0,'5','5','2','3','3','390','3','1','3','2','1','4','2','3','40','2','60');
 /*!40000 ALTER TABLE `Birthday Party_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -373,6 +505,66 @@ INSERT INTO `Food Caterers` VALUES (0,1,'Gourmet Gatherings',5000,350,'Buffet',N
 UNLOCK TABLES;
 
 --
+-- Table structure for table `Funeral`
+--
+
+DROP TABLE IF EXISTS `Funeral`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Funeral` (
+  `id` int NOT NULL,
+  `Funeral Date` date DEFAULT NULL,
+  `Time` time DEFAULT NULL,
+  `Venue` varchar(1000) DEFAULT NULL,
+  `Officiant Name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Funeral`
+--
+
+LOCK TABLES `Funeral` WRITE;
+/*!40000 ALTER TABLE `Funeral` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Funeral` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Funeral_details`
+--
+
+DROP TABLE IF EXISTS `Funeral_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Funeral_details` (
+  `id` int NOT NULL,
+  `Funeral_id` int DEFAULT NULL,
+  `Funeral Procession|Ritual Setup` varchar(100) DEFAULT NULL,
+  `Funeral Procession|Devotional Group` varchar(100) DEFAULT NULL,
+  `Funeral Procession|Cremation` varchar(100) DEFAULT NULL,
+  `Funeral Procession|Certificate` varchar(100) DEFAULT NULL,
+  `Funeral Ceremony|Certificate` varchar(100) DEFAULT NULL,
+  `Funeral Ceremony|Screen` varchar(100) DEFAULT NULL,
+  `Funeral Ceremony|Venue Lighting` varchar(100) DEFAULT NULL,
+  `Funeral Ceremony|Food Caterers` varchar(100) DEFAULT NULL,
+  `Funeral Ceremony|Food Caterers-No of Plates Required` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `Funeral_id` (`Funeral_id`),
+  CONSTRAINT `Funeral_details_ibfk_1` FOREIGN KEY (`Funeral_id`) REFERENCES `Funeral` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Funeral_details`
+--
+
+LOCK TABLES `Funeral_details` WRITE;
+/*!40000 ALTER TABLE `Funeral_details` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Funeral_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `Furniture Rentals`
 --
 
@@ -433,6 +625,282 @@ LOCK TABLES `Games & Activity` WRITE;
 /*!40000 ALTER TABLE `Games & Activity` DISABLE KEYS */;
 INSERT INTO `Games & Activity` VALUES (0,7,'KidsJump India','Bouncy Castle (Small)',4500,1500,1),(1,7,'BullRide Events','Mechanical Bull Ride',15000,3500,1),(2,7,'VR Zone India','VR Gaming Booth',20000,5000,2),(3,7,'MegaBounce','Inflatable Obstacle Course',12000,4000,2),(4,7,'PlayNation','Human Foosball',13000,3500,1),(5,7,'PartyPropZ','Giant Jenga & Connect 4',4000,1000,1);
 /*!40000 ALTER TABLE `Games & Activity` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Graduation`
+--
+
+DROP TABLE IF EXISTS `Graduation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Graduation` (
+  `id` int NOT NULL,
+  `Name` varchar(100) DEFAULT NULL,
+  `Date and Time` datetime DEFAULT NULL,
+  `Venue` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Graduation`
+--
+
+LOCK TABLES `Graduation` WRITE;
+/*!40000 ALTER TABLE `Graduation` DISABLE KEYS */;
+INSERT INTO `Graduation` VALUES (0,'Christ Academy','2025-05-13 18:53:00','Christ Academy Ground');
+/*!40000 ALTER TABLE `Graduation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Graduation_details`
+--
+
+DROP TABLE IF EXISTS `Graduation_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Graduation_details` (
+  `id` int NOT NULL,
+  `Graduation_id` int DEFAULT NULL,
+  `Pre Celebrations|Screen` varchar(100) DEFAULT NULL,
+  `Pre Celebrations|Venue Lighting` varchar(100) DEFAULT NULL,
+  `Pre Celebrations|Valet` varchar(100) DEFAULT NULL,
+  `Pre Celebrations|Decorations` varchar(100) DEFAULT NULL,
+  `Pre Celebrations|Tent & Seating` varchar(100) DEFAULT NULL,
+  `Pre Celebrations|Tent & Seating-No. of Seats Required` varchar(100) DEFAULT NULL,
+  `Main Party|DJ` varchar(100) DEFAULT NULL,
+  `Main Party|Waiters` varchar(100) DEFAULT NULL,
+  `Main Party|Photographers` varchar(100) DEFAULT NULL,
+  `Main Party|Photographers-No.  Of Photographers Required` varchar(100) DEFAULT NULL,
+  `Main Party|Certificate` varchar(100) DEFAULT NULL,
+  `Main Party|Security` varchar(100) DEFAULT NULL,
+  `Main Party|Games & Activity` varchar(100) DEFAULT NULL,
+  `Post Party|Return Gifts` varchar(100) DEFAULT NULL,
+  `Post Party|Return Gifts-No. of Gifts Required` varchar(100) DEFAULT NULL,
+  `Post Party|Cleaning` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `Graduation_id` (`Graduation_id`),
+  CONSTRAINT `Graduation_details_ibfk_1` FOREIGN KEY (`Graduation_id`) REFERENCES `Graduation` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Graduation_details`
+--
+
+LOCK TABLES `Graduation_details` WRITE;
+/*!40000 ALTER TABLE `Graduation_details` DISABLE KEYS */;
+INSERT INTO `Graduation_details` VALUES (0,0,'4','3','5','3','2','100','2','3','4','3','5','2','4','4','200','5');
+/*!40000 ALTER TABLE `Graduation_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `House Warming`
+--
+
+DROP TABLE IF EXISTS `House Warming`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `House Warming` (
+  `id` int NOT NULL,
+  `Date and Time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `House Warming`
+--
+
+LOCK TABLES `House Warming` WRITE;
+/*!40000 ALTER TABLE `House Warming` DISABLE KEYS */;
+/*!40000 ALTER TABLE `House Warming` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `House Warming_details`
+--
+
+DROP TABLE IF EXISTS `House Warming_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `House Warming_details` (
+  `id` int NOT NULL,
+  `House Warming_id` int DEFAULT NULL,
+  `House Tour and Ceremony|Screen` varchar(100) DEFAULT NULL,
+  `House Tour and Ceremony|Venue Lighting` varchar(100) DEFAULT NULL,
+  `House Tour and Ceremony|Valet` varchar(100) DEFAULT NULL,
+  `House Tour and Ceremony|Decorations` varchar(100) DEFAULT NULL,
+  `House Tour and Ceremony|Tent & Seating` varchar(100) DEFAULT NULL,
+  `House Tour and Ceremony|Tent & Seating-No. of Seats Required` varchar(100) DEFAULT NULL,
+  `Main Party|Musician` varchar(100) DEFAULT NULL,
+  `Main Party|Valet` varchar(100) DEFAULT NULL,
+  `Main Party|Decorations` varchar(100) DEFAULT NULL,
+  `Main Party|DJ` varchar(100) DEFAULT NULL,
+  `Main Party|Waiters` varchar(100) DEFAULT NULL,
+  `Main Party|Food Caterers` varchar(100) DEFAULT NULL,
+  `Main Party|Food Caterers-No of Plates Required` varchar(100) DEFAULT NULL,
+  `Main Party|Photographers` varchar(100) DEFAULT NULL,
+  `Main Party|Photographers-No.  Of Photographers Required` varchar(100) DEFAULT NULL,
+  `Main Party|Furniture Rentals` varchar(100) DEFAULT NULL,
+  `Main Party|Furniture Rentals-No. of Items Required` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `House Warming_id` (`House Warming_id`),
+  CONSTRAINT `House Warming_details_ibfk_1` FOREIGN KEY (`House Warming_id`) REFERENCES `House Warming` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `House Warming_details`
+--
+
+LOCK TABLES `House Warming_details` WRITE;
+/*!40000 ALTER TABLE `House Warming_details` DISABLE KEYS */;
+/*!40000 ALTER TABLE `House Warming_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Inaugurations`
+--
+
+DROP TABLE IF EXISTS `Inaugurations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Inaugurations` (
+  `id` int NOT NULL,
+  `Venue` varchar(100) DEFAULT NULL,
+  `Date and Time` datetime DEFAULT NULL,
+  `Host Name` varchar(100) DEFAULT NULL,
+  `Activites` varchar(100) DEFAULT NULL,
+  `Budget` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Inaugurations`
+--
+
+LOCK TABLES `Inaugurations` WRITE;
+/*!40000 ALTER TABLE `Inaugurations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Inaugurations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Inaugurations_details`
+--
+
+DROP TABLE IF EXISTS `Inaugurations_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Inaugurations_details` (
+  `id` int NOT NULL,
+  `Inaugurations_id` int DEFAULT NULL,
+  `Pre Event|Ritual Setup` varchar(100) DEFAULT NULL,
+  `Pre Event|Screen` varchar(100) DEFAULT NULL,
+  `Pre Event|Venue Lighting` varchar(100) DEFAULT NULL,
+  `Pre Event|Valet` varchar(100) DEFAULT NULL,
+  `Pre Event|Decorations` varchar(100) DEFAULT NULL,
+  `Main Party|Tent & Seating` varchar(100) DEFAULT NULL,
+  `Main Party|Tent & Seating-No. of Seats Required` varchar(100) DEFAULT NULL,
+  `Main Party|Photographers` varchar(100) DEFAULT NULL,
+  `Main Party|Photographers-No.  Of Photographers Required` varchar(100) DEFAULT NULL,
+  `Main Party|DJ` varchar(100) DEFAULT NULL,
+  `Main Party|Waiters` varchar(100) DEFAULT NULL,
+  `Main Party|Food Caterers` varchar(100) DEFAULT NULL,
+  `Main Party|Food Caterers-No of Plates Required` varchar(100) DEFAULT NULL,
+  `Main Party|Certificate` varchar(100) DEFAULT NULL,
+  `Main Party|Security` varchar(100) DEFAULT NULL,
+  `Main Party|Power Backup` varchar(100) DEFAULT NULL,
+  `Post Party|Return Gifts` varchar(100) DEFAULT NULL,
+  `Post Party|Return Gifts-No. of Gifts Required` varchar(100) DEFAULT NULL,
+  `Post Party|Cleaning` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `Inaugurations_id` (`Inaugurations_id`),
+  CONSTRAINT `Inaugurations_details_ibfk_1` FOREIGN KEY (`Inaugurations_id`) REFERENCES `Inaugurations` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Inaugurations_details`
+--
+
+LOCK TABLES `Inaugurations_details` WRITE;
+/*!40000 ALTER TABLE `Inaugurations_details` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Inaugurations_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Marriage`
+--
+
+DROP TABLE IF EXISTS `Marriage`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Marriage` (
+  `id` int NOT NULL,
+  `Wedding Date` date DEFAULT NULL,
+  `Venue` varchar(1000) DEFAULT NULL,
+  `Bride Name` varchar(100) DEFAULT NULL,
+  `Groom Name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Marriage`
+--
+
+LOCK TABLES `Marriage` WRITE;
+/*!40000 ALTER TABLE `Marriage` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Marriage` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Marriage_details`
+--
+
+DROP TABLE IF EXISTS `Marriage_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Marriage_details` (
+  `id` int NOT NULL,
+  `Marriage_id` int DEFAULT NULL,
+  `Procession (Baraat)|DJ` varchar(100) DEFAULT NULL,
+  `Procession (Baraat)|Photographers` varchar(100) DEFAULT NULL,
+  `Procession (Baraat)|Photographers-No.  Of Photographers Required` varchar(100) DEFAULT NULL,
+  `Procession (Baraat)|Food Caterers` varchar(100) DEFAULT NULL,
+  `Procession (Baraat)|Food Caterers-No of Plates Required` varchar(100) DEFAULT NULL,
+  `Procession (Baraat)|Musician` varchar(100) DEFAULT NULL,
+  `Procession (Baraat)|Wedding Coordinator` varchar(100) DEFAULT NULL,
+  `Wedding Ceremony|Decorations` varchar(100) DEFAULT NULL,
+  `Wedding Ceremony|Tent & Seating` varchar(100) DEFAULT NULL,
+  `Wedding Ceremony|Tent & Seating-No. of Seats Required` varchar(100) DEFAULT NULL,
+  `Wedding Ceremony|Waiters` varchar(100) DEFAULT NULL,
+  `Wedding Ceremony|DJ` varchar(100) DEFAULT NULL,
+  `Wedding Ceremony|Photographers` varchar(100) DEFAULT NULL,
+  `Wedding Ceremony|Photographers-No.  Of Photographers Required` varchar(100) DEFAULT NULL,
+  `Wedding Ceremony|Food Caterers` varchar(100) DEFAULT NULL,
+  `Wedding Ceremony|Food Caterers-No of Plates Required` varchar(100) DEFAULT NULL,
+  `Wedding Ceremony|Cleaning` varchar(100) DEFAULT NULL,
+  `Wedding Ceremony|Return Gifts` varchar(100) DEFAULT NULL,
+  `Wedding Ceremony|Return Gifts-No. of Gifts Required` varchar(100) DEFAULT NULL,
+  `Wedding Ceremony|Screen` varchar(100) DEFAULT NULL,
+  `Wedding Ceremony|Valet` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `Marriage_id` (`Marriage_id`),
+  CONSTRAINT `Marriage_details_ibfk_1` FOREIGN KEY (`Marriage_id`) REFERENCES `Marriage` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Marriage_details`
+--
+
+LOCK TABLES `Marriage_details` WRITE;
+/*!40000 ALTER TABLE `Marriage_details` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Marriage_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -527,6 +995,79 @@ LOCK TABLES `Power Backup` WRITE;
 /*!40000 ALTER TABLE `Power Backup` DISABLE KEYS */;
 INSERT INTO `Power Backup` VALUES (0,11,'GenPower Solutions','Generator Rental',5000,800,1,1),(1,11,'PowerGen Rentals','Generator Rental',10000,1500,1,2),(2,11,'PowerTech Rentals','Generator Rental',20000,2500,2,3),(3,11,'UPS Experts India','UPS Backup System',8000,1200,1,2),(4,11,'PowerPro Systems','Full-Event Power Backup',40000,5000,3,5),(5,11,'QuickPower Services','Battery Backup',3000,600,1,1);
 /*!40000 ALTER TABLE `Power Backup` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Reception`
+--
+
+DROP TABLE IF EXISTS `Reception`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Reception` (
+  `id` int NOT NULL,
+  `Host Name` varchar(100) DEFAULT NULL,
+  `Guest Count` int DEFAULT NULL,
+  `Dress Code` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Reception`
+--
+
+LOCK TABLES `Reception` WRITE;
+/*!40000 ALTER TABLE `Reception` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Reception` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Reception_details`
+--
+
+DROP TABLE IF EXISTS `Reception_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Reception_details` (
+  `id` int NOT NULL,
+  `Reception_id` int DEFAULT NULL,
+  `Pre Party|Ritual Setup` varchar(100) DEFAULT NULL,
+  `Pre Party|Screen` varchar(100) DEFAULT NULL,
+  `Pre Party|Venue Lighting` varchar(100) DEFAULT NULL,
+  `Pre Party|Musician` varchar(100) DEFAULT NULL,
+  `Pre Party|Valet` varchar(100) DEFAULT NULL,
+  `Pre Party|Decorations` varchar(100) DEFAULT NULL,
+  `Pre Party|Tent & Seating` varchar(100) DEFAULT NULL,
+  `Pre Party|Tent & Seating-No. of Seats Required` varchar(100) DEFAULT NULL,
+  `Pre Party|Stage Setup` varchar(100) DEFAULT NULL,
+  `Main Event|DJ` varchar(100) DEFAULT NULL,
+  `Main Event|Waiters` varchar(100) DEFAULT NULL,
+  `Main Event|Food Caterers` varchar(100) DEFAULT NULL,
+  `Main Event|Food Caterers-No of Plates Required` varchar(100) DEFAULT NULL,
+  `Main Event|Wedding Coordinator` varchar(100) DEFAULT NULL,
+  `Main Event|Ritual Setup` varchar(100) DEFAULT NULL,
+  `Main Event|Screen` varchar(100) DEFAULT NULL,
+  `Main Event|Venue Lighting` varchar(100) DEFAULT NULL,
+  `Main Event|Power Backup` varchar(100) DEFAULT NULL,
+  `Post Event|Return Gifts` varchar(100) DEFAULT NULL,
+  `Post Event|Return Gifts-No. of Gifts Required` varchar(100) DEFAULT NULL,
+  `Post Event|Photographers` varchar(100) DEFAULT NULL,
+  `Post Event|Photographers-No.  Of Photographers Required` varchar(100) DEFAULT NULL,
+  `Post Event|Cleaning` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `Reception_id` (`Reception_id`),
+  CONSTRAINT `Reception_details_ibfk_1` FOREIGN KEY (`Reception_id`) REFERENCES `Reception` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Reception_details`
+--
+
+LOCK TABLES `Reception_details` WRITE;
+/*!40000 ALTER TABLE `Reception_details` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Reception_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -787,6 +1328,70 @@ INSERT INTO `Tour Guide` VALUES (0,17,'CityExplorers','Local City Tour Guide',20
 UNLOCK TABLES;
 
 --
+-- Table structure for table `Trip`
+--
+
+DROP TABLE IF EXISTS `Trip`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Trip` (
+  `id` int NOT NULL,
+  `Name` varchar(100) DEFAULT NULL,
+  `Destination` varchar(100) DEFAULT NULL,
+  `Start Date` date DEFAULT NULL,
+  `End Date` date DEFAULT NULL,
+  `Travellers` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Trip`
+--
+
+LOCK TABLES `Trip` WRITE;
+/*!40000 ALTER TABLE `Trip` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Trip` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Trip_details`
+--
+
+DROP TABLE IF EXISTS `Trip_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Trip_details` (
+  `id` int NOT NULL,
+  `Trip_id` int DEFAULT NULL,
+  `Pre Travel|Car Rental` varchar(100) DEFAULT NULL,
+  `Pre Travel|Car Rental-No. of days` varchar(100) DEFAULT NULL,
+  `Pre Travel|Tour Guide` varchar(100) DEFAULT NULL,
+  `Sightseeing and Adventures|Power Backup` varchar(100) DEFAULT NULL,
+  `Sightseeing and Adventures|Screen` varchar(100) DEFAULT NULL,
+  `Sightseeing and Adventures|Games & Activity` varchar(100) DEFAULT NULL,
+  `Meals and Dining|Food Caterers` varchar(100) DEFAULT NULL,
+  `Meals and Dining|Food Caterers-No of Plates Required` varchar(100) DEFAULT NULL,
+  `Meals and Dining|Tent & Seating` varchar(100) DEFAULT NULL,
+  `Meals and Dining|Tent & Seating-No. of Seats Required` varchar(100) DEFAULT NULL,
+  `Meals and Dining|DJ` varchar(100) DEFAULT NULL,
+  `Meals and Dining|Waiters` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `Trip_id` (`Trip_id`),
+  CONSTRAINT `Trip_details_ibfk_1` FOREIGN KEY (`Trip_id`) REFERENCES `Trip` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Trip_details`
+--
+
+LOCK TABLES `Trip_details` WRITE;
+/*!40000 ALTER TABLE `Trip_details` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Trip_details` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `Valet`
 --
 
@@ -937,6 +1542,7 @@ CREATE TABLE `events` (
 
 LOCK TABLES `events` WRITE;
 /*!40000 ALTER TABLE `events` DISABLE KEYS */;
+INSERT INTO `events` VALUES (0,'Marriage','Marriage','2025-05-13','09:33:00','https://www.google.com/maps/place/Royal+Meenakshi+Mall/@12.8881935,77.5963265,15z/data=!4m6!3m5!1s0x3bae152cc2008809:0x6f1c35681dbd4e5a!8m2!3d12.8757!4d77.595766!16s%2Fg%2F11b7stmqk8?entry=ttu&g_ep=EgoyMDI0MTEwNi4wIKXMDSoASAFQAw%3D%3D','Principal','Students');
 /*!40000 ALTER TABLE `events` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -965,6 +1571,7 @@ CREATE TABLE `files` (
 
 LOCK TABLES `files` WRITE;
 /*!40000 ALTER TABLE `files` DISABLE KEYS */;
+INSERT INTO `files` VALUES (0,0,1,'./database/files/0-Ye Fitoooor Merraaa.mp3','0-Ye Fitoooor Merraaa.mp3');
 /*!40000 ALTER TABLE `files` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1020,6 +1627,7 @@ CREATE TABLE `subevents` (
 
 LOCK TABLES `subevents` WRITE;
 /*!40000 ALTER TABLE `subevents` DISABLE KEYS */;
+INSERT INTO `subevents` VALUES (0,0,'Engagement','Giving Ring',60);
 /*!40000 ALTER TABLE `subevents` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1046,7 +1654,7 @@ CREATE TABLE `templates` (
 
 LOCK TABLES `templates` WRITE;
 /*!40000 ALTER TABLE `templates` DISABLE KEYS */;
-INSERT INTO `templates` VALUES (0,'Birthday Party','Plan Birthday Parties with ease with Tubelight','Name:text|Age:number|Date and Time:datetime|Venue:textarea','Birthday Cake Cutting|Food and Drinks|Post Party','Birthday Cake Cutting-[\'Screen\', \'Venue Lighting\', \'Musician\']|Food and Drinks-[\'Waiters\', \'Food Caterers\', \'DJ\', \'Cleaning\', \'Stage Setup\']|Post Party-[\'Games & Activity\', \'Cleaning\', \'Stage Setup\', \'Power Backup\', \'Return Gifts\', \'Tent & Seating\']');
+INSERT INTO `templates` VALUES (0,'Birthday Party','Plan Birthday Parties with ease with Tubelight','Name:text|Age:number|Date and Time:datetime|Venue:textarea','Birthday Cake Cutting|Food and Drinks|Post Party','Birthday Cake Cutting-[\'Screen\', \'Venue Lighting\', \'Musician\']|Food and Drinks-[\'Waiters\', \'Food Caterers\', \'DJ\', \'Cleaning\', \'Stage Setup\']|Post Party-[\'Games & Activity\', \'Cleaning\', \'Stage Setup\', \'Power Backup\', \'Return Gifts\', \'Tent & Seating\']'),(1,'Trip','Plan a journey or travel experience taken for leisure, adventure, or exploration','Name:text|Destination:text|Start Date:date|End Date:date|Travellers:number','Pre Travel|Sightseeing and Adventures|Meals and Dining','Pre Travel-[\'Car Rental\', \'Tour Guide\']|Sightseeing and Adventures-[\'Power Backup\', \'Screen\', \'Games & Activity\']|Meals and Dining-[\'Food Caterers\', \'Tent & Seating\', \'DJ\', \'Waiters\']'),(2,'Marriage','Plan a wonderful marriage event with Tubelight','Wedding Date:date|Venue:textarea|Bride Name:text|Groom Name:text','Procession (Baraat)|Wedding Ceremony','Procession (Baraat)-[\'DJ\', \'Photographers\', \'Food Caterers\', \'Musician\', \'Wedding Coordinator\']|Wedding Ceremony-[\'Decorations\', \'Tent & Seating\', \'Waiters\', \'DJ\', \'Photographers\', \'Food Caterers\', \'Cleaning\', \'Return Gifts\', \'Screen\', \'Valet\']'),(3,'Anniversary','Plan your Anniversary fast and seamless with Tubelight','Anniversary Type:text|Mr.:text|Mrs.:text|Date:date','Pre Celebrations|Main Celebration|Post Celebration','Pre Celebrations-[\'Decorations\', \'Tent & Seating\', \'Screen\']|Main Celebration-[\'Food Caterers\', \'Stage Setup\', \'Power Backup\', \'Valet\', \'Games & Activity\', \'Photographers\']|Post Celebration-[\'Cleaning\', \'Return Gifts\']'),(4,'House Warming','Plan your House warming ceremony swiftly with Tubelight','Date and Time:datetime','House Tour and Ceremony|Main Party','House Tour and Ceremony-[\'Screen\', \'Venue Lighting\', \'Valet\', \'Decorations\', \'Tent & Seating\']|Main Party-[\'Musician\', \'Valet\', \'Decorations\', \'DJ\', \'Waiters\', \'Food Caterers\', \'Photographers\', \'Furniture Rentals\']'),(5,'Inaugurations','Make Inauguration events more seamlessly with Tubelight','Venue:text|Date and Time:datetime|Host Name:text|Activites:text|Budget:number','Pre Event|Main Party|Post Party','Pre Event-[\'Ritual Setup\', \'Screen\', \'Venue Lighting\', \'Valet\', \'Decorations\']|Main Party-[\'Tent & Seating\', \'Photographers\', \'DJ\', \'Waiters\', \'Food Caterers\', \'Certificate\', \'Security\', \'Power Backup\']|Post Party-[\'Return Gifts\', \'Cleaning\']'),(6,'Reception','Manage your Reception Event productively with Tubelight','Host Name:text|Guest Count:number|Dress Code:text','Pre Party|Main Event|Post Event','Pre Party-[\'Ritual Setup\', \'Screen\', \'Venue Lighting\', \'Musician\', \'Valet\', \'Decorations\', \'Tent & Seating\', \'Stage Setup\']|Main Event-[\'DJ\', \'Waiters\', \'Food Caterers\', \'Wedding Coordinator\', \'Ritual Setup\', \'Screen\', \'Venue Lighting\', \'Power Backup\']|Post Event-[\'Return Gifts\', \'Photographers\', \'Cleaning\']'),(7,'Baby Shower','Manage your Baby Shower event effortlessly with Tubelight','Date and Time:datetime|Venue:textarea|Host Name:text|Theme:text','Pre Celebrations|Main Celebration','Pre Celebrations-[\'Decorations\', \'Tent & Seating\', \'Stage Setup\', \'Power Backup\', \'Screen\', \'Venue Lighting\']|Main Celebration-[\'Waiters\', \'Photographers\', \'Food Caterers\', \'Return Gifts\', \'Games & Activity\', \'Cleaning\']'),(8,'Funeral','Co-ordinate a funeral event with Tubelight','Funeral Date:date|Time:time|Venue:textarea|Officiant Name:text','Funeral Procession|Funeral Ceremony','Funeral Procession-[\'Ritual Setup\', \'Devotional Group\', \'Cremation\', \'Certificate\']|Funeral Ceremony-[\'Certificate\', \'Screen\', \'Venue Lighting\', \'Food Caterers\']'),(9,'Graduation','Plan the most fun and engaging graduation party with your close ones','Name:text|Date and Time:datetime|Venue:textarea','Pre Celebrations|Main Party|Post Party','Pre Celebrations-[\'Screen\', \'Venue Lighting\', \'Valet\', \'Decorations\', \'Tent & Seating\']|Main Party-[\'DJ\', \'Waiters\', \'Photographers\', \'Certificate\', \'Security\', \'Games & Activity\']|Post Party-[\'Return Gifts\', \'Cleaning\']');
 /*!40000 ALTER TABLE `templates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1074,7 +1682,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('Aryan','R','aryan','aryan@gmail.com','b5c4f0ab95a1b29da77a4bfb2b5cf4a431b5d612572025004656d3875ed47a35','0-0|');
+INSERT INTO `users` VALUES ('Aryan','R','aryan','aryan@gmail.com','b5c4f0ab95a1b29da77a4bfb2b5cf4a431b5d612572025004656d3875ed47a35','0-1|0|'),('Ayush','PV','ayush','ayush@gmail.com','a5e44282bc7dc73ec31ffc3c3e7afda26c4a2bb564d3c0c7dbafc7fa304a6f56','9-0|');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -1087,4 +1695,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-13  4:50:14
+-- Dump completed on 2025-06-07  0:15:57

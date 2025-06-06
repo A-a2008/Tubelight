@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+<header id="header">
+    <h1>{{ service.name }}</h1>
+</header>
+{% endblock %}
+
+{% block content %}
+<span class="image main"><img src="{% static '$Image$' %}" alt="" /></span>
+<h2>All the services provided are as follows:</h2>
+<p>
+    {% for service in service_details %}
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        {% for key in service.keys %}
+                        {% if key != 'id' and key != 'services_id' %}
+
+                        <th>{{ key }}</th>
+                        {% endif %}
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% for key, value in service.items %}
+                        {% if key != 'id' and key != 'services_id' %}
+                        <td>{{ value }}</td>
+                        {% endif %}
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr>
+    {% endfor %}
+</p>
+{% endblock %}

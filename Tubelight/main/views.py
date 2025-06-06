@@ -11,6 +11,10 @@ from PIL import Image
 import zipfile
 from mysql_connection import add_row, add_row_dict, get_table, update_value, create_table, create_table_foreign_key, fetch_columns, drop_table, datatypes
 import re
+from PIL import Image
+from io import BytesIO
+from playwright.async_api import async_playwright
+import asyncio
 
 # Create your views here.
 
@@ -145,13 +149,12 @@ def create_event(request):
         print(events_file_id)
         add_row("events", events_file_id, name, description, date, time, venue, cheif_guest, target_audience)
 
-        new_user_events = ""
-        users_file_rows = get_table("users")
-        for row in users_file_rows:
-            if row["username"] == username:
-                new_user_events = str(events_file_id) + "|"
+        users = get_table("users")
+        for user in users:
+            if user["username"] == username:
+                new_user_events = user["events"] + str(events_file_id) + "|"
+                update_value(table_name="users", column="events", value=new_user_events, identifier_name="username", identifier_value=username)
                 break
-        update_value(table_name="users", column="events", value=new_user_events, identifier_name="username", identifier_value=username)
 
         venue_qr(venue, f"./static/images/venues/{events_file_id}.png")
 
@@ -298,6 +301,8 @@ def audio_files_edit(file_paths, event_name):
 
     zip_file_name = f'{event_name}-{current_date}.zip'
     zip_files = "./database/files/zip_files"
+    os.makedirs(zip_files, exist_ok=True)  # <-- Ensure directory exists
+
     zip_file_path = os.path.join(zip_files, zip_file_name)
     zip_file_url = os.path.join(zip_files, zip_file_name)
 
@@ -311,7 +316,6 @@ def audio_files_edit(file_paths, event_name):
                 zip_file.write(file_path, arcname=os.path.join(subevent_name, file_name))
                 if file_path.endswith('.mp3'):
                     zip_file.write(file_path, arcname=os.path.join("All Music Files", file_name))
-                    
     return zip_file_url
 
 
@@ -714,6 +718,7 @@ def display_tubes(request):
         for template in reader:
             if template["username"] == request.session["username"]:
                 events_ids = [x for x in template["events"].split("|")[:-1]]
+                print(events_ids)
                 for event in events_ids:
                     if re.fullmatch(r'\d+-\d+', event):
                         template_ids.append((int(event.split("-")[0]), int(event.split("-")[1])))
@@ -845,3 +850,82 @@ def add_service(request, service_id):
             "service_details": service_details,
         }
         return render(request, "main/add_service.html", data)
+
+
+def event_invitation_template(request, template_id, event_id):
+    reader = get_table("templates")
+    for template in reader:
+        if template["id"] == template_id:
+            template_events = get_table(template["name"])
+            for template_event in template_events:
+                if template_event["id"] == event_id:
+                    event = template_event
+                    template_name = template["name"]
+                    break
+    del event["id"]             
+    data = {
+        "event_name": event["Name"],
+        "template_name": template_name
+    }
+    del event["Name"]
+    data["event"] = event
+    print(event)
+    html_string = render_to_string("main/event_invitation_template.html", data)
+    html_string = html_string.replace(
+        'href="/static/', 'href="http://localhost:8000/static/'
+    ).replace(
+        'src="/static/', 'src="http://localhost:8000/static/'
+    )
+
+    image_data = asyncio.run(html_to_image(html_string))
+    response = HttpResponse(image_data.read(), content_type="image/png")
+    response["Content-Disposition"] = "attachment; filename=rendered_image.png"
+    return response
+
+
+async def html_to_image(html_content: str) -> BytesIO:
+    async with async_playwright() as p:
+        browser = await p.chromium.launch()
+        context = await browser.new_context()
+        page = await context.new_page()
+
+        # Load HTML content and wait for network to be idle
+        await page.set_content(html_content, wait_until="networkidle")
+
+        # Wait for 2 seconds to allow animations/transitions to complete
+        await page.wait_for_timeout(2000)  # time in milliseconds
+
+        # Take a full-page screenshot
+        screenshot = await page.screenshot(full_page=True)
+
+        await browser.close()
+
+        output = BytesIO(screenshot)
+        output.seek(0)
+        return output
+    
+
+def service_details(request, service_id):
+    reader = get_table("services")
+    for row in reader:
+        if row["id"] == service_id:
+            service = row
+            break
+
+    service_details = get_table(service["name"])
+    print(service_details)
+    for service_detail in service_details:
+        # List of keys to delete
+        keys_to_delete = [key for key, value in service_detail.items() if value is None]
+        
+        # Remove keys with None values
+        for key in keys_to_delete:
+            service_detail[key] = "Input from User"
+        
+        print(service_detail)
+
+    data = {
+        "service": service,
+        "service_details": service_details,
+    }
+    return render(request, "main/service_details.html", data)

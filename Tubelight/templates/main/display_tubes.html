@@ -15,24 +15,24 @@
             <thead>
                 <tr>
                     <th>Template: Tube Name</th>
-                    <!-- <th style="text-align: right;">Download Invitation</th>
-                    <th style="text-align: right;">Download Files</th> -->
+                    <th style="text-align: right;">Download Invitation</th>
+                    <!-- <th style="text-align: right;">Download Files</th> -->
                 </tr>
             </thead>
             <tbody>
                 {% for event in event_templates %}
                 <tr>
                     <td><a href="{% url 'template_event_details' template_id=event.template_id event_id=event.id %}">{{ event.template_name }}: <b>{{ event.Name }}</b></a></td>
+                    <td style="text-align: right;"><a href="{% url 'event_invitation_template' template_id=event.template_id event_id=event.id %}" class="button small">Download</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 {% endif %}
-
+<br>
 {% if events %}
     <h3>Here are your tubes:</h3>
-    <br><br>
     <div class="table-wrapper">
         <table>
             <thead>

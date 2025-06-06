@@ -19,7 +19,8 @@
                 <h2>{{ service.name }}</h2>
             </header>
             <ul class="actions">
-                <li><a href="{% url 'add_service' service_id=service.id %}" class="button">Add Entry</a></li>
+                <li><a href="{% url 'service_details' service_id=service.id %}" class="button">More Details</a></li>
+                <!-- <li><a href="{% url 'add_service' service_id=service.id %}" class="button">Add Entry</a></li> -->
             </ul>
         </div>
     </div>

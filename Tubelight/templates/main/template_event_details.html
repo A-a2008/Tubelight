@@ -13,6 +13,11 @@
 <!-- <span class="image main"><img src="{% static '$Image$' %}" alt="" /></span> -->
 
 <p>
+    {% for info, info_value in event_info.items %}
+    {% if info != 'id' and info != 'template_name' and info != 'template_id' %}
+    <p><strong>{{ info|title }}:</strong> {{ info_value }}</p>
+    {% endif %}
+    {% endfor %}
     {% if event %}
     <h2><b>Event Details</b></h2>
     {% for service, event_name, event_details in event %}
@@ -42,5 +47,6 @@
     {% else %}
     <a href="{% url 'event_subevents_template' template_id=template_id event_id=event_id %}" class="button large primary">Select Services</a>
     {% endif %}
+    
 </p>
 {% endblock %}

@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Tubelight</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+		<noscript><link rel="stylesheet" href="{% static 'assets/css/noscript.css' %}" /></noscript>
+		<link rel="icon" href="{% static 'images/logo-bgremoved-small.png' %}">
+	</head>
+	<body class="is-preload">
+
+		
+		<!-- Wrapper -->
+			<div id="wrapper">
+				<!-- <nav id="nav-page">
+					<ul>
+						<li><a href="{% url 'home' %}">Home</a></li>
+						{% if not request.session.is_authenticated %}
+						<li><a href="{% url 'login' %}">Login</a></li>
+						<li><a href="{% url 'register' %}">Register</a></li>
+						{% else %}
+						<li><a href="{% url 'display_events' %}">Tubes</a></li>
+						<li><a href="{% url 'templates_menu' %}">Templates</a></li>
+						<li><a href="{% url 'services_menu' %}">Services</a></li>
+						<li><a href="{% url 'logout' %}">Logout</a></li>
+						{% endif %}
+					</ul>
+				</nav> -->
+
+				{% block header %}
+                <!-- Header -->
+                    <header id="header">
+                        <h1>{{ event_info.template_name }}: {{ event_info.Name }}</h1>
+                        <p>{{ event_info.description }}</p>
+                    </header>
+                {% endblock %}
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Content -->
+							<section id="content" class="main">
+								{% block content %}
+                                <!-- <span class="image main"><img src="{% static '$Image$' %}" alt="" /></span> -->
+
+                                <p>
+                                    <!-- {% for info, info_value in event_info.items %}
+                                    {% if info != 'id' and info != 'template_name' and info != 'template_id' %}
+                                    <p><strong>{{ info|title }}:</strong> {{ info_value }}</p>
+                                    {% endif %}
+                                    {% endfor %}
+                                    <hr> -->
+                                    {% if new %}
+                                    You have chosen the following services for your event:
+                                    {% else %}
+                                    Your services has been updated. Here is the updated list:
+                                    {% endif %}
+                                    <hr>
+                                    <h2><b>Event Services:</b></h2>
+                                    {% for event_name, event in display_event_details.items %}
+                                    <h2>{{ event_name }}</h2>
+                                    {% for service, event_details in event %}
+                                        <h3><u>{{ service }}</u></h3>
+                                        <div class="table-wrapper">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        {% for key in event_details.keys %}
+                                                        <th>{{ key }}</th>
+                                                        {% endfor %}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        {% for value in event_details.values %}
+                                                        <td>{{ value }}</td>
+                                                        {% endfor %}
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% endfor %}
+                                    <hr>
+                                    {% endfor %}
+                                    
+                                </p>
+                                {% endblock %}
+							</section>
+
+					</div>
+
+				<!-- Footer -->
+				<footer id="footer"></footer>
+
+			</div>
+
+		<!-- Scripts -->
+		<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+		<script src="{% static 'assets/js/jquery.scrollex.min.js' %}"></script>
+		<script src="{% static 'assets/js/jquery.scrolly.min.js' %}"></script>
+		<script src="{% static 'assets/js/browser.min.js' %}"></script>
+		<script src="{% static 'assets/js/breakpoints.min.js' %}"></script>
+		<script src="{% static 'assets/js/util.js' %}"></script>
+		<script src="{% static 'assets/js/main.js' %}"></script>
+
+	</body>
+</html>

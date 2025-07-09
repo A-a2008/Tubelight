@@ -16,12 +16,12 @@
     {% csrf_token %}
     {% for subevent_name, subevent_services in details %}
     <h2><b>{{ subevent_name }}</b></h2>
-    {% for service_name, services, input_column, service_details_view in subevent_services %}
+    {% for service_name, services, input_column, service_details_view, user_service, busy_service, busy_services in subevent_services %}
     <label for="{{ service_name }}"><u>{{ service_name }}</u></label>
     <select name="{{ subevent_name }}|{{ service_name }}" id="{{ service_name }}" required>
         <option value="" disabled selected hidden>Select Service Provider</option>
         {% for service in services %}
-        <option value="{{ service.id }}">{{ service.Name }}</option>
+        <option value="{{ service.id }}" {% if service.id == user_service %}selected{% endif %} {% if service.id in busy_services %}disabled{% endif %}>{{ service.Name }}</option>
         {% endfor %}
         <option value="-1">Self Planned</option>
     </select><br>
@@ -45,6 +45,14 @@
             </tbody>
         </table>
     </div>
+    <!-- {% for service in services %}
+    {% if busy_service == service.id %}
+    <font color="red">Note: <b>{{ service.Name }}</b> will not be available as it is already booked for another event.</font><br><br>
+    {% endif %}
+    {% endfor %} -->
+    {% if busy_service %}
+    <font color="red">Note: <b>{{ busy_service }}</b> will not be available as it is already booked for another event.</font><br><br>
+    {% endif %}
     {% if input_column.0 != "" %}
     <label for="{{ input_column.0 }}">{{ input_column.0 }}</label>
     Note: Enter <b>0</b> if <b>Self Planned</b>

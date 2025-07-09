@@ -131,3 +131,13 @@ def drop_table(table_name: str):
     except Exception as e:
         print(e)
         return -1
+
+
+def get_columns_on_datetype(table_name: str, *datatypes):
+    try:
+        cursor.execute(f"desc `{table_name}`")
+    except Exception as e:
+        return -1
+    columns_rows = cursor.fetchall()
+    columns = [row[0] for row in columns_rows if row[1] in datatypes]
+    return columns

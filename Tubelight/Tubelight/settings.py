@@ -130,3 +130,13 @@ MEDIA_URL = 'media/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# Replace with your Gmail credentials
+EMAIL_HOST_USER = 'tubelightehelpmail@gmail.com'
+EMAIL_HOST_PASSWORD = 'chom luxn rzih stwd'

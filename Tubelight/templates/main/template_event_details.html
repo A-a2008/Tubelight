@@ -18,10 +18,12 @@
     <p><strong>{{ info|title }}:</strong> {{ info_value }}</p>
     {% endif %}
     {% endfor %}
+    <hr>
     {% if event %}
     <h2><b>Event Details</b></h2>
-    {% for service, event_name, event_details in event %}
-        <h2>{{ event_name }}</h2>
+    {% for event_name, event in display_event_details.items %}
+    <h2>{{ event_name }}</h2>
+    {% for service, event_details in event %}
         <h3><u>{{ service }}</u></h3>
         <div class="table-wrapper">
             <table>
@@ -41,7 +43,8 @@
                 </tbody>
             </table>
         </div>
-        <hr>
+    {% endfor %}
+    <hr>
     {% endfor %}
     <a href="{% url 'event_subevents_template' template_id=template_id event_id=event_id %}" class="button large">Edit Services</a>
     {% else %}

@@ -5,3 +5,8 @@ Google:
 - Email: tubelightehelpmail@gmail.com
 - App name: Tubelight
 - Passkey: chom luxn rzih stwd
+
+
+mysqldump -u [username] -p [database_name] > [filename].sql
+
+SOURCE [path_sql_file];

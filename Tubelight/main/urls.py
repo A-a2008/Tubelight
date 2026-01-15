@@ -12,6 +12,7 @@ urlpatterns = [
     path("tubes/connections/create/<int:event_id>/", views.create_subevent, name="create_subevent"),
     path("tubes/connections/details/<int:subevent_id>/", views.display_subevent_details, name="display_subevent_details"),
     path("tubes/invitation/<int:template_id>/<int:event_id>/", views.event_invitation_template, name="event_invitation_template"),
+    path("tubes/invitation/<int:event_id>/", views.event_invitation_template_normal, name="event_invitation_template_normal"),
     path("tubes/download_files/<int:event_id>/", views.download_files, name="download_files"),
     path("templates/", views.templates_menu, name="templates_menu"),
     path("templates/create_template/", views.create_template, name="create_template"),

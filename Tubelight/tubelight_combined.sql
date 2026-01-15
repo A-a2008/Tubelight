@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.42, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.44, for Linux (x86_64)
 --
 -- Host: localhost    Database: tubelight_combined
 -- ------------------------------------------------------
--- Server version	8.0.42
+-- Server version	8.0.44
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -171,7 +171,7 @@ CREATE TABLE `Birthday Party` (
 
 LOCK TABLES `Birthday Party` WRITE;
 /*!40000 ALTER TABLE `Birthday Party` DISABLE KEYS */;
-INSERT INTO `Birthday Party` VALUES (1,'Srishti',17,'2025-05-28 17:30:00','Royal Meenakshi Mall');
+INSERT INTO `Birthday Party` VALUES (1,'Srishti',17,'2025-05-28 17:30:00','Royal Meenakshi Mall'),(2,'Venkat Krishna',48,'2025-07-25 08:00:00','Home, \r\n#24, 4th Main Road, Brindavan Extension,\r\nArekere MICO Layout, BG Road,\r\nBengaluru - 560076'),(3,'Sriman',29,'2026-01-17 05:30:00','House');
 /*!40000 ALTER TABLE `Birthday Party` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,6 +214,7 @@ CREATE TABLE `Birthday Party_details` (
 
 LOCK TABLES `Birthday Party_details` WRITE;
 /*!40000 ALTER TABLE `Birthday Party_details` DISABLE KEYS */;
+INSERT INTO `Birthday Party_details` VALUES (0,1,'2','1','3','1','4','60','2','1','0','3','0','4','2','5','80','5','70'),(1,2,'-1','2','1','1','-1','0','-1','3','-1','2','3','-1','3','2','6','4','10');
 /*!40000 ALTER TABLE `Birthday Party_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,6 +235,7 @@ CREATE TABLE `Bouncers` (
   `No. of People` int DEFAULT NULL,
   `Customization Options` varchar(100) DEFAULT NULL,
   `Delivery & Setup Fees` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `Bouncers_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -246,7 +248,7 @@ CREATE TABLE `Bouncers` (
 
 LOCK TABLES `Bouncers` WRITE;
 /*!40000 ALTER TABLE `Bouncers` DISABLE KEYS */;
-INSERT INTO `Bouncers` VALUES (0,6,'Elite Guard Services','Professional Bouncers',15000,5000,5,'Yes',3000),(1,6,'Elite Guard Services','Professional Bouncers',15000,5000,5,'Yes',3000),(2,6,'Shield Force Security ','Event Security',12000,4500,8,'Yes',2800),(3,6,'Titan Protection','Armed Security Personnel ',25000,8000,6,'Yes',4500),(4,6,'Guardian Bouncers','Venue Protection',10000,3500,4,'Yes',2500),(5,6,'SafeShield Security','Personal Security Guards',18000,6000,3,'yes',3500),(6,6,'Fortified Defense','Crowd Management Specialists',13500,4000,10,'Yes',2800);
+INSERT INTO `Bouncers` VALUES (0,6,'Elite Guard Services','Professional Bouncers',15000,5000,5,'Yes',3000,NULL),(1,6,'Elite Guard Services','Professional Bouncers',15000,5000,5,'Yes',3000,NULL),(2,6,'Shield Force Security ','Event Security',12000,4500,8,'Yes',2800,NULL),(3,6,'Titan Protection','Armed Security Personnel ',25000,8000,6,'Yes',4500,NULL),(4,6,'Guardian Bouncers','Venue Protection',10000,3500,4,'Yes',2500,NULL),(5,6,'SafeShield Security','Personal Security Guards',18000,6000,3,'yes',3500,NULL),(6,6,'Fortified Defense','Crowd Management Specialists',13500,4000,10,'Yes',2800,NULL);
 /*!40000 ALTER TABLE `Bouncers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -268,6 +270,7 @@ CREATE TABLE `Car Rental` (
   `Vehicle Age` int DEFAULT NULL,
   `Mileage Limit` int DEFAULT NULL,
   `Cancellation Policy` varchar(100) DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `car rental_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -280,7 +283,7 @@ CREATE TABLE `Car Rental` (
 
 LOCK TABLES `Car Rental` WRITE;
 /*!40000 ALTER TABLE `Car Rental` DISABLE KEYS */;
-INSERT INTO `Car Rental` VALUES (0,16,'DriveIndia Rentals','Basic Car Rental',1500,NULL,6,2,100,'Yes'),(1,16,'EliteDrive Rentals','Luxury Car Rental',5000,NULL,5,1,200,'Yes'),(2,16,'VanHire India','Minivan Rental',3500,NULL,8,3,150,'Yes'),(3,16,'RoadKing Rentals','SUV Rental',4000,NULL,7,2,150,'Yes'),(4,16,'CityTravel Vehicles','Tempo Traveller Rental',7000,NULL,5,4,250,'No'),(5,16,'BigRide Transport','Bus Rental',12000,NULL,5,5,500,'Yes');
+INSERT INTO `Car Rental` VALUES (0,16,'DriveIndia Rentals','Basic Car Rental',1500,NULL,6,2,100,'Yes',NULL),(1,16,'EliteDrive Rentals','Luxury Car Rental',5000,NULL,5,1,200,'Yes',NULL),(2,16,'VanHire India','Minivan Rental',3500,NULL,8,3,150,'Yes','[\'2025-06-15\', \'2025-06-14\']'),(3,16,'RoadKing Rentals','SUV Rental',4000,NULL,7,2,150,'Yes',NULL),(4,16,'CityTravel Vehicles','Tempo Traveller Rental',7000,NULL,5,4,250,'No','[\'2025-06-15\', \'2025-06-12\', \'2025-06-11\', \'2025-06-13\', \'2025-06-14\']'),(5,16,'BigRide Transport','Bus Rental',12000,NULL,5,5,500,'Yes',NULL);
 /*!40000 ALTER TABLE `Car Rental` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -299,6 +302,7 @@ CREATE TABLE `Certificate` (
   `Price per Certificate` int DEFAULT NULL,
   `Certificate Type` varchar(100) DEFAULT NULL,
   `Delivery Time` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `certificate_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -311,7 +315,7 @@ CREATE TABLE `Certificate` (
 
 LOCK TABLES `Certificate` WRITE;
 /*!40000 ALTER TABLE `Certificate` DISABLE KEYS */;
-INSERT INTO `Certificate` VALUES (0,18,'CertifyNow','Standard Certificate',500,'Printed Certificate',4),(1,18,'PremiumCerts Ltd.','Premium Certificate',1000,'Embossed Certificate',2),(2,18,'CustomCerts','Customizable Certificate',1500,'Personalized Certificate',3),(3,18,'CorpCert Solutions','Corporate Certificate',2000,'Company Logo Certificate',6),(4,18,'EventPro Certifiers','Event Participation Certificate',300,'Event Participation',1),(5,18,'SkillCert Academy','Training Completion Certificate',1200,'Training Certificate',4);
+INSERT INTO `Certificate` VALUES (0,18,'CertifyNow','Standard Certificate',500,'Printed Certificate',4,NULL),(1,18,'PremiumCerts Ltd.','Premium Certificate',1000,'Embossed Certificate',2,NULL),(2,18,'CustomCerts','Customizable Certificate',1500,'Personalized Certificate',3,NULL),(3,18,'CorpCert Solutions','Corporate Certificate',2000,'Company Logo Certificate',6,NULL),(4,18,'EventPro Certifiers','Event Participation Certificate',300,'Event Participation',1,NULL),(5,18,'SkillCert Academy','Training Completion Certificate',1200,'Training Certificate',4,NULL);
 /*!40000 ALTER TABLE `Certificate` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -331,6 +335,7 @@ CREATE TABLE `Cleaning` (
   `Price per Hour (INR)` int DEFAULT NULL,
   `Time Required` int DEFAULT NULL,
   `No. of People` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `cleaning_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -343,7 +348,7 @@ CREATE TABLE `Cleaning` (
 
 LOCK TABLES `Cleaning` WRITE;
 /*!40000 ALTER TABLE `Cleaning` DISABLE KEYS */;
-INSERT INTO `Cleaning` VALUES (0,8,'Urban Company','General Venue Cleaning',5000,1200,1,3),(1,8,'CleanFanatic','Carpet Deep Cleaning',2000,1000,1,2),(2,8,'QuikClean India','Toilet & Restroom Cleaning',3000,1200,2,2),(3,8,'Cleanomatics','Post-Event Clean-up',8000,2000,1,4),(4,8,'HiCare','Sofa/Chair Shampooing',3000,1500,1,2),(5,8,'CleanStaff Services','Full-Day Cleaning Staff',1200,1500,3,1);
+INSERT INTO `Cleaning` VALUES (0,8,'Urban Company','General Venue Cleaning',5000,1200,1,3,'[\'2025-05-28\']'),(1,8,'CleanFanatic','Carpet Deep Cleaning',2000,1000,1,2,'[\'2025-05-28\']'),(2,8,'QuikClean India','Toilet & Restroom Cleaning',3000,1200,2,2,NULL),(3,8,'Cleanomatics','Post-Event Clean-up',8000,2000,1,4,'[\'2025-07-25\']'),(4,8,'HiCare','Sofa/Chair Shampooing',3000,1500,1,2,NULL),(5,8,'CleanStaff Services','Full-Day Cleaning Staff',1200,1500,3,1,'[\'2025-06-23\']');
 /*!40000 ALTER TABLE `Cleaning` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -363,6 +368,7 @@ CREATE TABLE `Cremation` (
   `Price per Unit` int DEFAULT NULL,
   `No. of Workmen` int DEFAULT NULL,
   `Cancellation Policy` varchar(100) DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `cremation_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -375,7 +381,7 @@ CREATE TABLE `Cremation` (
 
 LOCK TABLES `Cremation` WRITE;
 /*!40000 ALTER TABLE `Cremation` DISABLE KEYS */;
-INSERT INTO `Cremation` VALUES (0,15,'MokshVahan Services','Hearse Van Service',2500,1000,2,'Full refund if canceled 2 hrs prior'),(1,15,'AntimYatra Solutions','Cremation Ground Booking',1000,500,1,'Non-refundable once booked'),(2,15,'MokshaPriest Services','Priest for Last Rites',3000,1000,1,'50% refund if canceled 3 hrs prior'),(3,15,'Antyeshti Essentials','Samagri Kit',1800,1800,1,'Not applicable'),(4,15,'ShantiSeva Support','Freezer Box Rental',4000,4000,2,'Full refund if canceled 12 hrs prior'),(5,15,'PeacefulFarewell India','Chautha Setup',6000,1500,3,'75% refund if canceled 24 hrs prior');
+INSERT INTO `Cremation` VALUES (0,15,'MokshVahan Services','Hearse Van Service',2500,1000,2,'Full refund if canceled 2 hrs prior',NULL),(1,15,'AntimYatra Solutions','Cremation Ground Booking',1000,500,1,'Non-refundable once booked',NULL),(2,15,'MokshaPriest Services','Priest for Last Rites',3000,1000,1,'50% refund if canceled 3 hrs prior',NULL),(3,15,'Antyeshti Essentials','Samagri Kit',1800,1800,1,'Not applicable',NULL),(4,15,'ShantiSeva Support','Freezer Box Rental',4000,4000,2,'Full refund if canceled 12 hrs prior',NULL),(5,15,'PeacefulFarewell India','Chautha Setup',6000,1500,3,'75% refund if canceled 24 hrs prior',NULL);
 /*!40000 ALTER TABLE `Cremation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -394,6 +400,7 @@ CREATE TABLE `DJ` (
   `Duration (Hours)` int DEFAULT NULL,
   `Number of People` int DEFAULT NULL,
   `Equipment Provided` varchar(100) DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `DJ_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -406,7 +413,7 @@ CREATE TABLE `DJ` (
 
 LOCK TABLES `DJ` WRITE;
 /*!40000 ALTER TABLE `DJ` DISABLE KEYS */;
-INSERT INTO `DJ` VALUES (0,4,'DJ Pulsewave',12000,4,3,'Sound system, DJ console, LED lights'),(1,4,'BeatStorm DJs',18000,5,4,'Full PA system, wireless mics, lighting rig'),(2,4,'EchoGroove Productions',10000,3,5,'Compact setup, speakers, mixer'),(3,4,'DJ NovaSound',25000,6,2,'Premium console, smoke machine, stage lights'),(4,4,'SonicSpree Entertainment',15000,4,3,'DJ booth, bass speakers, disco lights'),(5,4,'Bassline Vibes',20000,5,2,'Laser lights, subwoofers, visuals & screen setup');
+INSERT INTO `DJ` VALUES (0,4,'DJ Pulsewave',12000,4,3,'Sound system, DJ console, LED lights','[\'2025-06-23\']'),(1,4,'BeatStorm DJs',18000,5,4,'Full PA system, wireless mics, lighting rig','[\'2025-06-15\', \'2025-06-12\', \'2025-06-11\', \'2025-06-13\', \'2025-06-14\']'),(2,4,'EchoGroove Productions',10000,3,5,'Compact setup, speakers, mixer','[\'2025-05-28\']'),(3,4,'DJ NovaSound',25000,6,2,'Premium console, smoke machine, stage lights','[\'2025-06-15\', \'2025-06-14\']'),(4,4,'SonicSpree Entertainment',15000,4,3,'DJ booth, bass speakers, disco lights','[\'2025-06-23\']'),(5,4,'Bassline Vibes',20000,5,2,'Laser lights, subwoofers, visuals & screen setup',NULL);
 /*!40000 ALTER TABLE `DJ` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -425,6 +432,7 @@ CREATE TABLE `Decorations` (
   `Items Provided` varchar(100) DEFAULT NULL,
   `Experience (Years)` int DEFAULT NULL,
   `No. of Items` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `decorations_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -437,7 +445,7 @@ CREATE TABLE `Decorations` (
 
 LOCK TABLES `Decorations` WRITE;
 /*!40000 ALTER TABLE `Decorations` DISABLE KEYS */;
-INSERT INTO `Decorations` VALUES (0,20,'Blossom & Co.',30000,'paintings, artwork, mirrors',8,5),(1,20,'Elegant Events Decor',20000,'clocks,Magazine racks,Decorative hooks and hangers  ',5,4),(2,20,'DreamWeavers Decorators',25000,'Wall decals or stickers',6,6),(3,20,'Shaadi Sparkle',50000,'Sculptures and figurines, Bowls and trays, ',10,8),(4,20,'Festive Aura Designsv',18000,'Decorative boxes, Globes and antique objects',7,5),(5,20,'PartyCanvas Creations',15000,'Bowls and trays, Lanterns and garlands, Seasonal wreaths',4,3);
+INSERT INTO `Decorations` VALUES (0,20,'Blossom & Co.',30000,'paintings, artwork, mirrors',8,5,NULL),(1,20,'Elegant Events Decor',20000,'clocks,Magazine racks,Decorative hooks and hangers  ',5,4,NULL),(2,20,'DreamWeavers Decorators',25000,'Wall decals or stickers',6,6,'[\'2025-06-23\']'),(3,20,'Shaadi Sparkle',50000,'Sculptures and figurines, Bowls and trays, ',10,8,NULL),(4,20,'Festive Aura Designsv',18000,'Decorative boxes, Globes and antique objects',7,5,NULL),(5,20,'PartyCanvas Creations',15000,'Bowls and trays, Lanterns and garlands, Seasonal wreaths',4,3,NULL);
 /*!40000 ALTER TABLE `Decorations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -457,6 +465,7 @@ CREATE TABLE `Devotional Group` (
   `Price per Hour` int DEFAULT NULL,
   `Setup Time Required` int DEFAULT NULL,
   `No. of People` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `devotional group_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -469,7 +478,7 @@ CREATE TABLE `Devotional Group` (
 
 LOCK TABLES `Devotional Group` WRITE;
 /*!40000 ALTER TABLE `Devotional Group` DISABLE KEYS */;
-INSERT INTO `Devotional Group` VALUES (0,14,'DivineMelodies','Bhajan Group',8000,2000,1,5),(1,14,'BhaktiSwar','Kirtan Group',10000,2500,2,6),(2,14,'SangeetSadhana','Classical Devotional Band',12000,3000,2,5),(3,14,'HariNaam Seva','Sankirtan Mandali',15000,3500,2,8),(4,14,'Anand Raga','Live Flute and Tabla Duo',6000,1500,1,2),(5,14,'Shakti Bhajan Group','Female Devotional Singers',9000,2000,1,4);
+INSERT INTO `Devotional Group` VALUES (0,14,'DivineMelodies','Bhajan Group',8000,2000,1,5,NULL),(1,14,'BhaktiSwar','Kirtan Group',10000,2500,2,6,NULL),(2,14,'SangeetSadhana','Classical Devotional Band',12000,3000,2,5,NULL),(3,14,'HariNaam Seva','Sankirtan Mandali',15000,3500,2,8,NULL),(4,14,'Anand Raga','Live Flute and Tabla Duo',6000,1500,1,2,NULL),(5,14,'Shakti Bhajan Group','Female Devotional Singers',9000,2000,1,4,NULL);
 /*!40000 ALTER TABLE `Devotional Group` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -488,6 +497,7 @@ CREATE TABLE `Food Caterers` (
   `Cost per plate` int DEFAULT NULL,
   `Service type` varchar(100) DEFAULT NULL,
   `No of Plates Required` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `Food Caterers_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -500,7 +510,7 @@ CREATE TABLE `Food Caterers` (
 
 LOCK TABLES `Food Caterers` WRITE;
 /*!40000 ALTER TABLE `Food Caterers` DISABLE KEYS */;
-INSERT INTO `Food Caterers` VALUES (0,1,'Gourmet Gatherings',5000,350,'Buffet',NULL),(1,1,'Spice & Spoon Caterers',7500,420,'Sit-down',NULL),(2,1,'Urban Tandoor Events',4000,300,'Live Counter Buffet',NULL),(3,1,'Festive Flavors Co.',6000,390,'Boxed Meals',NULL),(4,1,'Royal Feast Services',10000,500,'Plated Dinner',NULL),(5,1,'The Green Bowl Kitchen',3000,280,'Self-serve Buffet',NULL);
+INSERT INTO `Food Caterers` VALUES (0,1,'Gourmet Gatherings',5000,350,'Buffet',NULL,'[\'2025-06-15\', \'2025-06-14\']'),(1,1,'Spice & Spoon Caterers',7500,420,'Sit-down',NULL,NULL),(2,1,'Urban Tandoor Events',4000,300,'Live Counter Buffet',NULL,'[\'2025-06-23\']'),(3,1,'Festive Flavors Co.',6000,390,'Boxed Meals',NULL,NULL),(4,1,'Royal Feast Services',10000,500,'Plated Dinner',NULL,'[\'2025-06-23\']'),(5,1,'The Green Bowl Kitchen',3000,280,'Self-serve Buffet',NULL,NULL);
 /*!40000 ALTER TABLE `Food Caterers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -580,6 +590,7 @@ CREATE TABLE `Furniture Rentals` (
   `Price per Hour` int DEFAULT NULL,
   `Setup Time Required` int DEFAULT NULL,
   `No. of Items Required` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `Furniture Rentals_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -592,7 +603,7 @@ CREATE TABLE `Furniture Rentals` (
 
 LOCK TABLES `Furniture Rentals` WRITE;
 /*!40000 ALTER TABLE `Furniture Rentals` DISABLE KEYS */;
-INSERT INTO `Furniture Rentals` VALUES (0,0,'Rent-a-Furniture','Chairs (Plastic)',5000,500,15,NULL),(1,0,'FurnitureMania','Chairs (Wooden)',1500,500,15,NULL),(2,0,'EventFurniture Rentals','Tables (Round)',3300,550,20,NULL),(3,0,'RentMyFurniture','Tables (Rectangular)',500,450,15,NULL),(4,0,'SofaRent India','Sofa Set (3-Seater) ',4500,500,30,NULL),(5,0,'EventFurnishings','Full Furniture Package',2000,600,60,NULL);
+INSERT INTO `Furniture Rentals` VALUES (0,0,'Rent-a-Furniture','Chairs (Plastic)',5000,500,15,NULL,NULL),(1,0,'FurnitureMania','Chairs (Wooden)',1500,500,15,NULL,NULL),(2,0,'EventFurniture Rentals','Tables (Round)',3300,550,20,NULL,NULL),(3,0,'RentMyFurniture','Tables (Rectangular)',500,450,15,NULL,NULL),(4,0,'SofaRent India','Sofa Set (3-Seater) ',4500,500,30,NULL,NULL),(5,0,'EventFurnishings','Full Furniture Package',2000,600,60,NULL,NULL);
 /*!40000 ALTER TABLE `Furniture Rentals` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -611,6 +622,7 @@ CREATE TABLE `Games & Activity` (
   `Approx. Cost (INR)` int DEFAULT NULL,
   `Price per Hour (INR)` int DEFAULT NULL,
   `Setup Time Required` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `games & activity_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -623,7 +635,7 @@ CREATE TABLE `Games & Activity` (
 
 LOCK TABLES `Games & Activity` WRITE;
 /*!40000 ALTER TABLE `Games & Activity` DISABLE KEYS */;
-INSERT INTO `Games & Activity` VALUES (0,7,'KidsJump India','Bouncy Castle (Small)',4500,1500,1),(1,7,'BullRide Events','Mechanical Bull Ride',15000,3500,1),(2,7,'VR Zone India','VR Gaming Booth',20000,5000,2),(3,7,'MegaBounce','Inflatable Obstacle Course',12000,4000,2),(4,7,'PlayNation','Human Foosball',13000,3500,1),(5,7,'PartyPropZ','Giant Jenga & Connect 4',4000,1000,1);
+INSERT INTO `Games & Activity` VALUES (0,7,'KidsJump India','Bouncy Castle (Small)',4500,1500,1,'[\'2025-06-15\', \'2025-06-12\', \'2025-06-11\', \'2025-06-13\', \'2025-06-14\']'),(1,7,'BullRide Events','Mechanical Bull Ride',15000,3500,1,'[\'2025-06-15\', \'2025-06-14\']'),(2,7,'VR Zone India','VR Gaming Booth',20000,5000,2,'[\'2025-07-25\']'),(3,7,'MegaBounce','Inflatable Obstacle Course',12000,4000,2,'[\'2025-05-28\']'),(4,7,'PlayNation','Human Foosball',13000,3500,1,NULL),(5,7,'PartyPropZ','Giant Jenga & Connect 4',4000,1000,1,NULL);
 /*!40000 ALTER TABLE `Games & Activity` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -840,6 +852,7 @@ DROP TABLE IF EXISTS `Marriage`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Marriage` (
   `id` int NOT NULL,
+  `Name` varchar(1000) DEFAULT NULL,
   `Wedding Date` date DEFAULT NULL,
   `Venue` varchar(1000) DEFAULT NULL,
   `Bride Name` varchar(100) DEFAULT NULL,
@@ -854,6 +867,7 @@ CREATE TABLE `Marriage` (
 
 LOCK TABLES `Marriage` WRITE;
 /*!40000 ALTER TABLE `Marriage` DISABLE KEYS */;
+INSERT INTO `Marriage` VALUES (0,'X weds Y','2025-06-23','White Feather','X','Y');
 /*!40000 ALTER TABLE `Marriage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -900,6 +914,7 @@ CREATE TABLE `Marriage_details` (
 
 LOCK TABLES `Marriage_details` WRITE;
 /*!40000 ALTER TABLE `Marriage_details` DISABLE KEYS */;
+INSERT INTO `Marriage_details` VALUES (0,0,'0','2','3','2','60','2','4','2','3','70','3','4','0','5','4','80','5','2','80','1','1');
 /*!40000 ALTER TABLE `Marriage_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -918,6 +933,7 @@ CREATE TABLE `Musician` (
   `Setup Time Required` int DEFAULT NULL,
   `Price per Hour` int DEFAULT NULL,
   `Experience (Years)` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `musician_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -930,7 +946,7 @@ CREATE TABLE `Musician` (
 
 LOCK TABLES `Musician` WRITE;
 /*!40000 ALTER TABLE `Musician` DISABLE KEYS */;
-INSERT INTO `Musician` VALUES (0,23,'Rhythm Roots Collective',20000,2,2500,7),(1,23,'Melodic Vibes',12000,1,2000,5),(2,23,'DJ PulseBeats',18000,2,3000,6),(3,23,'Strings & Harmony',15000,2,2500,8),(4,23,'DesiGroove Band',25000,3,3125,9),(5,23,'The Jazz Junction',16000,1,2000,4);
+INSERT INTO `Musician` VALUES (0,23,'Rhythm Roots Collective',20000,2,2500,7,NULL),(1,23,'Melodic Vibes',12000,1,2000,5,'[\'2025-07-25\']'),(2,23,'DJ PulseBeats',18000,2,3000,6,'[\'2025-06-23\']'),(3,23,'Strings & Harmony',15000,2,2500,8,'[\'2025-05-28\']'),(4,23,'DesiGroove Band',25000,3,3125,9,NULL),(5,23,'The Jazz Junction',16000,1,2000,4,NULL);
 /*!40000 ALTER TABLE `Musician` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -949,6 +965,7 @@ CREATE TABLE `Photographers` (
   `Price per hour` int DEFAULT NULL,
   `Experience (Years)` int DEFAULT NULL,
   `No.  Of Photographers Required` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `Photographers_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -961,7 +978,7 @@ CREATE TABLE `Photographers` (
 
 LOCK TABLES `Photographers` WRITE;
 /*!40000 ALTER TABLE `Photographers` DISABLE KEYS */;
-INSERT INTO `Photographers` VALUES (0,2,'FrameCraft Studios',25000,500,8,NULL),(1,2,'SnapAura Photography',18000,650,5,NULL),(2,2,'PixelGlow Creations',30000,740,10,NULL),(3,2,'FlashFrame Studios',15000,590,4,NULL),(4,2,'ShutterTales Photography',22000,640,6,NULL),(5,2,'Moments & Memories Studio',28000,700,9,NULL);
+INSERT INTO `Photographers` VALUES (0,2,'FrameCraft Studios',25000,500,8,NULL,'[\'2025-06-23\']'),(1,2,'SnapAura Photography',18000,650,5,NULL,NULL),(2,2,'PixelGlow Creations',30000,740,10,NULL,'[\'2025-06-23\']'),(3,2,'FlashFrame Studios',15000,590,4,NULL,NULL),(4,2,'ShutterTales Photography',22000,640,6,NULL,NULL),(5,2,'Moments & Memories Studio',28000,700,9,NULL,NULL);
 /*!40000 ALTER TABLE `Photographers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -981,6 +998,7 @@ CREATE TABLE `Power Backup` (
   `Price per Hour` int DEFAULT NULL,
   `Setup Time Required` int DEFAULT NULL,
   `No. of Generators` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `power backup_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -993,7 +1011,7 @@ CREATE TABLE `Power Backup` (
 
 LOCK TABLES `Power Backup` WRITE;
 /*!40000 ALTER TABLE `Power Backup` DISABLE KEYS */;
-INSERT INTO `Power Backup` VALUES (0,11,'GenPower Solutions','Generator Rental',5000,800,1,1),(1,11,'PowerGen Rentals','Generator Rental',10000,1500,1,2),(2,11,'PowerTech Rentals','Generator Rental',20000,2500,2,3),(3,11,'UPS Experts India','UPS Backup System',8000,1200,1,2),(4,11,'PowerPro Systems','Full-Event Power Backup',40000,5000,3,5),(5,11,'QuickPower Services','Battery Backup',3000,600,1,1);
+INSERT INTO `Power Backup` VALUES (0,11,'GenPower Solutions','Generator Rental',5000,800,1,1,NULL),(1,11,'PowerGen Rentals','Generator Rental',10000,1500,1,2,'[\'2025-06-15\', \'2025-06-14\']'),(2,11,'PowerTech Rentals','Generator Rental',20000,2500,2,3,'[\'2025-06-15\', \'2025-06-12\', \'2025-06-11\', \'2025-06-13\', \'2025-06-14\']'),(3,11,'UPS Experts India','UPS Backup System',8000,1200,1,2,'[\'2025-07-25\']'),(4,11,'PowerPro Systems','Full-Event Power Backup',40000,5000,3,5,NULL),(5,11,'QuickPower Services','Battery Backup',3000,600,1,1,NULL);
 /*!40000 ALTER TABLE `Power Backup` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1006,9 +1024,10 @@ DROP TABLE IF EXISTS `Reception`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Reception` (
   `id` int NOT NULL,
+  `Name` varchar(100) DEFAULT NULL,
   `Host Name` varchar(100) DEFAULT NULL,
-  `Guest Count` int DEFAULT NULL,
   `Dress Code` varchar(100) DEFAULT NULL,
+  `Date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1086,6 +1105,7 @@ CREATE TABLE `Return Gifts` (
   `Price per Unit` int DEFAULT NULL,
   `No. of Gifts Required` int DEFAULT NULL,
   `No. of People` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `return gifts_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -1098,7 +1118,7 @@ CREATE TABLE `Return Gifts` (
 
 LOCK TABLES `Return Gifts` WRITE;
 /*!40000 ALTER TABLE `Return Gifts` DISABLE KEYS */;
-INSERT INTO `Return Gifts` VALUES (0,12,'GiftBox India','Personalized Keychains',100,50,NULL,1),(1,12,'CustomGifts India','Customized Mugs',300,100,NULL,1),(2,12,'GiftWorld','Scented Candles',200,80,NULL,1),(3,12,'HamperStore India','Gift Hampers',1000,300,NULL,2),(4,12,'PrintIt India','Tote Bags',500,150,NULL,1),(5,12,'LuxeGifts India','Luxury Return Gifts',5000,1000,NULL,2);
+INSERT INTO `Return Gifts` VALUES (0,12,'GiftBox India','Personalized Keychains',100,50,NULL,1,NULL),(1,12,'CustomGifts India','Customized Mugs',300,100,NULL,1,NULL),(2,12,'GiftWorld','Scented Candles',200,80,NULL,1,'[\'2025-07-25\']'),(3,12,'HamperStore India','Gift Hampers',1000,300,NULL,2,NULL),(4,12,'PrintIt India','Tote Bags',500,150,NULL,1,NULL),(5,12,'LuxeGifts India','Luxury Return Gifts',5000,1000,NULL,2,'[\'2025-05-28\']');
 /*!40000 ALTER TABLE `Return Gifts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1118,6 +1138,7 @@ CREATE TABLE `Ritual Setup` (
   `Price per Unit` int DEFAULT NULL,
   `Setup Time Required` int DEFAULT NULL,
   `No. of People` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `ritual setup_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -1130,7 +1151,7 @@ CREATE TABLE `Ritual Setup` (
 
 LOCK TABLES `Ritual Setup` WRITE;
 /*!40000 ALTER TABLE `Ritual Setup` DISABLE KEYS */;
-INSERT INTO `Ritual Setup` VALUES (0,13,'Rituals India','Pooja Setup Small',2000,500,1,2),(1,13,'DivineRituals','Pooja Setup Large',5000,1500,2,3),(2,13,'PujaSetup India','Hawan Setup',3000,1000,2,2),(3,13,'SacredPriests','Priest for Ceremony',2500,1000,1,1),(4,13,'MandapDesigns India','Mandap Setup',10000,2000,3,4),(5,13,'FloralRituals India','Decorative Flowers Setup',2500,500,2,2);
+INSERT INTO `Ritual Setup` VALUES (0,13,'Rituals India','Pooja Setup Small',2000,500,1,2,NULL),(1,13,'DivineRituals','Pooja Setup Large',5000,1500,2,3,NULL),(2,13,'PujaSetup India','Hawan Setup',3000,1000,2,2,NULL),(3,13,'SacredPriests','Priest for Ceremony',2500,1000,1,1,NULL),(4,13,'MandapDesigns India','Mandap Setup',10000,2000,3,4,NULL),(5,13,'FloralRituals India','Decorative Flowers Setup',2500,500,2,2,NULL);
 /*!40000 ALTER TABLE `Ritual Setup` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1150,6 +1171,7 @@ CREATE TABLE `Screen` (
   `Booking Duration` int DEFAULT NULL,
   `Customization Options` varchar(100) DEFAULT NULL,
   `Delivery & Setup Fees` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `screen_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -1162,7 +1184,7 @@ CREATE TABLE `Screen` (
 
 LOCK TABLES `Screen` WRITE;
 /*!40000 ALTER TABLE `Screen` DISABLE KEYS */;
-INSERT INTO `Screen` VALUES (0,25,'LED Video Wall',20000,7000,1,'Yes',4500),(1,25,'Projection Screen',8000,3000,1,'Yes',2500),(2,25,'Outdoor Giant Screen',25000,10000,1,'Yes',5500),(3,25,'Interactive Touchscreen',12000,5000,1,'Yes',3500),(4,25,'Cinema Projection Screen',15000,6500,1,'Yes',4000),(5,25,'360-Degree Display',30000,12000,1,'Yes',6000);
+INSERT INTO `Screen` VALUES (0,25,'LED Video Wall',20000,7000,1,'Yes',4500,NULL),(1,25,'Projection Screen',8000,3000,1,'Yes',2500,'[\'2025-06-23\']'),(2,25,'Outdoor Giant Screen',25000,10000,1,'Yes',5500,'[\'2025-05-28\']'),(3,25,'Interactive Touchscreen',12000,5000,1,'Yes',3500,'[\'2025-06-15\', \'2025-06-14\']'),(4,25,'Cinema Projection Screen',15000,6500,1,'Yes',4000,NULL),(5,25,'360-Degree Display',30000,12000,1,'Yes',6000,'[\'2025-06-15\', \'2025-06-12\', \'2025-06-11\', \'2025-06-13\', \'2025-06-14\']');
 /*!40000 ALTER TABLE `Screen` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1181,6 +1203,7 @@ CREATE TABLE `Security` (
   `Service Cost` int DEFAULT NULL,
   `Price per Hour` int DEFAULT NULL,
   `No. of People` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `security_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -1193,7 +1216,7 @@ CREATE TABLE `Security` (
 
 LOCK TABLES `Security` WRITE;
 /*!40000 ALTER TABLE `Security` DISABLE KEYS */;
-INSERT INTO `Security` VALUES (0,10,'SecureEvents India','Basic Event Security ',3000,500,1),(1,10,'ShieldGuard Security','Crowd Control ',6000,1200,2),(2,10,'VIPSecure Services','VIP Security ',8000,1500,1),(3,10,'GuardPro Solutions','Full Event Security ',20000,3500,5),(4,10,'SecureForce India','Emergency Response Team',15000,2500,3);
+INSERT INTO `Security` VALUES (0,10,'SecureEvents India','Basic Event Security ',3000,500,1,NULL),(1,10,'ShieldGuard Security','Crowd Control ',6000,1200,2,NULL),(2,10,'VIPSecure Services','VIP Security ',8000,1500,1,NULL),(3,10,'GuardPro Solutions','Full Event Security ',20000,3500,5,NULL),(4,10,'SecureForce India','Emergency Response Team',15000,2500,3,NULL);
 /*!40000 ALTER TABLE `Security` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1214,6 +1237,7 @@ CREATE TABLE `Sound System` (
   `Event Types Covered` varchar(100) DEFAULT NULL,
   `Customization Options` varchar(100) DEFAULT NULL,
   `Delivery & Setup Fees` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `Sound System_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -1226,7 +1250,7 @@ CREATE TABLE `Sound System` (
 
 LOCK TABLES `Sound System` WRITE;
 /*!40000 ALTER TABLE `Sound System` DISABLE KEYS */;
-INSERT INTO `Sound System` VALUES (0,5,'Sonic Blast Audio','Professional PA System',5000,2000,'Concerts, Conferences','Yes',1500),(1,5,'Crystal Clear Sounds','DJ Equipment',7500,3000,'Weddings, Private Parties','Yes',2000),(2,5,'EchoWave Rentals','Home Theatre Setup',3500,1500,'Corporate Events, Film Screenings','Yes',1200),(3,5,'Bass Boost Audio','Large-Scale Sound System',10000,4500,'Festivals, Open-Air Events','Yes',3000),(4,5,'Sound Spectrum ','Wireless Speaker Sets',2000,1000,'Small Gatherings, Seminars','Yes',800),(5,5,'High Fidelity Audio','Studio-Grade Sound',6500,2500,'Music Production, Recording Sessions','Yes',1800);
+INSERT INTO `Sound System` VALUES (0,5,'Sonic Blast Audio','Professional PA System',5000,2000,'Concerts, Conferences','Yes',1500,NULL),(1,5,'Crystal Clear Sounds','DJ Equipment',7500,3000,'Weddings, Private Parties','Yes',2000,NULL),(2,5,'EchoWave Rentals','Home Theatre Setup',3500,1500,'Corporate Events, Film Screenings','Yes',1200,NULL),(3,5,'Bass Boost Audio','Large-Scale Sound System',10000,4500,'Festivals, Open-Air Events','Yes',3000,NULL),(4,5,'Sound Spectrum ','Wireless Speaker Sets',2000,1000,'Small Gatherings, Seminars','Yes',800,NULL),(5,5,'High Fidelity Audio','Studio-Grade Sound',6500,2500,'Music Production, Recording Sessions','Yes',1800,NULL);
 /*!40000 ALTER TABLE `Sound System` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1246,6 +1270,7 @@ CREATE TABLE `Stage Setup` (
   `Price per Hour` int DEFAULT NULL,
   `Setup Time Required` int DEFAULT NULL,
   `No. of People` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `stage setup_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -1258,7 +1283,7 @@ CREATE TABLE `Stage Setup` (
 
 LOCK TABLES `Stage Setup` WRITE;
 /*!40000 ALTER TABLE `Stage Setup` DISABLE KEYS */;
-INSERT INTO `Stage Setup` VALUES (0,9,'StageCraft India','Basic Stage Setup',15000,2500,2,4),(1,9,'LightSound India','LED Screen Setup',25000,4500,3,5),(2,9,'EventAudio Solutions','Sound System Setup',10000,2000,2,3),(3,9,'LightUp Events','Lighting Setup',12000,2500,2,3),(4,9,'StagePro Productions','Full Stage Production',50000,8000,5,7),(5,9,'DecorStage Events','Backdrop & Decor Setup',20000,3500,2,4);
+INSERT INTO `Stage Setup` VALUES (0,9,'StageCraft India','Basic Stage Setup',15000,2500,2,4,'[\'2025-05-28\']'),(1,9,'LightSound India','LED Screen Setup',25000,4500,3,5,NULL),(2,9,'EventAudio Solutions','Sound System Setup',10000,2000,2,3,NULL),(3,9,'LightUp Events','Lighting Setup',12000,2500,2,3,NULL),(4,9,'StagePro Productions','Full Stage Production',50000,8000,5,7,'[\'2025-05-28\']'),(5,9,'DecorStage Events','Backdrop & Decor Setup',20000,3500,2,4,NULL);
 /*!40000 ALTER TABLE `Stage Setup` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1279,6 +1304,7 @@ CREATE TABLE `Tent & Seating` (
   `No. of Seats Required` int DEFAULT NULL,
   `Tent Type` varchar(100) DEFAULT NULL,
   `Seating Arrangement` varchar(100) DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `tent & seating_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -1291,7 +1317,7 @@ CREATE TABLE `Tent & Seating` (
 
 LOCK TABLES `Tent & Seating` WRITE;
 /*!40000 ALTER TABLE `Tent & Seating` DISABLE KEYS */;
-INSERT INTO `Tent & Seating` VALUES (0,19,'TentMasters India','Basic Tent Setup',10000,5000,NULL,'Dome Tent','Rows of Chairs'),(1,19,'LuxuryEvents Setup','Deluxe Tent Setup',20000,10000,NULL,'High-peak Tent','Round Tables'),(2,19,'WeddingEvent Planners','Wedding Tent and Seating',25000,12000,NULL,'Clear-span Tent','Banquet Style'),(3,19,'Corporate Events Ltd.','Corporate Event Tent',15000,7500,NULL,'Marquee Tent','Conference Style'),(4,19,'EventPlanners India','Party Tent Setup',12000,6000,NULL,'Pole Tent','Lounge Style'),(5,19,'FestiTents','Festival Tent and Seating',18000,9000,NULL,'Pop-up Tent','Picnic Style');
+INSERT INTO `Tent & Seating` VALUES (0,19,'TentMasters India','Basic Tent Setup',10000,5000,NULL,'Dome Tent','Rows of Chairs',NULL),(1,19,'LuxuryEvents Setup','Deluxe Tent Setup',20000,10000,NULL,'High-peak Tent','Round Tables','[\'2025-06-15\', \'2025-06-14\']'),(2,19,'WeddingEvent Planners','Wedding Tent and Seating',25000,12000,NULL,'Clear-span Tent','Banquet Style','[\'2025-06-15\', \'2025-06-12\', \'2025-06-11\', \'2025-06-13\', \'2025-06-14\']'),(3,19,'Corporate Events Ltd.','Corporate Event Tent',15000,7500,NULL,'Marquee Tent','Conference Style','[\'2025-06-23\']'),(4,19,'EventPlanners India','Party Tent Setup',12000,6000,NULL,'Pole Tent','Lounge Style','[\'2025-07-25\']'),(5,19,'FestiTents','Festival Tent and Seating',18000,9000,NULL,'Pop-up Tent','Picnic Style','[\'2025-05-28\']');
 /*!40000 ALTER TABLE `Tent & Seating` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1311,6 +1337,7 @@ CREATE TABLE `Tour Guide` (
   `No. of People` int DEFAULT NULL,
   `Tour Guide Experience` int DEFAULT NULL,
   `Language` varchar(100) DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `tour guide_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -1323,7 +1350,7 @@ CREATE TABLE `Tour Guide` (
 
 LOCK TABLES `Tour Guide` WRITE;
 /*!40000 ALTER TABLE `Tour Guide` DISABLE KEYS */;
-INSERT INTO `Tour Guide` VALUES (0,17,'CityExplorers','Local City Tour Guide',2000,1,5,'English'),(1,17,'HeritageGuides India','Historical Tour Guide',3500,2,10,'English, Hindi'),(2,17,'AdventureSeekers India','Adventure Tour Guide',4500,2,8,'English, Marathi'),(3,17,'SacredJourneys','Religious Tour Guide',2500,3,6,'Hindi, Sanskrit'),(4,17,'WildNature Expeditions','Nature/ Wildlife Tour Guide',5000,1,7,'English, Kannada'),(5,17,'GlobalTour Leaders','Multi-Language Tour Guide',6000,2,15,'English, French, Spanish');
+INSERT INTO `Tour Guide` VALUES (0,17,'CityExplorers','Local City Tour Guide',2000,1,5,'English',NULL),(1,17,'HeritageGuides India','Historical Tour Guide',3500,2,10,'English, Hindi',NULL),(2,17,'AdventureSeekers India','Adventure Tour Guide',4500,2,8,'English, Marathi','[\'2025-06-15\', \'2025-06-12\', \'2025-06-11\', \'2025-06-13\', \'2025-06-14\']'),(3,17,'SacredJourneys','Religious Tour Guide',2500,3,6,'Hindi, Sanskrit','[\'2025-06-15\', \'2025-06-14\']'),(4,17,'WildNature Expeditions','Nature/ Wildlife Tour Guide',5000,1,7,'English, Kannada',NULL),(5,17,'GlobalTour Leaders','Multi-Language Tour Guide',6000,2,15,'English, French, Spanish',NULL);
 /*!40000 ALTER TABLE `Tour Guide` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1351,6 +1378,7 @@ CREATE TABLE `Trip` (
 
 LOCK TABLES `Trip` WRITE;
 /*!40000 ALTER TABLE `Trip` DISABLE KEYS */;
+INSERT INTO `Trip` VALUES (0,'Fun tour with Friends','Bangalore','2025-06-14','2025-06-15',4),(1,'Fun get together','Goa','2025-06-11','2025-06-15',10);
 /*!40000 ALTER TABLE `Trip` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1388,6 +1416,7 @@ CREATE TABLE `Trip_details` (
 
 LOCK TABLES `Trip_details` WRITE;
 /*!40000 ALTER TABLE `Trip_details` DISABLE KEYS */;
+INSERT INTO `Trip_details` VALUES (0,0,'2','2','3','1','3','1','0','5','1','5','3','0'),(1,0,NULL,'2',NULL,NULL,NULL,NULL,NULL,'5',NULL,'5',NULL,NULL),(2,0,NULL,'2',NULL,NULL,NULL,NULL,NULL,'5',NULL,'5',NULL,NULL),(3,0,NULL,'2',NULL,NULL,NULL,NULL,NULL,'5',NULL,'5',NULL,NULL),(4,0,NULL,'2',NULL,NULL,NULL,NULL,NULL,'5',NULL,'5',NULL,NULL),(5,0,NULL,'2',NULL,NULL,NULL,NULL,NULL,'5',NULL,'5',NULL,NULL),(6,0,NULL,'2',NULL,NULL,NULL,NULL,NULL,'5',NULL,'5',NULL,NULL),(7,0,NULL,'2',NULL,NULL,NULL,NULL,NULL,'5',NULL,'5',NULL,NULL),(8,1,'4','5','2','2','5','0','-1','0','2','10','1','3');
 /*!40000 ALTER TABLE `Trip_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1406,6 +1435,7 @@ CREATE TABLE `Valet` (
   `No. of Attendants` int DEFAULT NULL,
   `Price per Hour` int DEFAULT NULL,
   `Experience (Years)` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `valet_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -1418,7 +1448,7 @@ CREATE TABLE `Valet` (
 
 LOCK TABLES `Valet` WRITE;
 /*!40000 ALTER TABLE `Valet` DISABLE KEYS */;
-INSERT INTO `Valet` VALUES (0,21,'SwiftPark Valet Services',7000,4,200,6),(1,21,'EliteDrive Parking Crew',9000,5,240,8),(2,21,'ParkEase Professionals',6500,3,300,4),(3,21,'RoyalWheel Valet Co.',10000,6,280,9),(4,21,'QuickPark Solutions',5800,4,350,3),(5,21,'MetroValet Pvt. Ltd.',8500,5,290,7);
+INSERT INTO `Valet` VALUES (0,21,'SwiftPark Valet Services',7000,4,200,6,NULL),(1,21,'EliteDrive Parking Crew',9000,5,240,8,'[\'2025-06-23\']'),(2,21,'ParkEase Professionals',6500,3,300,4,NULL),(3,21,'RoyalWheel Valet Co.',10000,6,280,9,NULL),(4,21,'QuickPark Solutions',5800,4,350,3,NULL),(5,21,'MetroValet Pvt. Ltd.',8500,5,290,7,NULL);
 /*!40000 ALTER TABLE `Valet` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1438,6 +1468,7 @@ CREATE TABLE `Venue Lighting` (
   `Booking Duration` int DEFAULT NULL,
   `Customization Options` varchar(100) DEFAULT NULL,
   `Delivery & Setup Fees` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `venue lighting_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -1450,7 +1481,7 @@ CREATE TABLE `Venue Lighting` (
 
 LOCK TABLES `Venue Lighting` WRITE;
 /*!40000 ALTER TABLE `Venue Lighting` DISABLE KEYS */;
-INSERT INTO `Venue Lighting` VALUES (0,24,'Luminous Events','LED Ambient Lighting',11000,1,'Yes',2500),(1,24,'BrightVibes Lighting','Stage & Concert Lighting',20000,1,'Yes',3500),(2,24,'SparkGlow Rentals','Decorative Chandeliers',16000,1,'Yes',3000),(3,24,'Radiance Pro Lighting','Intelligent DMX Lighting',14500,1,'Yes',3200),(4,24,'GlowWave Systems','Outdoor & Garden Lighting',8700,1,'Yes',2000),(5,24,'NeonPulse Productions','UV & Special Effects Lighting',14400,1,'Yes',4000);
+INSERT INTO `Venue Lighting` VALUES (0,24,'Luminous Events','LED Ambient Lighting',11000,1,'Yes',2500,NULL),(1,24,'BrightVibes Lighting','Stage & Concert Lighting',20000,1,'Yes',3500,'[\'2025-05-28\']'),(2,24,'SparkGlow Rentals','Decorative Chandeliers',16000,1,'Yes',3000,'[\'2025-07-25\']'),(3,24,'Radiance Pro Lighting','Intelligent DMX Lighting',14500,1,'Yes',3200,NULL),(4,24,'GlowWave Systems','Outdoor & Garden Lighting',8700,1,'Yes',2000,'[\'2025-05-28\']'),(5,24,'NeonPulse Productions','UV & Special Effects Lighting',14400,1,'Yes',4000,NULL);
 /*!40000 ALTER TABLE `Venue Lighting` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1469,6 +1500,7 @@ CREATE TABLE `Waiters` (
   `No. of Waiters Provided` int DEFAULT NULL,
   `Shift Duration (Hours)` int DEFAULT NULL,
   `Experience (Years)` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `Waiters_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -1481,7 +1513,7 @@ CREATE TABLE `Waiters` (
 
 LOCK TABLES `Waiters` WRITE;
 /*!40000 ALTER TABLE `Waiters` DISABLE KEYS */;
-INSERT INTO `Waiters` VALUES (0,3,'ServeSmart Hospitality',6000,4,6,5),(1,3,'Elite Serve Pvt. Ltd.',8000,6,8,7),(2,3,'EventEase Services',4500,3,5,3),(3,3,'Silver Tray Staffing',10000,7,8,10),(4,3,'PlatePerfect Cater Staff',5500,4,6,4),(5,3,'UrbanServe Hospitality ',7200,5,7,6);
+INSERT INTO `Waiters` VALUES (0,3,'ServeSmart Hospitality',6000,4,6,5,'[\'2025-06-15\', \'2025-06-14\']'),(1,3,'Elite Serve Pvt. Ltd.',8000,6,8,7,'[\'2025-07-25\']'),(2,3,'EventEase Services',4500,3,5,3,NULL),(3,3,'Silver Tray Staffing',10000,7,8,10,'[\'2025-06-15\', \'2025-06-12\', \'2025-06-11\', \'2025-06-13\', \'2025-06-14\']'),(4,3,'PlatePerfect Cater Staff',5500,4,6,4,NULL),(5,3,'UrbanServe Hospitality ',7200,5,7,6,NULL);
 /*!40000 ALTER TABLE `Waiters` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1500,6 +1532,7 @@ CREATE TABLE `Wedding Coordinator` (
   `Languages Spoken` varchar(100) DEFAULT NULL,
   `Price per Hour` int DEFAULT NULL,
   `Experience (Years)` int DEFAULT NULL,
+  `busy` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `services_id` (`services_id`),
   CONSTRAINT `wedding coordinator_ibfk_1` FOREIGN KEY (`services_id`) REFERENCES `services` (`id`)
@@ -1512,7 +1545,7 @@ CREATE TABLE `Wedding Coordinator` (
 
 LOCK TABLES `Wedding Coordinator` WRITE;
 /*!40000 ALTER TABLE `Wedding Coordinator` DISABLE KEYS */;
-INSERT INTO `Wedding Coordinator` VALUES (0,22,'Graceful Events Co.',15000,'English, Hindi',1875,7),(1,22,'PlanCraft Management',12000,'Hindi, Tamil',2000,5),(2,22,'EventEase Planners',18000,'English, Kannada',2250,8),(3,22,'Blissful Day Coordinators',14000,'English, Marathi, Hindi',2000,6),(4,22,'UnityEvent Managers',16000,'English, Telugu',1600,10),(5,22,'DreamSync Event Services',13500,'Hindi, Bengali, English',2700,4);
+INSERT INTO `Wedding Coordinator` VALUES (0,22,'Graceful Events Co.',15000,'English, Hindi',1875,7,NULL),(1,22,'PlanCraft Management',12000,'Hindi, Tamil',2000,5,NULL),(2,22,'EventEase Planners',18000,'English, Kannada',2250,8,NULL),(3,22,'Blissful Day Coordinators',14000,'English, Marathi, Hindi',2000,6,NULL),(4,22,'UnityEvent Managers',16000,'English, Telugu',1600,10,'[\'2025-06-23\']'),(5,22,'DreamSync Event Services',13500,'Hindi, Bengali, English',2700,4,NULL);
 /*!40000 ALTER TABLE `Wedding Coordinator` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1542,7 +1575,7 @@ CREATE TABLE `events` (
 
 LOCK TABLES `events` WRITE;
 /*!40000 ALTER TABLE `events` DISABLE KEYS */;
-INSERT INTO `events` VALUES (0,'Marriage','Marriage','2025-05-13','09:33:00','https://www.google.com/maps/place/Royal+Meenakshi+Mall/@12.8881935,77.5963265,15z/data=!4m6!3m5!1s0x3bae152cc2008809:0x6f1c35681dbd4e5a!8m2!3d12.8757!4d77.595766!16s%2Fg%2F11b7stmqk8?entry=ttu&g_ep=EgoyMDI0MTEwNi4wIKXMDSoASAFQAw%3D%3D','Principal','Students');
+INSERT INTO `events` VALUES (0,'Marriage','Marriage','2025-05-13','09:33:00','https://www.google.com/maps/place/Royal+Meenakshi+Mall/@12.8881935,77.5963265,15z/data=!4m6!3m5!1s0x3bae152cc2008809:0x6f1c35681dbd4e5a!8m2!3d12.8757!4d77.595766!16s%2Fg%2F11b7stmqk8?entry=ttu&g_ep=EgoyMDI0MTEwNi4wIKXMDSoASAFQAw%3D%3D','Principal','Students'),(1,'Club Fest','Fest with all different departments of CAJC','2025-06-11','10:35:00','https://maps.app.goo.gl/G6tt2KttrPKuVpbU9','Fr. Lebin','Students');
 /*!40000 ALTER TABLE `events` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1571,7 +1604,7 @@ CREATE TABLE `files` (
 
 LOCK TABLES `files` WRITE;
 /*!40000 ALTER TABLE `files` DISABLE KEYS */;
-INSERT INTO `files` VALUES (0,0,1,'./database/files/0-Ye Fitoooor Merraaa.mp3','0-Ye Fitoooor Merraaa.mp3');
+INSERT INTO `files` VALUES (0,0,1,'./database/files/0-Ye Fitoooor Merraaa.mp3','0-Ye Fitoooor Merraaa.mp3'),(1,3,2,'./database/files/3-Mehendi Song.mp3','3-Mehendi Song.mp3'),(2,3,3,'./database/files/3-Mehendi Song-1.mp3','3-Mehendi Song-1.mp3'),(3,4,4,'./database/files/4-Barat Song.m4a','4-Barat Song.m4a'),(4,4,5,'./database/files/4-Barat Video.mp4','4-Barat Video.mp4');
 /*!40000 ALTER TABLE `files` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1627,7 +1660,7 @@ CREATE TABLE `subevents` (
 
 LOCK TABLES `subevents` WRITE;
 /*!40000 ALTER TABLE `subevents` DISABLE KEYS */;
-INSERT INTO `subevents` VALUES (0,0,'Engagement','Giving Ring',60);
+INSERT INTO `subevents` VALUES (0,0,'Engagement','Giving Ring',60),(1,1,'Octave0','Music by experts',10),(2,1,'Theatrum','Dance event',20),(3,0,'Mehendi','Haldi rang',50),(4,0,'Barat','Barat',50);
 /*!40000 ALTER TABLE `subevents` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1639,12 +1672,13 @@ DROP TABLE IF EXISTS `templates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `templates` (
-  `id` int DEFAULT NULL,
+  `id` int NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `description` varchar(1000) DEFAULT NULL,
   `raw` varchar(1000) DEFAULT NULL,
   `subevents` varchar(1000) DEFAULT NULL,
-  `subevents_raw` varchar(1000) DEFAULT NULL
+  `subevents_raw` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1654,7 +1688,7 @@ CREATE TABLE `templates` (
 
 LOCK TABLES `templates` WRITE;
 /*!40000 ALTER TABLE `templates` DISABLE KEYS */;
-INSERT INTO `templates` VALUES (0,'Birthday Party','Plan Birthday Parties with ease with Tubelight','Name:text|Age:number|Date and Time:datetime|Venue:textarea','Birthday Cake Cutting|Food and Drinks|Post Party','Birthday Cake Cutting-[\'Screen\', \'Venue Lighting\', \'Musician\']|Food and Drinks-[\'Waiters\', \'Food Caterers\', \'DJ\', \'Cleaning\', \'Stage Setup\']|Post Party-[\'Games & Activity\', \'Cleaning\', \'Stage Setup\', \'Power Backup\', \'Return Gifts\', \'Tent & Seating\']'),(1,'Trip','Plan a journey or travel experience taken for leisure, adventure, or exploration','Name:text|Destination:text|Start Date:date|End Date:date|Travellers:number','Pre Travel|Sightseeing and Adventures|Meals and Dining','Pre Travel-[\'Car Rental\', \'Tour Guide\']|Sightseeing and Adventures-[\'Power Backup\', \'Screen\', \'Games & Activity\']|Meals and Dining-[\'Food Caterers\', \'Tent & Seating\', \'DJ\', \'Waiters\']'),(2,'Marriage','Plan a wonderful marriage event with Tubelight','Wedding Date:date|Venue:textarea|Bride Name:text|Groom Name:text','Procession (Baraat)|Wedding Ceremony','Procession (Baraat)-[\'DJ\', \'Photographers\', \'Food Caterers\', \'Musician\', \'Wedding Coordinator\']|Wedding Ceremony-[\'Decorations\', \'Tent & Seating\', \'Waiters\', \'DJ\', \'Photographers\', \'Food Caterers\', \'Cleaning\', \'Return Gifts\', \'Screen\', \'Valet\']'),(3,'Anniversary','Plan your Anniversary fast and seamless with Tubelight','Anniversary Type:text|Mr.:text|Mrs.:text|Date:date','Pre Celebrations|Main Celebration|Post Celebration','Pre Celebrations-[\'Decorations\', \'Tent & Seating\', \'Screen\']|Main Celebration-[\'Food Caterers\', \'Stage Setup\', \'Power Backup\', \'Valet\', \'Games & Activity\', \'Photographers\']|Post Celebration-[\'Cleaning\', \'Return Gifts\']'),(4,'House Warming','Plan your House warming ceremony swiftly with Tubelight','Date and Time:datetime','House Tour and Ceremony|Main Party','House Tour and Ceremony-[\'Screen\', \'Venue Lighting\', \'Valet\', \'Decorations\', \'Tent & Seating\']|Main Party-[\'Musician\', \'Valet\', \'Decorations\', \'DJ\', \'Waiters\', \'Food Caterers\', \'Photographers\', \'Furniture Rentals\']'),(5,'Inaugurations','Make Inauguration events more seamlessly with Tubelight','Venue:text|Date and Time:datetime|Host Name:text|Activites:text|Budget:number','Pre Event|Main Party|Post Party','Pre Event-[\'Ritual Setup\', \'Screen\', \'Venue Lighting\', \'Valet\', \'Decorations\']|Main Party-[\'Tent & Seating\', \'Photographers\', \'DJ\', \'Waiters\', \'Food Caterers\', \'Certificate\', \'Security\', \'Power Backup\']|Post Party-[\'Return Gifts\', \'Cleaning\']'),(6,'Reception','Manage your Reception Event productively with Tubelight','Host Name:text|Guest Count:number|Dress Code:text','Pre Party|Main Event|Post Event','Pre Party-[\'Ritual Setup\', \'Screen\', \'Venue Lighting\', \'Musician\', \'Valet\', \'Decorations\', \'Tent & Seating\', \'Stage Setup\']|Main Event-[\'DJ\', \'Waiters\', \'Food Caterers\', \'Wedding Coordinator\', \'Ritual Setup\', \'Screen\', \'Venue Lighting\', \'Power Backup\']|Post Event-[\'Return Gifts\', \'Photographers\', \'Cleaning\']'),(7,'Baby Shower','Manage your Baby Shower event effortlessly with Tubelight','Date and Time:datetime|Venue:textarea|Host Name:text|Theme:text','Pre Celebrations|Main Celebration','Pre Celebrations-[\'Decorations\', \'Tent & Seating\', \'Stage Setup\', \'Power Backup\', \'Screen\', \'Venue Lighting\']|Main Celebration-[\'Waiters\', \'Photographers\', \'Food Caterers\', \'Return Gifts\', \'Games & Activity\', \'Cleaning\']'),(8,'Funeral','Co-ordinate a funeral event with Tubelight','Funeral Date:date|Time:time|Venue:textarea|Officiant Name:text','Funeral Procession|Funeral Ceremony','Funeral Procession-[\'Ritual Setup\', \'Devotional Group\', \'Cremation\', \'Certificate\']|Funeral Ceremony-[\'Certificate\', \'Screen\', \'Venue Lighting\', \'Food Caterers\']'),(9,'Graduation','Plan the most fun and engaging graduation party with your close ones','Name:text|Date and Time:datetime|Venue:textarea','Pre Celebrations|Main Party|Post Party','Pre Celebrations-[\'Screen\', \'Venue Lighting\', \'Valet\', \'Decorations\', \'Tent & Seating\']|Main Party-[\'DJ\', \'Waiters\', \'Photographers\', \'Certificate\', \'Security\', \'Games & Activity\']|Post Party-[\'Return Gifts\', \'Cleaning\']');
+INSERT INTO `templates` VALUES (0,'Birthday Party','Plan Birthday Parties with ease with Tubelight','Name:text|Age:number|Date and Time:datetime|Venue:textarea','Birthday Cake Cutting|Food and Drinks|Post Party','Birthday Cake Cutting-[\'Screen\', \'Venue Lighting\', \'Musician\']|Food and Drinks-[\'Waiters\', \'Food Caterers\', \'DJ\', \'Cleaning\', \'Stage Setup\']|Post Party-[\'Games & Activity\', \'Cleaning\', \'Stage Setup\', \'Power Backup\', \'Return Gifts\', \'Tent & Seating\']'),(1,'Trip','Plan a journey or travel experience taken for leisure, adventure, or exploration','Name:text|Destination:text|Start Date:date|End Date:date|Travellers:number','Pre Travel|Sightseeing and Adventures|Meals and Dining','Pre Travel-[\'Car Rental\', \'Tour Guide\']|Sightseeing and Adventures-[\'Power Backup\', \'Screen\', \'Games & Activity\']|Meals and Dining-[\'Food Caterers\', \'Tent & Seating\', \'DJ\', \'Waiters\']'),(2,'Marriage','Plan a wonderful marriage event with Tubelight','Wedding Date:date|Venue:textarea|Bride Name:text|Groom Name:text','Procession (Baraat)|Wedding Ceremony','Procession (Baraat)-[\'DJ\', \'Photographers\', \'Food Caterers\', \'Musician\', \'Wedding Coordinator\']|Wedding Ceremony-[\'Decorations\', \'Tent & Seating\', \'Waiters\', \'DJ\', \'Photographers\', \'Food Caterers\', \'Cleaning\', \'Return Gifts\', \'Screen\', \'Valet\']'),(3,'Anniversary','Plan your Anniversary fast and seamless with Tubelight','Anniversary Type:text|Mr.:text|Mrs.:text|Date:date','Pre Celebrations|Main Celebration|Post Celebration','Pre Celebrations-[\'Decorations\', \'Tent & Seating\', \'Screen\']|Main Celebration-[\'Food Caterers\', \'Stage Setup\', \'Power Backup\', \'Valet\', \'Games & Activity\', \'Photographers\']|Post Celebration-[\'Cleaning\', \'Return Gifts\']'),(4,'House Warming','Plan your House warming ceremony swiftly with Tubelight','Date and Time:datetime','House Tour and Ceremony|Main Party','House Tour and Ceremony-[\'Screen\', \'Venue Lighting\', \'Valet\', \'Decorations\', \'Tent & Seating\']|Main Party-[\'Musician\', \'Valet\', \'Decorations\', \'DJ\', \'Waiters\', \'Food Caterers\', \'Photographers\', \'Furniture Rentals\']'),(5,'Inaugurations','Make Inauguration events more seamlessly with Tubelight','Venue:text|Date and Time:datetime|Host Name:text|Activites:text|Budget:number','Pre Event|Main Party|Post Party','Pre Event-[\'Ritual Setup\', \'Screen\', \'Venue Lighting\', \'Valet\', \'Decorations\']|Main Party-[\'Tent & Seating\', \'Photographers\', \'DJ\', \'Waiters\', \'Food Caterers\', \'Certificate\', \'Security\', \'Power Backup\']|Post Party-[\'Return Gifts\', \'Cleaning\']'),(7,'Baby Shower','Manage your Baby Shower event effortlessly with Tubelight','Date and Time:datetime|Venue:textarea|Host Name:text|Theme:text','Pre Celebrations|Main Celebration','Pre Celebrations-[\'Decorations\', \'Tent & Seating\', \'Stage Setup\', \'Power Backup\', \'Screen\', \'Venue Lighting\']|Main Celebration-[\'Waiters\', \'Photographers\', \'Food Caterers\', \'Return Gifts\', \'Games & Activity\', \'Cleaning\']'),(8,'Funeral','Co-ordinate a funeral event with Tubelight','Funeral Date:date|Time:time|Venue:textarea|Officiant Name:text','Funeral Procession|Funeral Ceremony','Funeral Procession-[\'Ritual Setup\', \'Devotional Group\', \'Cremation\', \'Certificate\']|Funeral Ceremony-[\'Certificate\', \'Screen\', \'Venue Lighting\', \'Food Caterers\']'),(9,'Graduation','Plan the most fun and engaging graduation party with your close ones','Name:text|Date and Time:datetime|Venue:textarea','Pre Celebrations|Main Party|Post Party','Pre Celebrations-[\'Screen\', \'Venue Lighting\', \'Valet\', \'Decorations\', \'Tent & Seating\']|Main Party-[\'DJ\', \'Waiters\', \'Photographers\', \'Certificate\', \'Security\', \'Games & Activity\']|Post Party-[\'Return Gifts\', \'Cleaning\']'),(10,'Reception','Manage your Reception Event productively with Tubelight','Name:text|Host Name:text|Dress Code:text|Date:date','Pre Party|Main Event|Post Event','Pre Party-[\'Ritual Setup\', \'Screen\', \'Venue Lighting\', \'Musician\', \'Valet\', \'Decorations\', \'Tent & Seating\', \'Stage Setup\']|Main Event-[\'DJ\', \'Waiters\', \'Food Caterers\', \'Wedding Coordinator\', \'Ritual Setup\', \'Screen\', \'Venue Lighting\', \'Power Backup\']|Post Event-[\'Return Gifts\', \'Photographers\', \'Cleaning\']');
 /*!40000 ALTER TABLE `templates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1682,7 +1716,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('Aryan','R','aryan','aryan@gmail.com','b5c4f0ab95a1b29da77a4bfb2b5cf4a431b5d612572025004656d3875ed47a35','0-1|0|'),('Ayush','PV','ayush','ayush@gmail.com','a5e44282bc7dc73ec31ffc3c3e7afda26c4a2bb564d3c0c7dbafc7fa304a6f56','9-0|');
+INSERT INTO `users` VALUES ('Ayush Nayan','Gupta','ang','aryan.rajalbandi@gmail.com','ca8709fb87590a0d90493d4487e2bb72db1f32a40b6da84722c68601494c5d2f','1|2-0|1-1|0-2|'),('Aryan','R','aryan','aryan.rajalbandi@gmail.com','b5c4f0ab95a1b29da77a4bfb2b5cf4a431b5d612572025004656d3875ed47a35','0-1|0|1-0|0-3|'),('Ayush','PV','ayush','ayush@gmail.com','a5e44282bc7dc73ec31ffc3c3e7afda26c4a2bb564d3c0c7dbafc7fa304a6f56','9-0|');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -1695,4 +1729,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-07  0:15:57
+-- Dump completed on 2026-01-15 23:09:04

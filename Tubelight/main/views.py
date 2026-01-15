@@ -210,7 +210,7 @@ def create_subevent(request, event_id):
     
 
 def display_subevent_details(request, subevent_id):
-    reader = get_table("events")
+    reader = get_table("subevents")
     for row in reader:
         if int(row["id"]) == subevent_id:
             event = row
@@ -219,13 +219,22 @@ def display_subevent_details(request, subevent_id):
     if request.method == "POST":
         file_name = request.POST["file_name"]
         uploaded_file = request.FILES.get('file')
-        file_name = f"{event['id']}-{file_name}{os.path.splitext(uploaded_file.name)[1]}"
+        file_extension = os.path.splitext(uploaded_file.name)[1]
+        file_name = f"{event['id']}-{file_name}{file_extension}"
 
         if uploaded_file:
             files_dir = "./database/files"
             save_path = f"{files_dir}/{file_name}"
             
             os.makedirs(os.path.dirname(save_path), exist_ok=True)
+            
+            # Handle duplicate file names
+            counter = 1
+            while os.path.exists(save_path):
+                base_name = f"{file_name.rsplit('.', 1)[0]}"
+                save_path = f"{files_dir}/{base_name}-{counter}{file_extension}"
+                file_name = f"{base_name}-{counter}{file_extension}"
+                counter += 1
             
             with open(save_path, 'wb') as file:
                 for chunk in uploaded_file.chunks():
@@ -236,7 +245,7 @@ def display_subevent_details(request, subevent_id):
             if len(reader):
                 last_row = reader[-1]
                 files_file_id = int(last_row["id"]) + 1
-                order = int(last_row["subevent_order"]) + 1
+                order = int(last_row["file_order"]) + 1
             else:
                 files_file_id = 0
                 order = 1
@@ -931,6 +940,28 @@ def add_service(request, service_id):
             "service_details": service_details,
         }
         return render(request, "main/add_service.html", data)
+
+
+def event_invitation_template_normal(request, event_id):
+    reader = get_table("events")
+    for event in reader:
+        if event["id"] == event_id:
+            event_data = event
+            break   
+    data = {
+        "event": event_data,
+    }
+    html_string = render_to_string("main/event_invitation.html", data)
+    html_string = html_string.replace(
+        'href="/static/', 'href="http://localhost:8000/static/'
+    ).replace(
+        'src="/static/', 'src="http://localhost:8000/static/'
+    )
+
+    image_data = asyncio.run(html_to_image(html_string))
+    response = HttpResponse(image_data.read(), content_type="image/png")
+    response["Content-Disposition"] = "attachment; filename=rendered_image.png"
+    return response
 
 
 def event_invitation_template(request, template_id, event_id):

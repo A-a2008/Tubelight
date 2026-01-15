@@ -9,70 +9,56 @@
 	</head>
 	<body class="is-preload">
 
-		<!-- Page Wrapper -->
-			<div id="page-wrapper">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header" class="alt">
+						<span class="logo"><img src="{% static 'images/logo-bgremoved-small-white.png' %}" alt="" /></span>
+						<h1>Tubelight</h1>
+						<p>Manage your event gatherings with ease and efficiency<br /><br>
+						</p>
+					</header>
 
 
-				<!-- Banner -->
-					<section id="banner">
-						<div class="inner">
-							<!-- <div class="logo"><span class="icon fa-gem"></span></div> -->
-							<h2>Invitation to "{{ event.name }}"</h2>
-							<p>{{ event.description }}</p>
-						</div>
-					</section>
+				<!-- Main -->
+					<div id="main">
 
-				<!-- Wrapper -->
-					<section id="wrapper">
-
-						<!-- One -->
-							<section id="one" class="wrapper spotlight style1">
-								<div class="inner">
+						<!-- Introduction -->
+							<section class="main">
+								<div class="spotlight" id="intro">
 									<div class="content">
-										<div class="row gtr-uniform">
-											<div class="col-4 col-4-xsmall">
-												<h2 class="major">Date</h2>
-												<p>{{ event.date }}</p>
-											</div>
-											<div class="col-4 col-4-xsmall">
-												<h2 class="major">Time</h2>
-												<p>{{ event.time }}</p>
-											</div>
-											<div class="col-4 col-4-xsmall">
-												<h2 class="major">Venue</h2>
-												<p><img src="{% static 'images/venues/' %}{{ event.id }}.png" width="400"><br><br>
-													<a href="{{ event.venue }}" target="_blank">Go to Maps ➡️</a><hr></p>
-											</div>
-										</div>
+										<header class="major">
+											<h2>You are Invited!</h2>
+										</header>
+                                        <br>
+                                        <h2>Invitation to: <b>"{{ event.name }}"</h2>
+										<p><strong>Description: </strong>{{ event.description }}</p>
+
+                                        <p><strong>Date:</strong> {{ event.date }}</p>
+                                        <p><strong>Time:</strong> {{ event.time }}</p>
+                                        <p><strong>Venue:</strong></p> <img src="{% static 'images/venues/' %}{{ event.id }}.png" width="400"><br><br>
+
+                                        <p><strong>Chief Guest:</strong> {{ event.chief_guest }}</p>
+                                        <p><strong>Audience:</strong> {{ event.target_audience }}</p>
+										
+										
 									</div>
 								</div>
 							</section>
 
-						<!-- Two -->
-							<section id="two" class="wrapper alt spotlight style2">
-								<div class="inner">
-									<div class="content">
-										<div class="row gtr-uniform">
-											<div class="col-6 col-6-xsmall">
-												<h2 class="major">Chief Guest</h2>
-												<p>{{ event.chief_guest }}</p>
-											</div>
-											<div class="col-6 col-6-xsmall">
-												<h2 class="major">Audience</h2>
-												<p>{{ event.target_audience }}</p>
-											</div>
-										</div>
-									</div>
-								</div>
-							</section>
+                            
+				<!-- Footer -->
+					<footer id="footer">
+						
+					</footer>
 
-
-					</section>
 			</div>
 
 		<!-- Scripts -->
 			<script src="{% static 'assets/js/jquery.min.js' %}"></script>
 			<script src="{% static 'assets/js/jquery.scrollex.min.js' %}"></script>
+			<script src="{% static 'assets/js/jquery.scrolly.min.js' %}"></script>
 			<script src="{% static 'assets/js/browser.min.js' %}"></script>
 			<script src="{% static 'assets/js/breakpoints.min.js' %}"></script>
 			<script src="{% static 'assets/js/util.js' %}"></script>

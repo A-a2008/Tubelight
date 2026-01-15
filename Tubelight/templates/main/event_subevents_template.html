@@ -19,11 +19,10 @@
     {% for service_name, services, input_column, service_details_view, user_service, busy_service, busy_services in subevent_services %}
     <label for="{{ service_name }}"><u>{{ service_name }}</u></label>
     <select name="{{ subevent_name }}|{{ service_name }}" id="{{ service_name }}" required>
-        <option value="" disabled selected hidden>Select Service Provider</option>
         {% for service in services %}
         <option value="{{ service.id }}" {% if service.id == user_service %}selected{% endif %} {% if service.id in busy_services %}disabled{% endif %}>{{ service.Name }}</option>
         {% endfor %}
-        <option value="-1">Self Planned</option>
+        <option value="-1" selected>Self Planned</option>
     </select><br>
     <div class="table-wrapper">
         <table>
@@ -56,7 +55,7 @@
     {% if input_column.0 != "" %}
     <label for="{{ input_column.0 }}">{{ input_column.0 }}</label>
     Note: Enter <b>0</b> if <b>Self Planned</b>
-    <input type="{{ input_column.1 }}" name="{{ subevent_name }}|{{service_name}}-{{ input_column.0 }}" id="{{ input_column.0 }}" required><br>
+    <input type="{{ input_column.1 }}" name="{{ subevent_name }}|{{service_name}}-{{ input_column.0 }}" id="{{ input_column.0 }}" value="0" required><br>
     {% endif %}
     {% endfor %}
     <hr>

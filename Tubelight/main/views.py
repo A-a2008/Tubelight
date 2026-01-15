@@ -1033,7 +1033,7 @@ def service_details(request, service_id):
         # Remove keys with None values
         for key in keys_to_delete:
             service_detail[key] = "Input from User"
-        
+        del service_detail["busy"]
         print(service_detail)
 
     data = {
